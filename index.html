@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="POS - Point of Sale Application" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Questrial:wght@400;600&family=Comfortaa:wght@300;400;500;600;700&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <title>POS App</title>
+    <script>
+      // Error handlers
+      window.addEventListener("unhandledrejection", function (event) {
+        console.error("PROMISE REJECTION:", event.reason);
+        if (event.reason && event.reason.stack) {
+          console.error(event.reason.stack);
+        }
+        event.preventDefault();
+      });
+
+      window.addEventListener("error", function (event) {
+        console.error(
+          "ERROR:",
+          event.message,
+          "at",
+          event.filename + ":" + event.lineno
+        );
+        if (event.error && event.error.stack) {
+          console.error(event.error.stack);
+        }
+      });
+    </script>
+    <script>
+      // CRITICAL: Patch Object.defineProperty for Android 4.x compatibility
+      // Android 4.x has non-configurable properties (length, name) on functions
+      // Stream polyfills try to redefine these properties, causing "Cannot redefine property" errors
+      // This patch wraps the native defineProperty to silently ignore errors for non-configurable properties
+      (function () {
+        var nativeDefineProperty = Object.defineProperty;
+        Object.defineProperty = function (obj, prop, descriptor) {
+          try {
+            return nativeDefineProperty(obj, prop, descriptor);
+          } catch (error) {
+            // Silently ignore errors when trying to redefine non-configurable properties
+            // This typically happens with function.length and function.name on Android 4.x
+            if (
+              error.message &&
+              error.message.indexOf("Cannot redefine property") !== -1
+            ) {
+              console.warn(
+                "Skipped redefining non-configurable property:",
+                prop
+              );
+              return obj;
+            }
+            // Re-throw other errors
+            throw error;
+          }
+        };
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>

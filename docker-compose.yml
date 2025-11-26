@@ -1,0 +1,26 @@
+services:
+  pos-web:
+    image: ghcr.io/zoroplay/pos-web-1:latest
+    container_name: pos-web-1
+    hostname: pos-web
+    networks:
+      - sbenet
+    ports:
+      - "0.0.0.0:3000:3000"
+    restart: on-failure
+    environment:
+      - NEXT_PUBLIC_ACCESS_TOKEN=b_winners_access_token
+      - NEXT_PUBLIC_REFRESH_TOKEN=b_winners_refresh_token
+      - NEXT_PUBLIC_CLIENT_ID=4
+      - NEXT_PUBLIC_BASE_URL=https://api.staging.sportsbookengine.com
+      - NEXT_PUBLIC_VERSION_1=/api/v1
+      - NEXT_PUBLIC_VERSION_2=/api/v2
+      - NEXT_PUBLIC_MQTT_URI=wss://emqx.sportsbookengine.com/mqtt
+      - NEXT_PUBLIC_MQTT_USERNAME=ui
+      - NEXT_PUBLIC_MQTT_PASSWORD=sportsbook123
+      - NEXT_PUBLIC_MQTT_URI_IP=192.168.1.1
+      - NEXT_PUBLIC_MQTT_CLIENTID=cubebet_m
+
+networks:
+  sbenet:
+    external: true
