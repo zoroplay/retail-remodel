@@ -6,7 +6,6 @@ import {
 import {
   useCreditPlayerMutation,
   useDepositCommissionMutation,
-  useUserCommissionProfileQuery,
   useValidateUserMutation,
 } from "../../../../store/services/user.service";
 import { setUserRerender } from "../../../../store/features/slice/user.slice";
@@ -55,10 +54,7 @@ const OnlineDepositPage = () => {
 
   const [validateUser] = useValidateUserMutation();
   const [creditPlayer] = useCreditPlayerMutation();
-  const { data: commissionData } = useUserCommissionProfileQuery({
-    user_id: user?.id!,
-    commission_type: "deposit",
-  });
+
   const [depositCommision] = useDepositCommissionMutation();
 
   const currency = global_variables?.currency || "NGN";
@@ -168,26 +164,26 @@ const OnlineDepositPage = () => {
         return;
       }
 
-      const depositCommissionPayload = {
-        clientId: Number(environmentConfig.CLIENT_ID),
-        userId: selectedUser.id,
-        commissionId: commissionData?.data?.data?.profile?.id ?? 0,
-        amount: depositAmount,
-        provider: "deposit",
-        depositCode: "deposit",
-      };
+      // const depositCommissionPayload = {
+      //   clientId: Number(environmentConfig.CLIENT_ID),
+      //   userId: selectedUser.id,
+      //   commissionId: commissionData?.data?.data?.profile?.id ?? 0,
+      //   amount: depositAmount,
+      //   provider: "deposit",
+      //   depositCode: "deposit",
+      // };
 
-      const depositCommissionResult = await depositCommision(
-        depositCommissionPayload
-      ).unwrap();
+      // const depositCommissionResult = await depositCommision(
+      //   depositCommissionPayload
+      // ).unwrap();
 
-      if (depositCommissionResult?.success === false) {
-        toast.warning(
-          depositCommissionResult.message || "Commission calculation failed"
-        );
-      }
+      // if (depositCommissionResult?.success === false) {
+      //   toast.warning(
+      //     depositCommissionResult.message || "Commission calculation failed"
+      //   );
+      // }
 
-      toast.success("Deposit completed successfully!");
+      // toast.success("Deposit completed successfully!");
 
       // Reset form
       setCustomerId("");
@@ -569,7 +565,7 @@ const OnlineDepositPage = () => {
                         !amount ||
                         Number(amount) <= 0
                       }
-                      className={`flex-1 ${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]} disabled:opacity-50 disabled:cursor-not-allowed ${pageClasses["button-primary-text"]} font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs shadow-lg`}
+                      className={`flex-1 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} text-xs font-medium rounded-md transition-all shadow-md py-2 px-4  duration-200 flex items-center justify-center gap-2 `}
                     >
                       {isLoading ? (
                         <>
@@ -593,7 +589,7 @@ const OnlineDepositPage = () => {
                         setShowDropdown(false);
                         setErrMessage("");
                       }}
-                      className={`px-4 py-2.5 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} border ${pageClasses["quick-button-border"]} ${pageClasses["button-secondary-text"]} text-xs rounded-lg transition-colors duration-200`}
+                      className={`px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow text-xs rounded-lg transition-colors duration-200`}
                     >
                       Reset
                     </button>

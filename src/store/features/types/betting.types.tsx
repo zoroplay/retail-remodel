@@ -3,7 +3,7 @@
 import type { PreMatchFixture } from "./fixtures.types";
 import type { LiveFixture } from "../slice/live-games.slice";
 import type { Outcome } from "../../../data/types/betting.types";
-import { FindBetData } from "@/store/services/data/betting.types";
+import { BetSlip, FindBetData } from "@/store/services/data/betting.types";
 import { BET_TYPES_ENUM } from "@/data/enums/enum";
 
 export interface BettingGame {
@@ -95,7 +95,7 @@ export interface BettingState {
   // Odds tracking for fixtures
   odds_changes: Record<string, OddsChange>; // Key: `${match_id}_${outcome_id}`
   display_duration: number; // How long to show change indicators (in ms)
-  betslip: FindBetData | null;
+  betslip: BetSlip | null;
   bet_type: BET_TYPES_ENUM;
 }
 

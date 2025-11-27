@@ -1,50 +1,37 @@
 "use client";
-import React, { useCallback, useState, useEffect, useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "../../../hooks/useAppDispatch";
-import {
-  addLiveFixture,
-  LiveFixture,
-  selectLiveFixtures,
-  updateLiveFixture,
-  updateLiveFixtureOutcome,
-} from "../../../store/features/slice/live-games.slice";
-import { useModal } from "../../../hooks/useModal";
-import { useLiveTimeIncrement } from "../../../hooks/useLiveTimeIncrement";
-import { useLiveMqtt, usePrematchMqtt } from "../../../hooks/useMqtt";
-import { useBetting } from "../../../hooks/useBetting";
-import { getClientTheme } from "../../../config/theme.config";
-import {
-  useFixturesQuery,
-  useSportsHighlightLiveQuery,
-  useSportsQuery,
-  useTopBetsQuery,
-} from "../../../store/services/bets.service";
-import { AppHelper } from "../../../lib/helper";
-import { SportsHighlightFixture } from "../../../store/services/data/betting.types";
-import { PreMatchFixture } from "../../../store/features/types/fixtures.types";
+import OddsButton from "@/components/buttons/OddsButton";
+import SwitchInput from "@/components/inputs/SwitchInput";
+import { getClientTheme } from "@/config/theme.config";
+import { MARKET_SECTION } from "@/data/enums/enum";
+import { Fixture } from "@/data/types/betting.types";
+import { useAppSelector, useAppDispatch } from "@/hooks/useAppDispatch";
+import { useBetting } from "@/hooks/useBetting";
+import { useLiveTimeIncrement } from "@/hooks/useLiveTimeIncrement";
+import { useModal } from "@/hooks/useModal";
+import { useLiveMqtt } from "@/hooks/useMqtt";
+import { AppHelper } from "@/lib/helper";
 import {
   setSelectedGame,
   updateFixtureOutcome,
-} from "../../../store/features/slice/fixtures.slice";
-import { MODAL_COMPONENTS } from "../../../store/features/types";
+} from "@/store/features/slice/fixtures.slice";
 import {
-  DISPLAY_NAME_ENUM,
-  MARKET_NAME_ENUM,
-  MARKET_SECTION,
-} from "../../../data/enums/enum";
-import { Fixture, Outcome } from "../../../data/types/betting.types";
-import MainLayout from "../../layouts/MainLayout";
-import NavigationBar from "../../layouts/NavigationBar";
-import DataTable from "../../inputs/DataTable";
-import Button from "../../buttons/Button";
-import GameButton from "../../inputs/GameButton";
-import SportsMenu from "@/components/layouts/sidebars/SportsMenu";
-import OddsButton from "@/components/buttons/OddsButton";
-import BetSlip from "@/components/bets/bet-slip/BetSlip";
+  selectLiveFixtures,
+  addLiveFixture,
+  updateLiveFixtureOutcome,
+  updateLiveFixture,
+  LiveFixture,
+} from "@/store/features/slice/live-games.slice";
+import { MODAL_COMPONENTS } from "@/store/features/types";
+import { PreMatchFixture } from "@/store/features/types/fixtures.types";
+import {
+  useTopBetsQuery,
+  useSportsQuery,
+  useSportsHighlightLiveQuery,
+} from "@/store/services/bets.service";
+import { SportsHighlightFixture } from "@/store/services/data/betting.types";
 import { ChevronRight } from "lucide-react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import { useSearchParams, useLocation, useParams } from "react-router-dom";
-import { parseSportIdFromRoute } from "@/data/routes/routeUtils";
-import SwitchInput from "@/components/inputs/SwitchInput";
 
 interface OverviewScreenProps {
   sportId?: string;
@@ -80,14 +67,13 @@ export default function LiveOverviewScreen({
   // State for selected sport filter
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
 
-  const { hasLiveGamesWithTime } = useLiveTimeIncrement(1000); // Update every second
-
+  const { hasLiveGamesWithTime } = useLiveTimeIncrement(1000); //
   const {
     subscribeToLiveOdds,
     subscribeToLiveBetStop,
     subscribeToLiveFixtureChange,
   } = useLiveMqtt();
-  const { toggleBet } = useBetting();
+  const { selected_bets, toggleBet } = useBetting();
 
   const { data: data_to_bets, isLoading: is_top_bets_loading } =
     useTopBetsQuery();
@@ -659,11 +645,11 @@ export default function LiveOverviewScreen({
 
                                   {/* Games for this date */}
                                   {fixtures.map(
-                                    (fixture: PreMatchFixture | Fixture) => {
+                                    (fixture: LiveFixture | Fixture) => {
                                       return (
                                         <div
                                           key={fixture.matchID}
-                                          className={`relative grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 p-2 ${sportsPageClasses["card-hover"]} transition-colors duration-200 cursor-pointer pr-4`}
+                                          className={`relative grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 p-2 ${sportsPageClasses["card-hover"]} transition-colors duration-200 border-r-4 border-transparent cursor-pointer pr-4`}
                                         >
                                           {/* Slanted left border accent */}
                                           <div
@@ -784,7 +770,7 @@ export default function LiveOverviewScreen({
                                             }
                                           )}
 
-                                          <div className="col-span-1 ml-2 px-2 flex items-center justify-center">
+                                          <div className="col-span-1 ml-2 px-2 flex items-center justify-center relative">
                                             <div
                                               onClick={(e) => {
                                                 e.stopPropagation();
@@ -792,12 +778,31 @@ export default function LiveOverviewScreen({
                                                   fixture as PreMatchFixture
                                                 );
                                               }}
-                                              className={`text-[10px] flex justify-center items-center h-10 rounded-md w-14 p-1 ${sportsPageClasses["more-button-text"]} ${sportsPageClasses["more-button-border"]} ${sportsPageClasses["more-button-hover"]} transition-colors border`}
+                                              className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1 ${
+                                                sportsPageClasses[
+                                                  "more-button-text"
+                                                ]
+                                              }  ${
+                                                sportsPageClasses[
+                                                  "more-button-hover"
+                                                ]
+                                              } shadow font-semibold transition-colors border-2 ${
+                                                selected_bets.some(
+                                                  (bet) =>
+                                                    bet.game &&
+                                                    (bet.game.matchID ==
+                                                      Number(fixture.matchID) ||
+                                                      bet.game.game_id ==
+                                                        Number(fixture.gameID))
+                                                )
+                                                  ? `${classes.game_options_modal["odds-button-selected-bg"]} ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
+                                                  : `${classes.game_options_modal["odds-button-border"]}`
+                                              }`}
                                             >
                                               <span>
                                                 +{fixture.activeMarkets || 0}
                                               </span>
-                                              <ChevronRight size={14} />
+                                              <ChevronRight size={12} />
                                             </div>
                                           </div>
                                         </div>

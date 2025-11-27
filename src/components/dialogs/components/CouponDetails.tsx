@@ -8,10 +8,7 @@ import environmentConfig, {
   getEnvironmentVariable,
   ENVIRONMENT_VARIABLES,
 } from "../../../store/services/configs/environment.config";
-import {
-  usePayoutCommissionMutation,
-  useUserCommissionProfileQuery,
-} from "../../../store/services/user.service";
+import { usePayoutCommissionMutation } from "../../../store/services/user.service";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useFindBetMutation } from "@/store/services/bets.service";
 import Modal from "../Modal";
@@ -19,6 +16,7 @@ import { getClientTheme } from "@/config/theme.config";
 import { useBetting } from "@/hooks/useBetting";
 import { showToast } from "@/components/tools/toast";
 import { OVERVIEW } from "@/data/routes/routes";
+import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
 
 type Props = {
   onClose: () => void;
@@ -28,10 +26,7 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
   const { user } = useAppSelector((state) => state.user);
   const { betslip } = useAppSelector((state) => state.betting);
   const [payoutCommission, { isLoading }] = usePayoutCommissionMutation();
-  const { data: commissionData } = useUserCommissionProfileQuery({
-    user_id: user?.id!,
-    commission_type: "payout",
-  });
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const betslip_id = searchParams.get("ref");
@@ -43,14 +38,14 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (betslip_id) {
-      findBet({
-        betslipId: betslip_id,
-        clientId: environmentConfig.CLIENT_ID,
-      });
-    }
-  }, [betslip_id, findBet]);
+  // useEffect(() => {
+  //   if (betslip_id) {
+  //     findBet({
+  //       betslipId: betslip_id,
+  //       clientId: environmentConfig.CLIENT_ID,
+  //     });
+  //   }
+  // }, [betslip_id, findBet]);
 
   // Status modal state
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -143,8 +138,8 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
       AppHelper.printTicket({
         ticket_data: {
           betslipId: betslip.betslipId,
-          terminal: user?.code || "Unknown",
-          cashier: user?.username || "Cashier",
+          terminal: user?.code || "",
+          cashier: user?.username || "",
           time: AppHelper.formatReceiptTimestamp(),
           stake: betslip.stake,
           totalOdds: betslip.totalOdd,
@@ -186,7 +181,7 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
             tournament: selection.tournament,
             categoryID: selection.category,
             categoryName: selection.category,
-            sportID: selection.sportId,
+            sportID: selection?.sportId || 0,
             sportName: selection.sport,
             tournamentID: 0,
             eventTime: selection.eventDate,
@@ -203,19 +198,19 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
             activeMarkets: 0,
           },
           outcome_data: {
-            displayName: selection.outcomeId,
+            displayName: selection.outcomeName,
             marketName: selection.marketName,
             odds: parseFloat(selection.odds),
-            outcomeID: selection.outcomeId,
+            outcomeID: selection?.outcomeId,
             outcomeName: selection.outcomeName,
             specifier: selection.specifier,
             oddID: 0,
             status: 0,
             active: 1,
-            producerID: selection.producerId,
-            marketID: selection.marketId,
+            producerID: selection?.producerId || 0,
+            marketID: selection?.marketId || 0,
             producerStatus: 0,
-            marketId: selection.marketId,
+            marketId: selection?.marketId || 0,
           },
           element_id: selection.eventId,
           bet_type: "pre",
@@ -374,7 +369,7 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      className="max-w-4xl"
+      className="max-w-2xl"
       header={
         <div className="flex items-center justify-between">
           <h2 className={`text-lg font-bold ${modalClasses["header-text"]}`}>
@@ -384,37 +379,56 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
       }
       footer={
         isFindingBet || !betslip ? (
-          <div className="flex flex-wrap gap-2 pt-2 animate-pulse">
+          <div className="flex flex-wrap gap-4 pt-2 animate-pulse">
             <div className="flex-1 min-w-[120px] h-10 bg-gray-700/30 rounded-lg"></div>
             <div className="flex-1 min-w-[120px] h-10 bg-gray-700/30 rounded-lg"></div>
             <div className="flex-1 min-w-[120px] h-10 bg-gray-700/30 rounded-lg"></div>
             <div className="flex-1 min-w-[120px] h-10 bg-gray-700/30 rounded-lg"></div>
           </div>
         ) : (
-          <div className="flex flex-wrap gap-2 pt-2">
+          <div className="flex flex-wrap gap-4 pt-2">
             {/* Rebet Button - Always show */}
             <button
               onClick={handleRebet}
-              className={`flex-1 min-w-[120px] px-4 py-2.5 rounded-lg font-medium text-xs ${classes["action-button"]} ${classes["action-button-hover"]} text-white transition-all duration-200 shadow-sm`}
+              className={`flex-1 min-w-[120px] px-4 py-2 rounded-lg font-medium text-xs ${classes["action-button"]} ${classes["action-button-hover"]} text-white transition-all duration-200 shadow-sm`}
             >
               Rebet
             </button>
 
             {/* Cashout Button - Always show, disabled if paid out */}
-            <button
-              onClick={handleCashout}
-              disabled={betslip.paidOut !== 0}
-              className={`flex-1 min-w-[120px] px-4 py-2.5 rounded-lg font-medium text-xs ${classes["action-button"]} ${classes["action-button-hover"]} text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm`}
-            >
-              Cash Out
-            </button>
+            {
+              <button
+                onClick={handleCashout}
+                disabled={betslip?.cashOutAmount > 0}
+                className={`flex-1  min-w-[120px] px-4 py-2 rounded-lg font-medium text-xs  ${
+                  classes["action-button-hover"]
+                } text-white transition-all duration-200 shadow-sm ${
+                  betslip?.cashOutAmount > 0
+                    ? `${classes["action-button"]}`
+                    : "pointer-events-none bg-opacity-50 bg-gray-600/40 cursor-not-allowed"
+                }`}
+              >
+                {betslip?.cashOutAmount > 0 ? (
+                  <>
+                    Cash Out{" "}
+                    <CurrencyFormatter
+                      amount={betslip?.cashOutAmount || 0}
+                      className={""}
+                      spanClassName={""}
+                    />
+                  </>
+                ) : (
+                  "Cash Out unavailable"
+                )}
+              </button>
+            }
 
             {/* Payout Button - Show if not paid out */}
-            {betslip.paidOut === 0 && (
+            {betslip.paid_out === 0 && (
               <button
                 onClick={handlePayoutCommission}
                 disabled={isLoading}
-                className={`flex-1 min-w-[120px] px-4 py-2.5 rounded-lg font-medium text-xs ${classes["action-button"]} ${classes["action-button-hover"]} text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm`}
+                className={`flex-1 min-w-[120px] px-4 py-2 rounded-lg font-medium text-xs ${classes["action-button"]} ${classes["action-button-hover"]} text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm`}
               >
                 {isLoading ? "Processing..." : "Pay Out"}
               </button>
@@ -423,7 +437,7 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
             {/* Reprint Button - Always show */}
             <button
               onClick={handleReprint}
-              className={`flex-1 min-w-[120px] px-4 py-2.5 rounded-lg font-medium text-xs ${classes["secondary-button"]} ${classes["secondary-button-hover"]} text-white transition-all duration-200 shadow-sm`}
+              className={`flex-1 min-w-[120px] px-4 py-2 rounded-lg font-medium text-xs ${classes["secondary-button"]} ${classes["secondary-button-hover"]} text-white transition-all duration-200 shadow-sm`}
             >
               Print Ticket
             </button>
@@ -437,7 +451,7 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
         <div className="space-y-2">
           {/* Betslip Info Section */}
           <div
-            className={`${classes["section-bg"]} rounded-lg p-3 space-y-2 border ${classes["section-border"]} shadow-sm`}
+            className={`${classes["section-bg"]} rounded-lg p-2 space-y-2 border ${classes["section-border"]} shadow-sm`}
           >
             <h3
               className={`font-semibold text-sm mb-2 ${classes["section-title"]}`}
@@ -452,13 +466,15 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
                 </span>
               </div>
               <div className="flex justify-start gap-4">
-                <span className={classes["label-text"]}>Source:</span>
-                <span className={classes["value-text"]}>{betslip.source}</span>
+                <span className={classes["label-text"]}>Date:</span>
+                <span className={classes["value-text"]}>
+                  {AppHelper.formatDate(betslip.created)}
+                </span>
               </div>
               <div className="flex justify-start gap-4 col-span-2">
-                <span className={classes["label-text"]}>Status:</span>
+                <span className={classes["label-text"]}>Bet Type:</span>
                 <span className={classes["value-text"]}>
-                  {betslip.paidOut === 1 ? "Paid Out" : "Pending"}
+                  {betslip.bet_category}
                 </span>
               </div>
             </div>
@@ -466,7 +482,7 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
 
           {/* Bet Details Section */}
           <div
-            className={`${classes["section-bg"]} rounded-lg p-3 flex flex-col gap-2 border ${classes["section-border"]} shadow-sm`}
+            className={`${classes["section-bg"]} rounded-lg p-2 flex flex-col gap-2 border ${classes["section-border"]} shadow-sm`}
           >
             <h3 className={`font-semibold text-sm ${classes["section-title"]}`}>
               Bet Details
@@ -475,7 +491,11 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
               <div className="flex justify-between">
                 <span className={classes["label-text"]}>Stake:</span>
                 <span className={`font-semibold ${classes["value-text"]}`}>
-                  {user?.currency} {formatNumber(Number(betslip.stake))}
+                  <CurrencyFormatter
+                    amount={Number(betslip.stake)}
+                    className={""}
+                    spanClassName={""}
+                  />
                 </span>
               </div>
 
@@ -485,15 +505,20 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
                   {formatNumber(Number(betslip.totalOdd))}
                 </span>
               </div>
-
               <div
-                className={`flex justify-between py-2 border-t ${classes["divider"]} mt-2 pt-2`}
-              >
+                className={`${theme.classes["light-divider"]} w-full h-0.5`}
+              />
+
+              <div className={`flex justify-between  px-1`}>
                 <span className={`font-semibold ${classes["label-text"]}`}>
-                  {betslip.paidOut === 0 ? "Possible Win:" : "Paid Amount:"}
+                  {betslip?.paid_out === 0 ? "Possible Win:" : "Paid Amount:"}
                 </span>
                 <span className={`font-bold ${classes["win-text"]}`}>
-                  {user?.currency} {formatNumber(Number(betslip.possibleWin))}
+                  <CurrencyFormatter
+                    amount={Number(betslip.possibleWin)}
+                    className={""}
+                    spanClassName={""}
+                  />
                 </span>
               </div>
             </div>
@@ -501,7 +526,7 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
 
           {/* Selections Section */}
           <div
-            className={`${classes["section-bg"]} rounded-lg p-3 border ${classes["section-border"]} shadow-sm`}
+            className={`${classes["section-bg"]} rounded-lg p-2 border ${classes["section-border"]} shadow-sm`}
           >
             <h3
               className={`font-semibold text-sm mb-2 ${classes["section-title"]}`}
@@ -511,19 +536,22 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
             <div className="flex flex-col gap-2">
               {betslip.selections.map((selection, index) => (
                 <div
-                  key={selection.selectionId}
-                  className={`${classes["item-bg"]} rounded-lg p-3 flex flex-col gap-2 border ${classes["item-border"]} shadow-sm`}
+                  key={index}
+                  className={`${classes["item-bg"]} rounded-md p-2 flex flex-col gap-2 border ${classes["item-border"]} shadow-sm`}
                 >
-                  <div className="flex justify-between gap-1 items-start">
-                    <div className="flex-1 gap-1  flex flex-col">
-                      <p
-                        className={`font-medium text-sm ${classes["event-name"]}`}
-                      >
-                        {selection.eventName}
-                      </p>
+                  <div className="flex-1 gap-1  flex flex-col">
+                    <p
+                      className={`font-medium text-xs ${classes["event-name"]}`}
+                    >
+                      {selection.eventName}
+                    </p>
+                    <div className="flex justify-start gap-4 items-start">
                       <p className={`text-xs ${classes["subtitle-text"]}`}>
                         {selection.category} - {selection.tournament}
                       </p>
+                      <div
+                        className={`${theme.classes["light-divider"]} w-0.5 h-4`}
+                      />
                       <p className={`text-xs ${classes["subtitle-text"]}`}>
                         {formatDate(selection.eventDate)}
                       </p>

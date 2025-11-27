@@ -4,6 +4,7 @@ import { useTournamentsQuery } from "@/store/services/bets.service";
 import TournamentItem from "./TournamentItem";
 import TournamentSkeleton from "./TournamentSkeleton";
 import { getClientTheme } from "@/config/theme.config";
+import { IoChevronDown } from "react-icons/io5";
 
 type Props = {
   category: SportCategory;
@@ -43,15 +44,15 @@ const CategoryItem = ({ category, sportId }: Props) => {
       {/* Category Header */}
       <div
         onClick={toggleExpansion}
-        className={`flex items-center justify-between p-2 pl-4 ${sidebarClasses["category-item-text"]} ${sidebarClasses["category-item-hover"]} cursor-pointer transition-colors duration-200`}
+        className={`flex items-center justify-between p-2 py-1.5 pl-4 ${sidebarClasses["category-item-text"]} ${sidebarClasses["category-item-hover"]} cursor-pointer transition-colors duration-200`}
       >
         <div className="flex items-center gap-2">
-          <span className="text-[11px] tracking-wider">
+          <span className="text-xs tracking-wider">
             {category.categoryName}
           </span>
           {hasTournaments && (
             <span
-              className={`text-xs ${sidebarClasses["category-item-count-text"]} ${sidebarClasses["category-item-count-bg"]} px-2 py-0.5 rounded-full`}
+              className={`text-[10px] ${sidebarClasses["category-item-count-text"]} ${sidebarClasses["category-item-count-bg"]} px-2 py-0.5 rounded-full`}
             >
               {category.total}
             </span>
@@ -59,9 +60,15 @@ const CategoryItem = ({ category, sportId }: Props) => {
         </div>
 
         {hasTournaments && (
-          <div className="transition-transform duration-200 text-sm">
-            {isExpanded ? "▼" : "▶"}
-          </div>
+          // <div className="transition-transform duration-200 text-sm">
+          //   {isExpanded ? "▼" : "▶"}
+          // </div>
+          <IoChevronDown
+            fontSize={14}
+            className={`transition-transform duration-200 ease-in-out ${
+              isExpanded ? "-rotate-90" : ""
+            }`}
+          />
         )}
       </div>
 

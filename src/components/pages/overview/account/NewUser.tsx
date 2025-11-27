@@ -347,27 +347,26 @@ const NewUser = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-3 pt-4">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`flex items-center gap-2 px-4 py-2 ${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]} ${pageClasses["button-primary-text"]} text-sm font-medium rounded-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {isSubmitting ? (
-                  <Loader size={16} className="animate-spin" />
-                ) : (
-                  <Save size={16} />
-                )}
-                {isSubmitting ? "Saving..." : "Create User"}
-              </button>
-
+            <div className="flex items-center justify-end gap-2 pt-4">
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className={`flex items-center gap-2 px-4 py-2 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} ${pageClasses["button-secondary-text"]} text-sm font-medium rounded-lg transition-all`}
+                className={`flex items-center text-xs gap-2 px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow`}
               >
-                <X size={16} />
+                <X size={14} />
                 Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`flex items-center text-xs gap-2 px-4 py-2 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} font-medium rounded-md transition-all shadow-md border disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                {isSubmitting ? (
+                  <Loader size={14} className="animate-spin" />
+                ) : (
+                  <Save size={14} />
+                )}
+                {isSubmitting ? "Saving..." : "Create User"}
               </button>
             </div>
           </form>

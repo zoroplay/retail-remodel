@@ -4,6 +4,7 @@ import { useSportsCategoriesQuery } from "@/store/services/bets.service";
 import CategoryItem from "./CategoryItem";
 import CategorySkeleton from "./CategorySkeleton";
 import { getClientTheme } from "@/config/theme.config";
+import { IoChevronDown } from "react-icons/io5";
 
 type Props = {
   sport: Sport;
@@ -40,21 +41,22 @@ const SportItem = ({ sport, onSportClick }: Props) => {
   const hasEvents = sport.total > 0;
 
   return (
-    <div className={`border ${sidebarClasses["sport-item-border"]} `}>
+    <div
+      className={`border ${sidebarClasses["sport-item-border"]} shadow-lg overflow-hidden mb-0.5`}
+    >
       {/* Sport Header */}
       <div
         onClick={toggleExpansion}
-        className={`flex items-center justify-between p-2 py-1.5   ${sidebarClasses["sport-item-bg"]} ${sidebarClasses["sport-item-hover"]} cursor-pointer transition-colors duration-200`}
+        className={`flex items-center justify-between pl-2 pr-2 py-1.5 border-l-4 ${classes["border"]} shadow-lg ${sidebarClasses["sport-item-bg"]} ${sidebarClasses["sport-item-hover"]} ${sidebarClasses["sport-item-text"]} ${sidebarClasses["sport-item-border"]} cursor-pointer transition-colors duration-200`}
       >
         <div className="flex items-center gap-2">
-          <span
-            className={`text-xs font-semibold ${sidebarClasses["sport-item-text"]} tracking-wider`}
-          >
+          {/* Optionally add a sport icon here */}
+          <span className={`text-xs font-bold tracking-wider`}>
             {sport.sportName}
           </span>
           {sport.total > 0 && (
             <span
-              className={`text-xs font-semibold ${sidebarClasses["sport-item-count-text"]} ${sidebarClasses["sport-item-count-bg"]} px-2 py-0.5 rounded-full`}
+              className={`text-[10px] font-semibold ${sidebarClasses["sport-item-count-text"]} ${sidebarClasses["sport-item-count-bg"]} px-1.5 py-0.5 rounded-full`}
             >
               {sport.total}
             </span>
@@ -62,9 +64,12 @@ const SportItem = ({ sport, onSportClick }: Props) => {
         </div>
 
         {hasEvents && (
-          <div className="transition-transform duration-200">
-            {isExpanded ? "▼" : "▶"}
-          </div>
+          <IoChevronDown
+            fontSize={16}
+            className={`transition-transform duration-200 ease-in-out ${
+              isExpanded ? "-rotate-90" : ""
+            }`}
+          />
         )}
       </div>
 
@@ -77,13 +82,15 @@ const SportItem = ({ sport, onSportClick }: Props) => {
             <div
               className={`${sidebarClasses["category-item-bg"]} border-t ${sidebarClasses["sport-item-border"]}`}
             >
-              {categories.map((category) => (
-                <CategoryItem
-                  key={category.categoryID}
-                  category={category}
-                  sportId={sport.sportID}
-                />
-              ))}
+              {categories
+                .filter((category) => category.categoryID)
+                .map((category) => (
+                  <CategoryItem
+                    key={category.categoryID}
+                    category={category}
+                    sportId={sport.sportID}
+                  />
+                ))}
             </div>
           ) : (
             <div

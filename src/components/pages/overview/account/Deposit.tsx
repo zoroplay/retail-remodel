@@ -298,17 +298,29 @@ const Deposit = () => {
             <div className="overflow-x-auto">
               {/* Table Header */}
               <div
-                className={`${pageClasses["table-header-bg"]} border-b ${pageClasses["card-border"]} px-4 py-3`}
+                className={`${pageClasses["table-header-bg"]} border-b ${pageClasses["card-border"]} border-l-transparent border-l-4 px-2 grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-2 font-semibold text-xs ${pageClasses["table-header-text"]}`}
               >
-                <div
-                  className={`grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-4 font-semibold text-xs ${pageClasses["table-header-text"]}`}
-                >
-                  <div>Payment Method</div>
-                  <div>Description</div>
-                  <div>Fee</div>
-                  <div>Minimum Amount</div>
-                  <div></div>
+                <div className="flex justify-start items-center">
+                  Payment Method
                 </div>
+                <div
+                  className={`border-l py-2 ${classes["border-light"]} pl-4 flex justify-start items-center`}
+                >
+                  Description
+                </div>
+                <div
+                  className={`border-l py-2 ${classes["border-light"]} pl-4 flex justify-start items-center`}
+                >
+                  Fee
+                </div>
+                <div
+                  className={`border-l py-2 ${classes["border-light"]} pl-4 flex justify-start items-center`}
+                >
+                  Min. Amount
+                </div>
+                <div
+                  className={`border-l py-2 ${classes["border-light"]} pl-4 flex justify-start items-center`}
+                ></div>
               </div>
 
               {/* Table Rows */}
@@ -318,11 +330,11 @@ const Deposit = () => {
                 return (
                   <div
                     key={item.id || index}
-                    className={`border-b border-l-4 border-l-transparent ${pageClasses["card-border"]} px-4 py-2 ${pageClasses["row-hover"]} transition-colors`}
+                    className={`border-b border-l-4 border-l-transparent ${pageClasses["card-border"]} px-2  ${pageClasses["row-hover"]} transition-colors`}
                   >
-                    <div className="grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-4 items-center">
+                    <div className="grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-2 items-center">
                       {/* Payment Method with Logo */}
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 py-2">
                         <div className="w-10 h-10 rounded flex items-center justify-center overflow-hidden bg-white p-1">
                           <img
                             src={providerInfo.image}
@@ -345,7 +357,7 @@ const Deposit = () => {
                             {providerInfo.name}
                           </div>
                           <div
-                            className={`text-[11px] ${pageClasses["label-text"]}`}
+                            className={`text-[10px] ${pageClasses["label-text"]}`}
                           >
                             {item.provider === "paystack" &&
                               "(Card/bank) Instant Credit"}
@@ -359,7 +371,9 @@ const Deposit = () => {
                       </div>
 
                       {/* Description */}
-                      <div className={`text-xs ${pageClasses["label-text"]}`}>
+                      <div
+                        className={`text-[10px] ${pageClasses["label-text"]} ${classes["border-light"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
+                      >
                         {item.provider === "paystack" &&
                           "(Card/bank) Instant Credit"}
                         {item.provider === "interswitch" && "Instant Credit"}
@@ -380,22 +394,34 @@ const Deposit = () => {
                       </div>
 
                       {/* Fee */}
-                      <div className="font-semibold text-sm">FREE</div>
+                      <div
+                        className={`font-semibold text-xs ${classes["border-light"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
+                      >
+                        FREE
+                      </div>
 
                       {/* Minimum Amount */}
-                      <div className="font-semibold text-sm">N50</div>
-
-                      {/* Deposit Button */}
-                      <button
-                        onClick={() => handleDepositClick(item.provider)}
-                        className={`${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]} ${pageClasses["button-primary-text"]} px-4 py-2 rounded font-semibold text-xs transition-all flex items-center justify-center gap-2`}
+                      <div
+                        className={`font-semibold text-xs ${classes["border-light"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
                       >
-                        Deposit
-                        <Plus
-                          size={14}
-                          className="bg-white rounded-full text-blue-600"
-                        />
-                      </button>
+                        N50
+                      </div>
+
+                      <div
+                        className={`font-semibold text-xs ${classes["border-light"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
+                      >
+                        {/* Deposit Button */}
+                        <button
+                          onClick={() => handleDepositClick(item.provider)}
+                          className={`${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} px-3 py-1.5 rounded-md transition-all shadow-md border font-semibold text-[10px] flex items-center justify-center gap-2`}
+                        >
+                          Deposit
+                          <Plus
+                            size={14}
+                            className="bg-white rounded-full text-blue-600"
+                          />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );

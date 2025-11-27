@@ -407,7 +407,7 @@ const TransferFunds = () => {
                 <button
                   type="submit"
                   disabled={is_sending || !formData.toUsername}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 ${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]} ${pageClasses["button-primary-text"]} text-sm font-medium rounded-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} text-xs font-medium rounded-md transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {is_sending ? (
                     <>

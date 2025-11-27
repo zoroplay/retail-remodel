@@ -75,7 +75,7 @@ const SportsMenu = (props: Props) => {
   return (
     <section className="sticky top-[100px]">
       <aside
-        className={`lg:w-80 w-full ${classes.sports_sidebar["main-bg"]} overflow-hidden shadow-2xl`}
+        className={`lg:w-72 w-full ${classes.sports_sidebar["main-bg"]} overflow-hidden shadow-2xl`}
       >
         <div className="flex-1 items-center justify-center gap-2 p-2">
           {/* Restore SingleSearchInput at the top */}
@@ -112,10 +112,10 @@ const SportsMenu = (props: Props) => {
             border_color={`border ${classes["input-border"]}`}
           />
           <div
-            className={`w-full h-0.5 ${classes.sports_sidebar["divider"]} my-1.5`}
+            className={`w-full rounded-lg h-0.5 ${classes.sports_sidebar["divider"]} my-1.5`}
           />
           {/* Sports List */}
-          <div className="flex flex-col max-h-[calc(100vh-175px)] pr-1 overflow-y-auto h-full">
+          <div className=" max-h-[calc(100vh-175px)] pr-1 overflow-y-auto h-full">
             {sportsLoading ? (
               <div className="flex flex-col gap-1">
                 {[...Array(8)].map((_, index) => (

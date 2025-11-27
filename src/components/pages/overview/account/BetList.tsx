@@ -15,6 +15,8 @@ import { BET_STATUS_CODES } from "@/data/enums/enum";
 import { useModal } from "@/hooks/useModal";
 import { MODAL_COMPONENTS, MODAL_FUNCTION_ENUM } from "@/store/features/types";
 import { MdCancel } from "react-icons/md";
+import { useAppDispatch } from "@/store/hooks/useAppDispatch";
+import { setBetslip as set_betlist } from "@/store/features/slice/betting.slice";
 
 const BetListPage = () => {
   const { classes } = getClientTheme();
@@ -45,7 +47,7 @@ const BetListPage = () => {
   const [pageSize, setPageSize] = useState("15");
   const [outcome, setOutcome] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
+  const dispatch = useAppDispatch();
   // Lazy fetch hook - will be triggered by filter changes
   const [fetchBetList, { data, isLoading }] = useLazyFetchBetListQuery();
 
@@ -243,7 +245,7 @@ const BetListPage = () => {
     >
       {/* Filters */}
       <div
-        className={`${pageClasses["card-bg"]} p-2 rounded-md border ${pageClasses["card-border"]}`}
+        className={`${pageClasses["card-bg"]} ${classes["text-secondary"]} p-2 rounded-md border ${pageClasses["card-border"]}`}
       >
         <div className="flex gap-2 items-end flex-wrap">
           {/* <div className="flex flex-col text-gray-400">
@@ -260,7 +262,7 @@ const BetListPage = () => {
             />
           </div> */}
 
-          <div className="flex flex-col text-gray-400 w-full max-w-[400px]">
+          <div className="flex flex-col  w-full max-w-[400px]">
             <DateRangeInput
               // type="date"
               value={{
@@ -276,9 +278,9 @@ const BetListPage = () => {
                 })
               }
               font-semibold
-
+              text_color={classes["input-text"]}
+              bg_color={classes["input-bg"]}
               // height="h-[42px]"
-
               // className="bg-gray-700 text-white px-3 py-2 rounded-md"
             />
           </div>
@@ -309,12 +311,11 @@ const BetListPage = () => {
                 ))}
               </select>
             </div> */}
-          <div className="flex flex-row items-center gap-4 text-gray-400">
+          <div className="flex flex-row items-center gap-4 ">
             <div className="w-44">
               <Select
                 label="Page Size"
                 value={[pageSize]}
-                text_color={"text-gray-400"}
                 options={[
                   { id: "10", name: "10" },
                   { id: "15", name: "15" },
@@ -324,9 +325,10 @@ const BetListPage = () => {
                 ]}
                 onChange={(e) => setPageSize(e[0] as string)}
                 placeholder={""} // className="w-full"
-                bg_color={pageClasses["input-bg"]}
-                border_color={`border ${pageClasses["input-border"]}`}
-                className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                bg_color={classes["input-bg"]}
+                text_color={classes["input-text"]}
+                border_color={`border ${classes["input-border"]}`}
+                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
               />
             </div>
           </div>
@@ -445,17 +447,16 @@ const BetListPage = () => {
                     onClick={() => {
                       openModal({
                         modal_name: MODAL_COMPONENTS.COUPON_DETAILS,
-                        ref: bet.betslip_id,
+                        // ref: bet.betslip_id,
                       });
+                      dispatch(set_betlist(bet));
                     }}
                   >
                     {bet.betslip_id}
                   </td>
                   <td className="p-2">{bet.username}</td>
                   <td className="p-2">{bet.bet_category_desc}</td>
-                  <td className="p-2">
-                    {AppHelper.formatTransactionDate(bet.created)}
-                  </td>
+                  <td className="p-2">{AppHelper.formatDate(bet.created)}</td>
                   <td className="p-2">{bet.stake}</td>
                   <td className="p-2">
                     <div

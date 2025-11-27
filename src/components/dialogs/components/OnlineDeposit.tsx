@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/useAppDispatch";
 import {
   useCreditPlayerMutation,
   useDepositCommissionMutation,
-  useUserCommissionProfileQuery,
   useValidateUserMutation,
 } from "../../../store/services/user.service";
 import { MODAL_COMPONENTS } from "../../../store/features/types";
@@ -37,10 +36,7 @@ const OnlineDeposit: React.FC<Props> = ({ onClose }) => {
   const [validateUser, { isLoading: isValidating }] = useValidateUserMutation();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [creditPlayer, { isLoading: isCrediting }] = useCreditPlayerMutation();
-  const { data: commissionData } = useUserCommissionProfileQuery({
-    user_id: user?.id!,
-    commission_type: "deposit",
-  });
+
   const { openModal } = useModal();
 
   const [depositCommision] = useDepositCommissionMutation();
@@ -165,28 +161,6 @@ const OnlineDeposit: React.FC<Props> = ({ onClose }) => {
       }
       // dispatch(closeModal());
 
-      const depositCommissionPayload = {
-        clientId: getEnvironmentVariable(
-          ENVIRONMENT_VARIABLES.CLIENT_ID
-        ) as unknown as number,
-        userId: userDetails.id,
-        commissionId: commissionData?.data?.data?.profile?.id ?? 0,
-        amount: depositAmount,
-        provider: "deposit",
-        depositCode: "deposit",
-      };
-      const depositCommissionResult = await depositCommision(
-        depositCommissionPayload
-      ).unwrap();
-      console.log("depositCommissionResult", depositCommissionResult);
-      if (depositCommissionResult?.success === false) {
-        // errorToast({
-        //   title: "Warning",
-        //   message:
-        //     depositCommissionResult.message || "Commission calculation failed",
-        // });
-        // Continue with deposit even if commission fails
-      }
       showSuccessModal("Success");
       // showSuccessModal("Success", "Deposit completed successfully!", () => {
       // Reset form and close modal logic here

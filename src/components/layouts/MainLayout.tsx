@@ -145,12 +145,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     confirmBet,
     cancelBet,
     canPlaceBet,
-    showInsufficientBalanceModal,
-    showSuccessModal,
-    modalData,
-    closeInsufficientBalanceModal,
-    closeSuccessModal,
-    handleDeposit,
+
     // InsufficientBalanceModalComponent,
     // SuccessModalComponent,
   } = usePlaceBet();
@@ -456,91 +451,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           )}
         </div>
       </div>
-
-      {/* Insufficient Balance Modal */}
-      {showInsufficientBalanceModal && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              closeInsufficientBalanceModal();
-            }
-          }}
-        >
-          <div className="bg-white w-full max-w-md rounded-xl p-6">
-            {/* Header */}
-            <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
-                <svg
-                  className="w-6 h-6 text-red-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                  />
-                </svg>
-              </div>
-              <h2 className="text-xl font-bold text-gray-800 flex-1">
-                {modalData.title}
-              </h2>
-            </div>
-
-            {/* Message */}
-            <p className="text-gray-600 mb-4 leading-6">{modalData.message}</p>
-
-            {/* Balance Details */}
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-gray-700 font-medium">Current Balance:</p>
-                <p className="text-gray-900 font-semibold">
-                  {modalData.currency}{" "}
-                  {modalData.currentBalance?.toFixed(2) || "0.00"}
-                </p>
-              </div>
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-gray-700 font-medium">Required Amount:</p>
-                <p className="text-gray-900 font-semibold">
-                  {modalData.currency}{" "}
-                  {modalData.requiredAmount?.toFixed(2) || "0.00"}
-                </p>
-              </div>
-              <div className="border-t border-gray-200 pt-2 mt-2">
-                <div className="flex justify-between items-center">
-                  <p className="text-red-600 font-bold">Shortfall:</p>
-                  <p className="text-red-600 font-bold">
-                    {modalData.currency}{" "}
-                    {(
-                      (modalData.requiredAmount || 0) -
-                      (modalData.currentBalance || 0)
-                    ).toFixed(2)}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={closeInsufficientBalanceModal}
-                className="flex-1 bg-gray-500 py-3 rounded-lg text-white font-semibold cursor-pointer hover:bg-gray-600"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeposit}
-                className="flex-1 bg-primary py-3 rounded-lg text-white font-semibold cursor-pointer hover:bg-gray-800"
-              >
-                Deposit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

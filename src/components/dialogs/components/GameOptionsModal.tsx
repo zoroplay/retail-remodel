@@ -20,6 +20,7 @@ import { MARKET_SECTION } from "@/data/enums/enum";
 import ExactGoals from "@/components/bets/sections/ExactGoals";
 import { SkeletonTitle } from "@/components/skeletons/OutComesSkeleton";
 import { getClientTheme } from "@/config/theme.config";
+import Modal from "../Modal";
 
 export const groupLiveSports = (data: PreMatchFixture[] | PreMatchFixture) => {
   // Handle both single fixture object and array of outcomes
@@ -267,359 +268,168 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
     return "SIMPLE";
   };
 
-  // Group markets by their component type (not by individual market ID)
+  // Render market sections in the order received from the backend
   const createDynamicMarketSections = () => {
     if (!fixture_data || !fixture_data.outcomes) {
       return [];
     }
 
-    // First, group outcomes by marketId
+    // Group outcomes by marketId, preserving order
+    const marketIdOrder: number[] = [];
     const marketGroups: { [key: number]: any[] } = {};
     fixture_data.outcomes.forEach((outcome) => {
       const marketId = outcome.marketId;
       if (!marketGroups[marketId]) {
         marketGroups[marketId] = [];
+        marketIdOrder.push(marketId);
       }
       marketGroups[marketId].push(outcome);
     });
 
-    // Check if over/under markets have quarter-based outcomes
-    const hasQuarterOverUnder = fixture_data.outcomes.some(
-      (o) =>
-        o.specifier?.includes("total=") && o.specifier?.includes("quarternr=")
-    );
-
-    // Then group markets by their detected type
-    const typeGroups: {
-      [type: string]: { marketIds: number[]; allOutcomes: any[] };
-    } = {};
-
-    Object.entries(marketGroups).forEach(([marketIdStr, outcomes]) => {
-      const marketId = parseInt(marketIdStr);
-      const marketName = outcomes[0]?.marketName || "";
-      const specifier = outcomes[0]?.specifier || "";
-      const marketType = detectMarketType(marketName, specifier, outcomes);
-
-      if (!typeGroups[marketType]) {
-        typeGroups[marketType] = {
-          marketIds: [],
-          allOutcomes: [],
-        };
-      }
-
-      typeGroups[marketType].marketIds.push(marketId);
-      typeGroups[marketType].allOutcomes.push(...outcomes);
-    });
-
-    // Fixed render order: SIMPLE(1st), SIMPLE(2nd), OVER_UNDER(3rd), COMBINATION(4th), HANDICAP(5th)
-    const sections: any[] = [];
     const componentProps = {
       fixture_data: fixture_data!,
       disabled: isFixtureLoading,
       is_loading: isFixtureLoading,
     };
 
-    // Collect all components by type
-    const componentsByType: { [key: string]: any[] } = {};
+    // Render each market group in the order received
+    return marketIdOrder.map((marketId) => {
+      const outcomes = marketGroups[marketId];
+      const marketName = outcomes[0]?.marketName || "";
+      const specifier = outcomes[0]?.specifier || "";
+      const marketType = detectMarketType(marketName, specifier, outcomes);
 
-    // Build components for each type
-    Object.entries(typeGroups).forEach(([type, group]) => {
-      if (!group || group.marketIds.length === 0) return;
-
-      if (!componentsByType[type]) {
-        componentsByType[type] = [];
-      }
-
-      if (type === "1X2") {
-        group.marketIds.forEach((marketId) => {
-          componentsByType[type].push({
-            type,
-            marketIds: [marketId],
-            component: (
-              <MainCard
-                key={`${type}-${marketId}`}
-                {...componentProps}
-                market_id={marketId}
-              />
-            ),
-          });
-        });
-      } else if (type === "DOUBLE_CHANCE") {
-        group.marketIds.forEach((marketId) => {
-          componentsByType[type].push({
-            type,
-            marketIds: [marketId],
-            component: (
-              <MainCard
-                key={`${type}-${marketId}`}
-                {...componentProps}
-                market_id={marketId}
-              />
-            ),
-          });
-        });
-      } else if (type === "DNB") {
-        group.marketIds.forEach((marketId) => {
-          componentsByType[type].push({
-            type,
-            marketIds: [marketId],
-            component: (
-              <MainCard
-                key={`${type}-${marketId}`}
-                {...componentProps}
-                market_id={marketId}
-              />
-            ),
-          });
-        });
-      } else if (type === "OVER_UNDER") {
-        // Check if basketball sport (sportID 2)
-        const isBasketball = Number(fixture_data?.sportID) === 2;
-
-        // Check if this is quarter-based over/under - split by quarter
-        if (hasQuarterOverUnder && !isBasketball) {
-          // Group outcomes by quarter
-          const quarterGroups: { [quarter: string]: any[] } = {};
-          group.allOutcomes.forEach((outcome) => {
-            const quarterMatch = outcome.specifier?.match(/quarternr=(\d+)/);
-            if (quarterMatch) {
-              const quarter = quarterMatch[1];
-              if (!quarterGroups[quarter]) {
-                quarterGroups[quarter] = [];
-              }
-              quarterGroups[quarter].push(outcome);
-            }
-          });
-
-          // Create separate component for each quarter
-          const quarters = ["1", "2", "3", "4"];
-          quarters.forEach((quarter) => {
-            if (quarterGroups[quarter] && quarterGroups[quarter].length > 0) {
-              componentsByType[type].push({
-                type: `OVER_UNDER_Q${quarter}`,
-                marketIds: group.marketIds,
-                component: (
-                  <OverUnder
-                    key={`${type}-Q${quarter}`}
-                    {...componentProps}
-                    market_id={group.marketIds[0]}
-                    title={`Quarter ${quarter} Over/Under`}
-                    filterOutcomes={(outcomes) =>
-                      outcomes.filter((o) =>
-                        o.specifier?.includes(`quarternr=${quarter}`)
-                      )
-                    }
-                  />
-                ),
-              });
-            }
-          });
-        } else {
-          componentsByType[type].push({
-            type,
-            marketIds: group.marketIds,
-            component: isBasketball ? (
-              <BasketballOverUnder
-                key={`${type}-${group.marketIds.join("-")}`}
-                {...componentProps}
-                outcomes={group.allOutcomes}
-              />
-            ) : (
-              <OverUnder
-                key={`${type}-${group.marketIds.join("-")}`}
-                {...componentProps}
-                market_id={group.marketIds[0]}
-              />
-            ),
-          });
-        }
-      } else if (type === "HANDICAP") {
-        componentsByType[type].push({
-          type,
-          marketIds: group.marketIds,
+      // Render the correct component for each market type
+      if (
+        marketType === "1X2" ||
+        marketType === "DOUBLE_CHANCE" ||
+        marketType === "DNB" ||
+        marketType === "SIMPLE"
+      ) {
+        return {
+          type: marketType,
           component: (
-            <HandicapMarket
-              key={`${type}-${group.marketIds[0]}`}
+            <MainCard
+              key={`${marketType}-${marketId}`}
               {...componentProps}
-              market_id={group.marketIds[0]}
+              market_id={marketId}
             />
           ),
-        });
-      } else if (type === "HOME_TOTAL") {
-        componentsByType[type].push({
-          type,
-          marketIds: group.marketIds,
+        };
+      } else if (marketType === "OVER_UNDER") {
+        const isBasketball = Number(fixture_data?.sportID) === 2;
+        return {
+          type: marketType,
+          component: isBasketball ? (
+            <BasketballOverUnder
+              key={`${marketType}-${marketId}`}
+              {...componentProps}
+              outcomes={outcomes}
+            />
+          ) : (
+            <OverUnder
+              key={`${marketType}-${marketId}`}
+              {...componentProps}
+              market_id={marketId}
+            />
+          ),
+        };
+      } else if (marketType === "HANDICAP") {
+        return {
+          type: marketType,
+          component: (
+            <HandicapMarket
+              key={`${marketType}-${marketId}`}
+              {...componentProps}
+              market_id={marketId}
+            />
+          ),
+        };
+      } else if (marketType === "HOME_TOTAL") {
+        return {
+          type: marketType,
           component: (
             <OverUnder
-              key={`${type}-${group.marketIds[0]}`}
+              key={`${marketType}-${marketId}`}
               {...componentProps}
-              market_id={group.marketIds[0]}
+              market_id={marketId}
               title="Home Total"
             />
           ),
-        });
-      } else if (type === "AWAY_TOTAL") {
-        componentsByType[type].push({
-          type,
-          marketIds: group.marketIds,
+        };
+      } else if (marketType === "AWAY_TOTAL") {
+        return {
+          type: marketType,
           component: (
             <OverUnder
-              key={`${type}-${group.marketIds[0]}`}
+              key={`${marketType}-${marketId}`}
               {...componentProps}
-              market_id={group.marketIds[0]}
+              market_id={marketId}
               title="Away Total"
             />
           ),
-        });
-      } else if (type === "QUARTER_1X2") {
-        // Group all quarter-based 1X2 outcomes together into single combination market
-        componentsByType[type].push({
-          type,
-          marketIds: group.marketIds,
+        };
+      } else if (
+        marketType === "QUARTER_1X2" ||
+        marketType === "COMBINATION" ||
+        marketType === "HT_FT_OUTCOME"
+      ) {
+        return {
+          type: marketType,
           component: (
             <CombinationMarket
-              key={`${type}-combined`}
+              key={`${marketType}-${marketId}`}
               {...componentProps}
-              market_id={group.marketIds[0]}
+              market_id={marketId}
             />
           ),
-        });
-      } else if (type === "COMBINATION") {
-        group.marketIds.forEach((marketId) => {
-          componentsByType[type].push({
-            type,
-            marketIds: [marketId],
-            component: (
-              <CombinationMarket
-                key={`${type}-${marketId}`}
-                {...componentProps}
-                market_id={marketId}
-              />
-            ),
-          });
-        });
-      } else if (type === "EXACT_GOALS") {
-        componentsByType[type].push({
-          type,
-          marketIds: group.marketIds,
+        };
+      } else if (marketType === "EXACT_GOALS") {
+        return {
+          type: marketType,
           component: (
             <ExactGoals
-              key={`${type}-${group.marketIds[0]}`}
+              key={`${marketType}-${marketId}`}
               {...componentProps}
-              market_id={group.marketIds[0]}
+              market_id={marketId}
             />
           ),
-        });
-      } else if (type === "GOALSCORER") {
-        group.marketIds.forEach((marketId) => {
-          componentsByType[type].push({
-            type,
-            marketIds: [marketId],
-            component: (
-              <AnytimeGoalscorer
-                key={`${type}-${marketId}`}
-                {...componentProps}
-                market_id={marketId}
-              />
-            ),
-          });
-        });
-      } else if (type === "HT_FT_CORRECT_SCORE") {
-        // Use MainCard for correct score markets (numeric scores)
-        group.marketIds.forEach((marketId) => {
-          componentsByType[type].push({
-            type,
-            marketIds: [marketId],
-            component: (
-              <HalfTimeFullTimeScore
-                key={`${type}-${marketId}`}
-                {...componentProps}
-                market_id={marketId}
-              />
-            ),
-          });
-        });
-      } else if (type === "HT_FT_OUTCOME") {
-        // Use CombinationMarket for outcome markets (Home/Draw/Away combinations)
-        group.marketIds.forEach((marketId) => {
-          componentsByType[type].push({
-            type,
-            marketIds: [marketId],
-            component: (
-              <CombinationMarket
-                key={`${type}-${marketId}`}
-                {...componentProps}
-                market_id={marketId}
-              />
-            ),
-          });
-        });
-      } else if (type === "SIMPLE") {
-        group.marketIds.forEach((marketId) => {
-          componentsByType[type].push({
-            type,
-            marketIds: [marketId],
-            component: (
-              <MainCard
-                key={`${type}-${marketId}`}
-                {...componentProps}
-                market_id={marketId}
-              />
-            ),
-          });
-        });
+        };
+      } else if (marketType === "GOALSCORER") {
+        return {
+          type: marketType,
+          component: (
+            <AnytimeGoalscorer
+              key={`${marketType}-${marketId}`}
+              {...componentProps}
+              market_id={marketId}
+            />
+          ),
+        };
+      } else if (marketType === "HT_FT_CORRECT_SCORE") {
+        return {
+          type: marketType,
+          component: (
+            <HalfTimeFullTimeScore
+              key={`${marketType}-${marketId}`}
+              {...componentProps}
+              market_id={marketId}
+            />
+          ),
+        };
       }
+      // Default fallback
+      return {
+        type: marketType,
+        component: (
+          <MainCard
+            key={`default-${marketId}`}
+            {...componentProps}
+            market_id={marketId}
+          />
+        ),
+      };
     });
-
-    // Fixed order positions for key markets
-    const orderedMarkets = [
-      { type: "1X2", position: 1 },
-      { type: "DOUBLE_CHANCE", position: 2 },
-      { type: "OVER_UNDER", position: 3 },
-      { type: "HANDICAP", position: 4 },
-      { type: "DNB", position: 5 }, // Draw No Bet
-      { type: "COMBINATION", position: 6 }, // Teams to Score (GG/NG, etc)
-      { type: "EXACT_GOALS", position: 7 },
-      { type: "HOME_TOTAL", position: 8 },
-      { type: "AWAY_TOTAL", position: 9 },
-    ];
-
-    // Add fixed position markets first
-    orderedMarkets.forEach(({ type }) => {
-      const components = componentsByType[type] || [];
-      if (components.length > 0) {
-        sections.push(components[0]); // Add first instance
-      }
-    });
-
-    // Collect remaining markets for randomization
-    const remainingComponents: any[] = [];
-
-    // Add remaining instances of ordered markets
-    orderedMarkets.forEach(({ type }) => {
-      const components = componentsByType[type] || [];
-      remainingComponents.push(...components.slice(1)); // Skip first, already added
-    });
-
-    // Add other market types that will be randomized
-    const randomizedTypes = [
-      "QUARTER_1X2",
-      "GOALSCORER",
-      "HT_FT_CORRECT_SCORE",
-      "HT_FT_OUTCOME",
-      "SIMPLE",
-    ];
-
-    randomizedTypes.forEach((type) => {
-      const components = componentsByType[type] || [];
-      remainingComponents.push(...components);
-    });
-
-    // Shuffle remaining components for randomization
-    const shuffled = remainingComponents.sort(() => Math.random() - 0.5);
-    sections.push(...shuffled);
-
-    return sections;
   };
 
   // Create dynamic market sections - always render components, they handle their own loading states
@@ -680,17 +490,16 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
   ];
 
   return (
-    <SideOverlay
+    <Modal
       open={true}
       onOpenChange={() => onClose()}
-      width="w-[660px]"
-      variant="game_options"
-      title={
+      className="!w-[660px]"
+      header={
         isFixtureLoading ? (
           <SkeletonTitle />
         ) : (
           <>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 pb-2">
               <span
                 className={`font-bold text-sm ${modalClasses["header-title"]}`}
               >
@@ -734,7 +543,7 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
           </div>
         )}
       </div>
-    </SideOverlay>
+    </Modal>
   );
 };
 

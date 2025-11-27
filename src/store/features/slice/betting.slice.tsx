@@ -14,6 +14,7 @@ import type {
   UpdateBetTypePayload,
 } from "../types/betting.types";
 import type {
+  BetSlip,
   FindBetData,
   LiveOutcome,
 } from "../../services/data/betting.types";
@@ -1238,7 +1239,7 @@ const BettingSlice = createSlice({
     },
     setBetslip: (
       state: BettingState,
-      action: PayloadAction<FindBetData | null>
+      action: PayloadAction<BetSlip | null>
     ) => {
       state.betslip = action.payload;
     },

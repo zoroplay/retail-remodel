@@ -171,7 +171,7 @@ const AccountMenu = (props: Props) => {
         relative overflow-hidden
         ${
           isActive
-            ? `${sidebarClasses["category-item-bg"]} ${sidebarClasses["category-item-text"]} border-l-4 border-l-blue-400 shadow-sm`
+            ? `${sidebarClasses["category-item-bg"]} ${sidebarClasses["category-item-text"]} border-l-4 ${sidebarClasses["category-item-border"]} shadow-sm`
             : `${sidebarClasses["tournament-item-text"]} hover:border-l-4 hover:border-l-slate-500`
         }
       `}
@@ -222,7 +222,9 @@ const AccountMenu = (props: Props) => {
               className={`border-b ${sidebarClasses["sport-item-border"]} last:border-b-0`}
             >
               {/* Section Header */}
-              <div className={`${section.color} px-4 py-2 shadow-sm relative`}>
+              <div
+                className={`${classes["bg-secondary"]} px-4 py-2 shadow-sm relative`}
+              >
                 <h3 className="text-white font-bold text-[11px] uppercase tracking-wider">
                   {section.title}
                 </h3>

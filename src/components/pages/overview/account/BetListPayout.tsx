@@ -439,9 +439,7 @@ const BetListPayoutPage = () => {
                   <td className="p-3">{bet.betslip_id}</td>
                   <td className="p-3">{bet.username}</td>
                   <td className="p-3">{bet.bet_category_desc}</td>
-                  <td className="p-3">
-                    {AppHelper.formatTransactionDate(bet.created)}
-                  </td>
+                  <td className="p-3">{AppHelper.formatDate(bet.created)}</td>
                   <td className="p-3">{bet.stake}</td>
                   <td className="p-3">
                     <div

@@ -64,7 +64,7 @@ const CommissionPage = () => {
                 <div key={index} className="border-b border-gray-600">
                   <div className="flex flex-row px-4 py-3 bg-secondary/30 gap-4">
                     <span className="text-white text-sm w-32">
-                      {AppHelper.formatTransactionDate(transaction?.created_at)}
+                      {AppHelper.formatDate(transaction?.created_at)}
                     </span>
                     <span className="text-white text-sm flex-1 pr-2">
                       {transaction?.type}

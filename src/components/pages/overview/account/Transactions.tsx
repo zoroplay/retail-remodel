@@ -418,9 +418,7 @@ const TransactionsPage = () => {
                     </span>
                   </div>
                   <span className={`${pageClasses["row-text"]} text-xs w-52`}>
-                    {AppHelper.formatTransactionDate(
-                      transaction.transactionDate
-                    )}
+                    {AppHelper.formatDate(transaction.transactionDate)}
                   </span>
                   <span className={`${pageClasses["row-text"]} text-xs w-44`}>
                     {transaction.description}

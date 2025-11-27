@@ -15,8 +15,9 @@ const CurrencyFormatter = ({
   precision = 1,
 }: Props) => {
   const [isAbbreviated, setIsAbbreviated] = useState(false);
-  const { user } = useAppSelector((state) => state.user);
-  const locale = user?.currency === "NGN" ? "en-NG" : "en-US";
+  const { global_variables } = useAppSelector((state) => state.app);
+  const locale = global_variables?.currency === "NGN" ? "en-NG" : "en-US";
+  const currency = global_variables?.currency_code || "USD";
 
   let numeric_amount = typeof amount === "string" ? parseFloat(amount) : amount;
   if (isNaN(numeric_amount)) numeric_amount = 0;
@@ -28,7 +29,7 @@ const CurrencyFormatter = ({
     if (absValue < 1000) {
       return new Intl.NumberFormat(locale, {
         style: "currency",
-        currency: user?.currency || "ng-NG",
+        currency: currency,
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       }).format(value);
@@ -46,7 +47,7 @@ const CurrencyFormatter = ({
     }
     return new Intl.NumberFormat(locale, {
       style: "currency",
-      currency: user?.currency || "NGN",
+      currency: currency || "NGN",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(value);
@@ -79,7 +80,7 @@ const CurrencyFormatter = ({
 
     const formatted = new Intl.NumberFormat(locale, {
       style: "currency",
-      currency: user?.currency || "USD",
+      currency: currency || "USD",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(value);

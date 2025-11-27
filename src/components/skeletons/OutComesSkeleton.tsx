@@ -27,7 +27,7 @@ export const SkeletonCard = ({ title }: { title: string }) => (
 );
 
 export const SkeletonTitle = () => (
-  <div className="flex flex-col gap-2 animate-pulse w-[44rem]">
+  <div className="flex flex-col gap-2 animate-pulse w-full">
     <div className="h-6  bg-gray-700/50 rounded" />
     <div className="flex justify-between items-center gap-2">
       <div className="h-4 w-1/2 bg-gray-700/50 rounded" />

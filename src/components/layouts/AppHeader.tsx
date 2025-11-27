@@ -11,20 +11,14 @@ import { useFetchUserCommissionBalanceQuery } from "../../store/services/user.se
 import { useAppSelector } from "../../store/hooks/useAppDispatch";
 import { ChevronDown, Loader, LogOut, Menu } from "lucide-react";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { logoutUser } from "@/store/features/slice/user.slice";
-import { clearBets } from "@/store/features/slice/betting.slice";
 import { Link, useNavigate } from "react-router-dom";
 import { ACCOUNT, AUTH, OVERVIEW } from "@/data/routes/routes";
-import { getSportRoute } from "@/data/routes/routeUtils";
 import { useModal } from "@/hooks/useModal";
 import { MODAL_COMPONENTS } from "@/store/features/types";
 import { setThemeByClient } from "@/utils/setThemeByClient";
 import { useSportsMenuQuery } from "@/store/services/bets.service";
 import { useGetGlobalVariablesQuery } from "@/store/services/app.service";
 import { setTournamentDetails } from "@/store/features/slice/app.slice";
-import Input from "../inputs/Input";
-import { useLoginMutation } from "@/store/services/auth.service";
-import { showToast } from "../tools/toast";
 import { useLogin } from "@/hooks/useLogin";
 import { getClientTheme } from "@/config/theme.config";
 
@@ -55,7 +49,6 @@ export const AppHeader: React.FC = ({}) => {
   // Memoize theme map to prevent recreation on every render
 
   const dispatch = useAppDispatch();
-  const [showCommission, setShowCommission] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );

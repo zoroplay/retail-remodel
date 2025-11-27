@@ -7,10 +7,7 @@ import {
 } from "../store/services/configs/environment.config";
 import { PlaceBetDto } from "../store/services/data/betting.types";
 import { CommissionRequest } from "../store/services/types/requests";
-import {
-  useUserCommissionProfileQuery,
-  useCommissionPayoutMutation,
-} from "../store/services/user.service";
+import { useCommissionPayoutMutation } from "../store/services/user.service";
 import { useBetting } from "./useBetting";
 import { useAppDispatch, useAppSelector } from "./useAppDispatch";
 import { usePlaceBetMutation } from "../store/services/bets.service";
@@ -35,10 +32,10 @@ export const usePlaceBet = (options?: UsePlaceBetOptions) => {
   const { global_variables } = useAppSelector((state) => state.app);
   const { openModal } = useModal();
   const [placeBetMutation] = usePlaceBetMutation();
-  const { data: commissionData } = useUserCommissionProfileQuery({
-    user_id: user?.id!,
-    commission_type: "livebet",
-  });
+  // const { data: commissionData } = useUserCommissionProfileQuery({
+  //   user_id: user?.id!,
+  //   commission_type: "livebet",
+  // });
   const [commissionPayout] = useCommissionPayoutMutation();
 
   const {
@@ -273,23 +270,23 @@ export const usePlaceBet = (options?: UsePlaceBetOptions) => {
     };
   };
 
-  const buildCommissionRequest = (): CommissionRequest => {
-    return {
-      userId: user?.id || 0,
-      noOfSelections: selected_bets.length,
-      provider: "sports",
-      stake: stake,
-      clientId: getEnvironmentVariable(
-        ENVIRONMENT_VARIABLES.CLIENT_ID
-      ) as unknown as number,
-      totalOdds: Number(total_odds.toFixed(2)),
-      commissionId: commissionData?.data?.data?.profile?.id || 0,
-      individualOdds: selected_bets.map((bet) => parseFloat(bet.game.odds)),
-      individualEventTypes: selected_bets.map((bet) =>
-        bet.game.event_type === "pre" ? "prematch" : "live"
-      ),
-    };
-  };
+  // const buildCommissionRequest = (): CommissionRequest => {
+  //   return {
+  //     userId: user?.id || 0,
+  //     noOfSelections: selected_bets.length,
+  //     provider: "sports",
+  //     stake: stake,
+  //     clientId: getEnvironmentVariable(
+  //       ENVIRONMENT_VARIABLES.CLIENT_ID
+  //     ) as unknown as number,
+  //     totalOdds: Number(total_odds.toFixed(2)),
+  //     commissionId: commissionData?.data?.data?.profile?.id || 0,
+  //     individualOdds: selected_bets.map((bet) => parseFloat(bet.game.odds)),
+  //     individualEventTypes: selected_bets.map((bet) =>
+  //       bet.game.event_type === "pre" ? "prematch" : "live"
+  //     ),
+  //   };
+  // };
 
   const placeBet = async () => {
     if (!validateBet()) {

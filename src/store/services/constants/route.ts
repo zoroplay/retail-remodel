@@ -69,8 +69,8 @@ export const USER_ACTIONS = {
   VALIDATE_USER: "/admin/players/search",
   COMMISSION_PAYOUT: "/commission/:client_id/flat-commission-payout",
   COMMISSION_PROFILE: "/user/wallet/agent/commission-balance/:client_id",
-  USER_COMMISSION_PROFILE:
-    "/commission/one-commission/:user_id?commissionType=:commission_type",
+  // USER_COMMISSION_PROFILE:
+  //   "/commission/one-commission/:user_id?commissionType=:commission_type",
   USER_COMMISSION: "/commission/:client_id/profile/users/:user_id",
   PAYOUT_COMMISSION: "/commission/:client_id/payout-commission",
   DEPOSIT_COMMISSION: "/commission/:client_id/deposit-commission",

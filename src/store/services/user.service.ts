@@ -119,17 +119,17 @@ const UserApiSlice = apiSlice.injectEndpoints({
         method: REQUEST_ACTIONS.GET,
       }),
     }),
-    userCommissionProfile: builder.query<
-      UserCommissionProfileResponse,
-      { user_id: number; commission_type: string }
-    >({
-      query: ({ user_id }) => ({
-        url: AppHelper.buildQueryUrl(USER_ACTIONS.USER_COMMISSION_PROFILE, {
-          user_id,
-        }),
-        method: REQUEST_ACTIONS.GET,
-      }),
-    }),
+    // userCommissionProfile: builder.query<
+    //   UserCommissionProfileResponse,
+    //   { user_id: number; commission_type: string }
+    // >({
+    //   query: ({ user_id }) => ({
+    //     url: AppHelper.buildQueryUrl(USER_ACTIONS.USER_COMMISSION_PROFILE, {
+    //       user_id,
+    //     }),
+    //     method: REQUEST_ACTIONS.GET,
+    //   }),
+    // }),
     payoutCommission: builder.mutation<any, PayoutCommissionRequest>({
       query: (body) => ({
         url: AppHelper.buildQueryUrl(USER_ACTIONS.PAYOUT_COMMISSION, {}),
@@ -169,7 +169,7 @@ export const {
   useCommissionTransactionsQuery,
   useCommissionPayoutMutation,
   useUserCommissionQuery,
-  useUserCommissionProfileQuery,
+  // useUserCommissionProfileQuery,
   usePayoutCommissionMutation,
   useDepositCommissionMutation,
   useGetAgentUsersQuery,
