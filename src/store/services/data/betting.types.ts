@@ -254,6 +254,7 @@ export interface BetSlip {
     status: number;
     score: string | null;
     htScore: string | null;
+    [x: string]: string | number | null;
   }[];
   userId: string;
   betslipId: string;
