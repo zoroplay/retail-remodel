@@ -63,6 +63,40 @@ const fixturesSlice = createSlice({
     clearCouponData: (state: FixturesState) => {
       state.couponData = null;
     },
+    setCashDeskLoading: (state: FixturesState) => {
+      state.cashdesk_fixtures.is_loading = true;
+    },
+    addCashDeskFixtures: (
+      state: FixturesState,
+      {
+        payload,
+      }: PayloadAction<{
+        fixtures: PreMatchFixture[];
+        selectedMarket: SelectedMarket[];
+        sport_id: number;
+      }>
+    ) => {
+      state.cashdesk_fixtures = {
+        ...state.cashdesk_fixtures,
+        fixtures: payload.fixtures,
+        sport_id: payload.sport_id,
+        selectedMarket: payload.selectedMarket,
+        is_loading: false,
+      };
+    },
+    removeCashDeskFixture: (
+      state: FixturesState
+      // action: PayloadAction<{
+      //   index: number;
+      // }>
+    ) => {
+      state.cashdesk_fixtures = {
+        sport_id: 0,
+        fixtures: [],
+        selectedMarket: [],
+        is_loading: false,
+      };
+    },
 
     updateFixtureOdds: (
       state: FixturesState,
@@ -161,5 +195,8 @@ export const {
   updateFixtureOdds,
   updateFixtureMarketStatus,
   updateFixtureOutcome,
+  addCashDeskFixtures,
+  removeCashDeskFixture,
+  setCashDeskLoading,
 } = fixturesSlice.actions;
 export default fixturesSlice.reducer;

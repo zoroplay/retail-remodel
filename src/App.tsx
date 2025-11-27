@@ -150,15 +150,16 @@ function App() {
                   </SportsLayout>
                 }
               />
-              {/* <Route
-                path={OVERVIEW.SPORTS}
-                element={
-                  <SafeComponentWrapper pageName="Overview">
-                    <OverviewScreen />
-                  </SafeComponentWrapper>
-                }
-              /> */}
 
+              <Route
+                path={OVERVIEW.CASHDESK}
+                element={
+                  <SportsLayout>
+                    <LoadBetsPage />
+                  </SportsLayout>
+                }
+              />
+              <Route path={OVERVIEW.SPORTS} element={<LoadBetsPage />} />
               <Route
                 path={ACCOUNT.HOME}
                 element={
@@ -280,10 +281,6 @@ function App() {
                 }
               />
               {/* </Route> */}
-              <Route path={OVERVIEW.CASHDESK} element={<LoadBetsPage />} />
-              <Route path={OVERVIEW.SPORTS} element={<LoadBetsPage />} />
-
-              <Route path="/overview/commission" element={<Commission />} />
 
               {/* 404 handler - must be last */}
               {/* <Route path="*" element={<NotFoundScreen />} /> */}

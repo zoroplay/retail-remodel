@@ -25,4 +25,10 @@ export interface FixturesState {
   outcomeTypes: OutcomeType[];
   selectedGame: PreMatchFixture | null;
   couponData: FindCouponData | null;
+  cashdesk_fixtures: {
+    sport_id: number;
+    fixtures: PreMatchFixture[];
+    selectedMarket: SelectedMarket[];
+    is_loading: boolean;
+  };
 }

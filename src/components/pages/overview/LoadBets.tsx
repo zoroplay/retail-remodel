@@ -19,6 +19,7 @@ import environmentConfig, {
 import {
   Check,
   ChevronDown,
+  ChevronRight,
   Edit3,
   Grid,
   Ticket,
@@ -35,7 +36,7 @@ import {
   FindBetResponse,
 } from "@/store/services/data/betting.types";
 import SwitchInput from "@/components/inputs/SwitchInput";
-import { BET_TYPES_ENUM } from "@/data/enums/enum";
+import { BET_TYPES_ENUM, MARKET_SECTION } from "@/data/enums/enum";
 import { useModal } from "@/hooks/useModal";
 import BetSlip from "@/components/bets/bet-slip/BetSlip";
 import QuickBets from "@/components/bets/QuickBets";
@@ -47,6 +48,326 @@ import {
 } from "@/store/features/slice/cashdesk.slice";
 import { CashDeskFormData } from "@/store/features/types/cashdesk.types";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import { PreMatchFixture } from "@/store/features/types/fixtures.types";
+import { Fixture, SelectedMarket } from "@/data/types/betting.types";
+import {
+  removeCashDeskFixture,
+  setSelectedGame,
+} from "@/store/features/slice/fixtures.slice";
+import OddsButton from "@/components/buttons/OddsButton";
+
+const FixtureDisplay = ({
+  displayFixtures,
+  selectedMarkets,
+  sport_id,
+  is_loading,
+}: {
+  displayFixtures: (PreMatchFixture | Fixture)[];
+  selectedMarkets: SelectedMarket[];
+  sport_id: number;
+  is_loading?: boolean;
+}) => {
+  const { classes } = getClientTheme();
+  const sportsPageClasses = classes.sports_page;
+  const { openModal } = useModal();
+  const { selected_bets, toggleBet } = useBetting();
+  selectedMarkets = Array.isArray(selectedMarkets) ? selectedMarkets : [];
+  console.log("Selected Markets in FixtureDisplay:", is_loading);
+
+  // For soccer (sportID 1), only show 1X2 and Double Chance markets
+  if (sport_id == 1) {
+    selectedMarkets = selectedMarkets.filter(
+      (market) =>
+        market.marketID === String(MARKET_SECTION.ONE_X_TWO) || // 1X2
+        market.marketID === String(MARKET_SECTION.DOUBLE_CHANCE) // Double Chance
+    );
+  }
+
+  const dispatch = useAppDispatch();
+  const getMarketOutcomes = (fixture: any, marketConfig: SelectedMarket) => {
+    return marketConfig.outcomes
+      .map((expectedOutcome: any) => {
+        return fixture?.outcomes?.find(
+          (outcome: any) =>
+            outcome.marketID.toString() === marketConfig.marketID &&
+            outcome.outcomeID.toString() ===
+              expectedOutcome.outcomeID.toString()
+        );
+      })
+      .filter(Boolean); // Remove undefined outcomes
+  };
+
+  const handleMorePress = useCallback(
+    (game: PreMatchFixture) => {
+      // dispatch(setSelectedGame(game));
+      openModal({
+        modal_name: MODAL_COMPONENTS.GAME_OPTIONS,
+        title: "Menu",
+        ref: game.gameID,
+      });
+    },
+    [openModal]
+  );
+
+  return (
+    <div
+      className={`${sportsPageClasses["card-bg"]} border ${sportsPageClasses["card-border"]} shadow-2xl overflow-hidden rounded-lg`}
+    >
+      <div
+        className={`p-1 px-2 flex items-center justify-end ${sportsPageClasses["header-bg"]} border-b ${sportsPageClasses["header-border"]}`}
+      >
+        <button
+          onClick={() => {
+            dispatch(removeCashDeskFixture());
+          }}
+          className="p-1  flex justify-center items-center text-red-500 bg-red-600/40 cursor-pointer h-7 w-7  border-red-700 rounded-full border hover:bg-red-700/80 transition-colors"
+        >
+          <X />
+        </button>
+      </div>
+      <div
+        className={`${sportsPageClasses["header-bg"]} border-b ${sportsPageClasses["header-border"]}`}
+      >
+        <div
+          className={`grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 px-6 py-1 text-xs font-semibold ${sportsPageClasses["header-text"]}`}
+        >
+          <div className="col-span-2">Time</div>
+          <div className="col-span-6">Match</div>
+          {selectedMarkets.map((market, index) => (
+            <div
+              key={market.marketID}
+              className="col-span-4 flex items-center justify-between"
+            >
+              {market.outcomes.map((outcome, outcomeIndex) => (
+                <span
+                  key={outcome.outcomeID}
+                  className="w-1/3 flex justify-center items-center"
+                >
+                  {outcome.outcomeName}
+                </span>
+              ))}
+            </div>
+          ))}
+          <div className="col-span-1 text-center">+</div>
+        </div>
+        {is_loading && (
+          <div
+            className={`divide-y ${sportsPageClasses["card-border"]} max-h-[84vh] overflow-y-auto `}
+          >
+            {[...Array(1)].map((_, groupIndex) => (
+              <div key={groupIndex}>
+                <div
+                  className={`${sportsPageClasses["date-separator-bg"]} px-6 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
+                >
+                  <div
+                    className={`h-4 ${sportsPageClasses["skeleton-secondary"]} rounded animate-pulse w-32`}
+                  ></div>
+                </div>
+                {[...Array(3)].map((_, gameIndex) => (
+                  <div
+                    key={gameIndex}
+                    className="grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 px-2 py-4 border-l-4 border-transparent animate-pulse"
+                  >
+                    {/* Time Skeleton */}
+                    <div
+                      className={`col-span-2 ${sportsPageClasses["time-border"]} border-r flex flex-col items-start justify-center`}
+                    >
+                      <div
+                        className={`h-4 ${sportsPageClasses["skeleton-bg"]} rounded w-12 mb-1 animate-pulse`}
+                      ></div>
+                    </div>
+
+                    {/* Match Info Skeleton */}
+                    <div className="col-span-6 flex flex-col justify-center">
+                      <div
+                        className={`h-3 ${sportsPageClasses["skeleton-bg"]} rounded w-32 mb-2 animate-pulse`}
+                      ></div>
+                      <div
+                        className={`h-4 ${sportsPageClasses["skeleton-bg"]} rounded w-48 animate-pulse`}
+                      ></div>
+                    </div>
+
+                    {/* Dynamic Market Outcomes Skeleton */}
+                    {selectedMarkets.map((market) => (
+                      <div
+                        key={market.marketID}
+                        className="col-span-4 flex items-center justify-center gap-1"
+                      >
+                        {market.outcomes.map((outcome) => (
+                          <div
+                            key={outcome.outcomeID}
+                            className={`h-11 ${sportsPageClasses["skeleton-bg"]} rounded flex-1 animate-pulse`}
+                          ></div>
+                        ))}
+                      </div>
+                    ))}
+
+                    {/* More Button Skeleton */}
+                    <div className="col-span-1 ml-2 px-2 flex items-center justify-center">
+                      <div
+                        className={`h-8 ${sportsPageClasses["skeleton-bg"]} rounded w-12 animate-pulse`}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      {!is_loading && displayFixtures.length > 0 && (
+        <div className="divide-y divide-gray-700 max-h-[85vh] overflow-y-auto overflow-x-hidden">
+          {Object.entries(
+            displayFixtures.reduce(
+              (groups: Record<string, typeof displayFixtures>, fixture) => {
+                // Parse date correctly from the fixture data format
+                const fixtureDate = new Date(
+                  fixture.date || fixture.eventTime
+                ).toLocaleDateString("en-GB", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                });
+
+                if (!groups[fixtureDate]) {
+                  groups[fixtureDate] = [];
+                }
+                groups[fixtureDate].push(fixture);
+                return groups;
+              },
+              {}
+            )
+          ).map(([date, fixtures]) => (
+            <div key={date}>
+              {/* Date Separator */}
+              <div
+                className={`${sportsPageClasses["date-separator-bg"]} px-6 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
+              >
+                <h3
+                  className={`${sportsPageClasses["date-separator-text"]} font-medium text-xs uppercase tracking-wide`}
+                >
+                  {date}
+                </h3>
+              </div>
+
+              {/* Games for this date */}
+              {fixtures.map((fixture: PreMatchFixture | Fixture) => {
+                return (
+                  <div
+                    key={fixture.matchID}
+                    className={`grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 p-2 ${sportsPageClasses["card-hover"]} transition-colors duration-200 cursor-pointer border-l-4 border-transparent`}
+                  >
+                    {/* Time */}
+                    <div
+                      className={`col-span-2 ${sportsPageClasses["time-border"]} border-r flex flex-col items-start justify-center`}
+                    >
+                      <span
+                        className={`text-[11px] font-semibold ${sportsPageClasses["time-text"]}`}
+                      >
+                        {fixture.eventTime}
+                      </span>
+
+                      <span
+                        className={`text-[11px] ${sportsPageClasses["match-tournament-text"]} whitespace-nowrap`}
+                      >
+                        ID: {fixture.matchID}
+                      </span>
+                    </div>
+
+                    {/* Match Info */}
+                    <div className="col-span-6 flex flex-col justify-center">
+                      <div
+                        className={`text-[10px] ${sportsPageClasses["match-tournament-text"]} mb-1`}
+                      >
+                        {fixture.tournament} • {fixture.categoryName}
+                      </div>
+                      <div
+                        className={`text-xs font-medium ${sportsPageClasses["match-team-text"]}`}
+                      >
+                        {fixture.homeTeam} vs {fixture.awayTeam}
+                      </div>
+                    </div>
+
+                    {/* Dynamic Market Outcomes */}
+                    {selectedMarkets.map((marketConfig, marketIndex) => {
+                      const marketOutcomes = getMarketOutcomes(
+                        fixture,
+                        marketConfig
+                      );
+
+                      return (
+                        <div
+                          key={marketConfig.marketID}
+                          className="col-span-4 flex items-center justify-center"
+                        >
+                          {marketConfig.outcomes.map(
+                            (expectedOutcome, outcomeIndex) => {
+                              const foundOutcome = marketOutcomes.find(
+                                (outcome: any) =>
+                                  outcome?.outcomeID.toString() ===
+                                  expectedOutcome.outcomeID.toString()
+                              );
+
+                              const isFirst = outcomeIndex === 0;
+                              const isLast =
+                                outcomeIndex ===
+                                marketConfig.outcomes.length - 1;
+                              let rounded = "";
+                              if (isFirst) rounded = "rounded-l-md";
+                              else if (isLast) rounded = "rounded-r-md";
+
+                              return (
+                                <OddsButton
+                                  key={`${marketConfig.marketID}-${expectedOutcome.outcomeID}`}
+                                  outcome={foundOutcome!}
+                                  game_id={Number(fixture.gameID)}
+                                  fixture_data={fixture as PreMatchFixture}
+                                  height={"h-10"}
+                                  disabled={!foundOutcome}
+                                  rounded={rounded}
+                                />
+                              );
+                            }
+                          )}
+                        </div>
+                      );
+                    })}
+
+                    <div className="col-span-1 ml-2 px-2 flex items-center justify-center relative">
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMorePress(fixture as PreMatchFixture);
+                        }}
+                        className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1 ${
+                          sportsPageClasses["more-button-text"]
+                        }  ${
+                          sportsPageClasses["more-button-hover"]
+                        } shadow font-semibold transition-colors border-2 ${
+                          selected_bets.some(
+                            (bet) =>
+                              bet.game &&
+                              (bet.game.matchID == Number(fixture.matchID) ||
+                                bet.game.game_id == Number(fixture.gameID))
+                          )
+                            ? `${classes.game_options_modal["odds-button-selected-bg"]} ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
+                            : `${classes.game_options_modal["odds-button-border"]}`
+                        }`}
+                      >
+                        <span>+{fixture.activeMarkets || 0}</span>
+                        <ChevronRight size={12} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const LoadBetsPage = () => {
   // Initialize theme
@@ -63,6 +384,7 @@ const LoadBetsPage = () => {
   const [quickBetEntries, setQuickBetEntries] = useState<any[]>([]); // Track items in quick bet entry
   const { global_variables } = useAppSelector((state) => state.app);
   const { form_data } = useAppSelector((state) => state.cashdesk);
+  const { cashdesk_fixtures } = useAppSelector((state) => state.fixtures);
 
   const [eventId, setEventId] = useState("");
 
@@ -314,6 +636,7 @@ const LoadBetsPage = () => {
   };
 
   const theme = "dark";
+
   return (
     // <LoadBetsLayout
     //   title={"Bet List"}
@@ -328,10 +651,10 @@ const LoadBetsPage = () => {
     //   }
     // >
     <div
-      className={`flex justify-center items-start text-white h-[calc(100vh-100px)] relative ${cashdeskClasses["container-bg"]}`}
+      className={`px-4 pb-8 text-white h-[calc(100vh-100px)] overflow-y-auto relative ${cashdeskClasses["container-bg"]}`}
     >
       {/* <SportsMenu /> */}
-      <main className="max-w-[70rem] p-2 relative">
+      <main className=" relative">
         <div className="flex flex-col lg:flex-row gap-2">
           {/* Left: main content */}
           <section className="flex-1">
@@ -734,7 +1057,16 @@ const LoadBetsPage = () => {
           onClose={() => setShowSuccessModal(false)}
         /> */}
       </main>
-      <BetSlip />
+      <main className="flex flex-col gap-4 mt-2">
+        {cashdesk_fixtures.fixtures.length ? (
+          <FixtureDisplay
+            displayFixtures={cashdesk_fixtures.fixtures}
+            selectedMarkets={cashdesk_fixtures.selectedMarket}
+            sport_id={cashdesk_fixtures.sport_id}
+            is_loading={cashdesk_fixtures.is_loading}
+          />
+        ) : null}
+      </main>
     </div>
     // </LoadBetsLayout>
   );

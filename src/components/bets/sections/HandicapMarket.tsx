@@ -289,7 +289,7 @@ const HandicapMarket: React.FC<HandicapMarketProps> = ({
                       <div
                         className={`${marketClasses["axis-label-text"]} text-sm font-semibold min-w-[40px] flex flex-col items-center`}
                       >
-                        <span className="text-sm uppercase">
+                        <span className="text-xs uppercase">
                           {group.handicapValue}
                         </span>
                       </div>

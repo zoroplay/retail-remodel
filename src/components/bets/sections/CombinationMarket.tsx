@@ -415,7 +415,7 @@ const CombinationMarket: React.FC<CombinationMarketProps> = ({
                   >
                     {/* Y-axis Label (Primary Option) */}
                     <span
-                      className={`${marketClasses["axis-label-text"]} text-sm justify-center font-semibold min-w-[40px] flex items-center`}
+                      className={`${marketClasses["axis-label-text"]} text-xs justify-center font-semibold min-w-[40px] flex items-center`}
                     >
                       {getIcon(primary)}
                     </span>

@@ -123,7 +123,7 @@ const BasketballOverUnder = ({
                   key={spec}
                   className="grid grid-cols-[4rem_1fr_1fr] items-center"
                 >
-                  <span className="text-gray-400 text-sm justify-center font-semibold min-w-[70px] flex items-center">
+                  <span className="text-gray-400 text-xs justify-center font-semibold min-w-[70px] flex items-center">
                     {value}
                   </span>
 
@@ -133,7 +133,7 @@ const BasketballOverUnder = ({
                     fixture_data={fixture_data}
                     show_display_name={true}
                     bg_color={"bg-white text-black"}
-                    height="h-12"
+                    height="h-11"
                     disabled={!group?.over || disabled}
                     rounded={`${
                       specifiers?.length - 1 === index
@@ -148,7 +148,7 @@ const BasketballOverUnder = ({
                     game_id={fixture_data?.gameID as unknown as number}
                     fixture_data={fixture_data}
                     show_display_name={true}
-                    height="h-12"
+                    height="h-11"
                     bg_color={"bg-white text-black"}
                     disabled={!group?.under || disabled}
                     rounded={`${

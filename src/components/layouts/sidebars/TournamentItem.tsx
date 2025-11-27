@@ -6,6 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { OVERVIEW } from "@/data/routes/routes";
 import { getSportRoute } from "@/data/routes/routeUtils";
 import { getClientTheme } from "@/config/theme.config";
+import { useLazyFixturesQuery } from "@/store/services/bets.service";
+import { MARKET_SECTION } from "@/data/enums/enum";
+import {
+  addCashDeskFixtures,
+  setCashDeskLoading,
+} from "@/store/features/slice/fixtures.slice";
+import { PreMatchFixture } from "@/store/features/types/fixtures.types";
 
 type Props = {
   tournament: Tournament;
@@ -17,17 +24,49 @@ const TournamentItem = ({ tournament, categoryId, sportId }: Props) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { classes } = getClientTheme();
+  const pathname = window.location.pathname;
   const sidebarClasses = classes.sports_sidebar;
+  const [fetchFixture] = useLazyFixturesQuery();
   const handleTournamentClick = () => {
-    dispatch(
-      setTournamentDetails({
-        tournament_id: tournament.tournamentID,
-        sport_id: Number(sportId) || undefined,
-        category_id: Number(categoryId) || undefined,
-      })
-    );
+    if (pathname === OVERVIEW.CASHDESK) {
+      dispatch(setCashDeskLoading());
 
-    navigate(getSportRoute(sportId));
+      fetchFixture({
+        tournament_id: String(tournament.tournamentID!),
+        sport_id: sportId,
+        period: "all",
+        markets: [
+          String(MARKET_SECTION.ONE_X_TWO),
+          String(MARKET_SECTION.DOUBLE_CHANCE),
+          String(MARKET_SECTION.OVER_UNDER),
+          String(MARKET_SECTION.TENNIS_WINNER),
+          String(MARKET_SECTION.NFL_ONE_X_TWO),
+          String(MARKET_SECTION.NFL_HSH),
+        ],
+        specifier: "",
+      })
+        .unwrap()
+        .then((response) => {
+          dispatch(
+            addCashDeskFixtures({
+              fixtures: (response?.fixtures ??
+                []) as unknown as PreMatchFixture[],
+              selectedMarket: response?.selectedMarket || [],
+              sport_id: Number(sportId) || 0,
+            })
+          );
+        });
+    } else {
+      dispatch(
+        setTournamentDetails({
+          tournament_id: tournament.tournamentID,
+          sport_id: Number(sportId) || undefined,
+          category_id: Number(categoryId) || undefined,
+        })
+      );
+
+      navigate(getSportRoute(sportId));
+    }
   };
 
   return (

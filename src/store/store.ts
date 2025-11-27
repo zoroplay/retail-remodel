@@ -47,7 +47,7 @@ import {
 import { apiSlice } from "./services/constants/api.service";
 
 const persistConfig = {
-  key: "bwinners-root:v1:9.5",
+  key: "retail:v1:40.5",
   storage,
   transforms: [
     compressTransform(),
@@ -72,7 +72,7 @@ const persistConfig = {
     "cashdesk",
     "withdrawal",
   ],
-  blacklist: ["app.tournament_details"],
+  blacklist: ["app.tournament_details", "fixtures.cashdesk_fixtures"],
 };
 // type RootState = {
 //   user: ReturnType<typeof user>;

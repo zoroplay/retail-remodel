@@ -178,7 +178,6 @@ const BetsApiSlice = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           // You can dispatch actions here if needed
-          dispatch(setBetslip(data.data));
         } catch (error) {
           console.error("Error finding bet:", error);
         }
@@ -356,6 +355,7 @@ export const {
   useSportsCategoriesQuery,
   useTournamentsQuery,
   useFixturesQuery,
+  useLazyFixturesQuery,
   useLazyGetFixtureQuery,
   useFindBetMutation,
   useFindCouponMutation,
