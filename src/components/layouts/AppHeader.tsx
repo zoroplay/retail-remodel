@@ -284,7 +284,14 @@ export const AppHeader: React.FC = ({}) => {
               </div>
             </div>
           ) : (
-            <div className="flex gap-2">
+            <form
+              className="flex gap-2"
+              autoComplete="off"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleLogin();
+              }}
+            >
               <div className="flex g focus-within:border-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary transition-all">
                 <div
                   className={`px-2 py-1 font-bold text-xs h-[36px] flex justify-center items-center bg-gradient-to- bg-slate-800 to-slate-700 shadow transition-all border border-slate-600  ${classes.app_header["inactive-route-indicator"]}`}
@@ -312,9 +319,7 @@ export const AppHeader: React.FC = ({}) => {
                   className="w-full h-[36px] p-2 bg-gradient-to-r from-slate-800 to-slate-700 border border-slate-600 rounded-none text-gray-200 text-xs placeholder-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary transition-all disabled:cursor-not-allowed disabled:opacity-50"
                 />
                 <button
-                  onClick={() => {
-                    handleLogin();
-                  }}
+                  type="submit"
                   className={`${classes.app_header["login-button-bg"]} ${classes.app_header["login-button-hover"]} ${classes.app_header["login-button-text"]} px-4 py-1 font-bold text-xs h-[36px] shadow transition-all`}
                 >
                   {isLoading ? (
@@ -324,7 +329,7 @@ export const AppHeader: React.FC = ({}) => {
                   )}
                 </button>
               </div>
-            </div>
+            </form>
           )}
           {/* Hamburger for mobile */}
           <button

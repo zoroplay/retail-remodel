@@ -57,7 +57,7 @@ const SingleSearchInput = React.forwardRef<
       onKeyDown,
       tabIndex,
       type = "text",
-      name,
+      name = "default",
       height = "h-[42px]",
       bg_color = "bg-white",
       border_color = "border-gray-300",

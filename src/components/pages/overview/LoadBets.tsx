@@ -1,5 +1,11 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { useAppSelector } from "../../../hooks/useAppDispatch";
 import { useBetting } from "../../../hooks/useBetting";
@@ -11,34 +17,18 @@ import {
 } from "../../../store/services/bets.service";
 import { usePlaceBet } from "../../../hooks/usePlaceBet";
 import { AppHelper } from "../../../lib/helper";
-import { showToast } from "../../tools/toast";
 import environmentConfig, {
   ENVIRONMENT_VARIABLES,
   getEnvironmentVariable,
 } from "../../../store/services/configs/environment.config";
-import {
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Edit3,
-  Grid,
-  Ticket,
-  Trash2,
-  X,
-} from "lucide-react";
+import { ChevronRight, Grid, X } from "lucide-react";
 import Spinner from "../../layouts/Spinner";
 import NavigationBar from "../../layouts/CDNavigationBar";
 import SingleSearchInput from "@/components/inputs/SingleSearchInput";
 import Input from "@/components/inputs/Input";
 import { MODAL_COMPONENTS, SelectedBet } from "@/store/features/types";
-import {
-  FetchFixtureResponse,
-  FindBetResponse,
-} from "@/store/services/data/betting.types";
-import SwitchInput from "@/components/inputs/SwitchInput";
-import { BET_TYPES_ENUM, MARKET_SECTION } from "@/data/enums/enum";
+import { FetchFixtureResponse } from "@/store/services/data/betting.types";
 import { useModal } from "@/hooks/useModal";
-import BetSlip from "@/components/bets/bet-slip/BetSlip";
 import QuickBets from "@/components/bets/QuickBets";
 import { getClientTheme } from "@/config/theme.config";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
@@ -50,29 +40,24 @@ import { CashDeskFormData } from "@/store/features/types/cashdesk.types";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
 import { PreMatchFixture } from "@/store/features/types/fixtures.types";
 import { Fixture, SelectedMarket } from "@/data/types/betting.types";
-import {
-  removeCashDeskFixture,
-  setSelectedGame,
-} from "@/store/features/slice/fixtures.slice";
+import { removeCashDeskFixture } from "@/store/features/slice/fixtures.slice";
 import OddsButton from "@/components/buttons/OddsButton";
+import { BET_TYPES_ENUM, MARKET_SECTION } from "@/data/enums/enum";
 
-const FixtureDisplay = ({
-  displayFixtures,
-  selectedMarkets,
-  sport_id,
-  is_loading,
-}: {
-  displayFixtures: (PreMatchFixture | Fixture)[];
-  selectedMarkets: SelectedMarket[];
-  sport_id: number;
-  is_loading?: boolean;
-}) => {
+const FixtureDisplay = forwardRef<
+  HTMLDivElement,
+  {
+    displayFixtures: (PreMatchFixture | Fixture)[];
+    selectedMarkets: SelectedMarket[];
+    sport_id: number;
+    is_loading?: boolean;
+  }
+>(({ displayFixtures, selectedMarkets, sport_id, is_loading }, ref) => {
   const { classes } = getClientTheme();
   const sportsPageClasses = classes.sports_page;
   const { openModal } = useModal();
-  const { selected_bets, toggleBet } = useBetting();
+  const { selected_bets } = useBetting();
   selectedMarkets = Array.isArray(selectedMarkets) ? selectedMarkets : [];
-  console.log("Selected Markets in FixtureDisplay:", is_loading);
 
   // For soccer (sportID 1), only show 1X2 and Double Chance markets
   if (sport_id == 1) {
@@ -111,18 +96,19 @@ const FixtureDisplay = ({
 
   return (
     <div
+      ref={ref as React.RefObject<HTMLDivElement>}
       className={`${sportsPageClasses["card-bg"]} border ${sportsPageClasses["card-border"]} shadow-2xl overflow-hidden rounded-lg`}
     >
       <div
-        className={`p-1 px-2 flex items-center justify-end ${sportsPageClasses["header-bg"]} border-b ${sportsPageClasses["header-border"]}`}
+        className={`p-1 flex items-center justify-end ${sportsPageClasses["header-bg"]} border-b ${sportsPageClasses["header-border"]}`}
       >
         <button
           onClick={() => {
             dispatch(removeCashDeskFixture());
           }}
-          className="p-1  flex justify-center items-center text-red-500 bg-red-600/40 cursor-pointer h-7 w-7  border-red-700 rounded-full border hover:bg-red-700/80 transition-colors"
+          className="p-1  flex justify-center items-center text-red-500 bg-red-500/40 cursor-pointer h-6 w-12  border-red-600/50 rounded-lg border hover:bg-red-700/80 transition-colors"
         >
-          <X />
+          <X className="w-4 h-4" />
         </button>
       </div>
       <div
@@ -216,7 +202,7 @@ const FixtureDisplay = ({
         )}
       </div>
       {!is_loading && displayFixtures.length > 0 && (
-        <div className="divide-y divide-gray-700 max-h-[85vh] overflow-y-auto overflow-x-hidden">
+        <div className="divide-y divide-gray-700 max-h-[70vh] overflow-y-auto overflow-x-hidden">
           {Object.entries(
             displayFixtures.reduce(
               (groups: Record<string, typeof displayFixtures>, fixture) => {
@@ -367,7 +353,7 @@ const FixtureDisplay = ({
       )}
     </div>
   );
-};
+});
 
 const LoadBetsPage = () => {
   // Initialize theme
@@ -637,19 +623,20 @@ const LoadBetsPage = () => {
 
   const theme = "dark";
 
+  // Ref for FixtureDisplay
+  const fixtureDisplayRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to FixtureDisplay when fixtures appear
+  useEffect(() => {
+    if (cashdesk_fixtures.fixtures.length && fixtureDisplayRef.current) {
+      fixtureDisplayRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [cashdesk_fixtures.fixtures.length]);
+
   return (
-    // <LoadBetsLayout
-    //   title={"Bet List"}
-    //   // onMenuPress={handleMenuPress}
-    //   // onSearchPress={handleSearchPress}
-    //   navigationBar={
-    //     <NavigationBar
-    //       // activeTab={activeTab}
-    //       // onTabPress={handleTabPress}
-    //       onSearchPress={handleSearchPress}
-    //     />
-    //   }
-    // >
     <div
       className={`px-4 pb-8 text-white h-[calc(100vh-100px)] overflow-y-auto relative ${cashdeskClasses["container-bg"]}`}
     >
@@ -1066,6 +1053,7 @@ const LoadBetsPage = () => {
       <main className="flex flex-col gap-4 mt-2">
         {cashdesk_fixtures.fixtures.length ? (
           <FixtureDisplay
+            ref={fixtureDisplayRef}
             displayFixtures={cashdesk_fixtures.fixtures}
             selectedMarkets={cashdesk_fixtures.selectedMarket}
             sport_id={cashdesk_fixtures.sport_id}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Tournament } from "@/data/types/betting.types";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch, useAppSelector } from "@/hooks/useAppDispatch";
 import { setTournamentDetails } from "@/store/features/slice/app.slice";
 import { useNavigate } from "react-router-dom";
 import { OVERVIEW } from "@/data/routes/routes";
@@ -26,6 +26,7 @@ const TournamentItem = ({ tournament, categoryId, sportId }: Props) => {
   const { classes } = getClientTheme();
   const pathname = window.location.pathname;
   const sidebarClasses = classes.sports_sidebar;
+  const { cashdesk_fixtures } = useAppSelector((state) => state.fixtures);
   const [fetchFixture] = useLazyFixturesQuery();
   const handleTournamentClick = () => {
     if (pathname === OVERVIEW.CASHDESK) {
