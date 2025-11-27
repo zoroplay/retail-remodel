@@ -320,7 +320,7 @@ const QuickBets = ({ formData: _form, total, index, is_empty_form }: Props) => {
                   onKeyDown={handleEventIdKeyPress}
                   type="number"
                   tabIndex={1}
-                  text_color={cashdeskClasses["input-text"]}
+                  text_color={`${cashdeskClasses["input-text"]} text-xs`}
                   bg_color={cashdeskClasses["input-bg"]}
                   className={`w-full border ${cashdeskClasses["input-border"]} rounded-lg px-3 py-2 placeholder-slate-400  transition-all`}
                   placeholder="Enter 4-digit ID"

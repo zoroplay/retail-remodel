@@ -779,20 +779,26 @@ const LoadBetsPage = () => {
                       ].map((item, index) => (
                         <div
                           key={index}
-                          className={`p-2 text-xs border ${cashdeskClasses["summary-item-border"]} rounded-md ${cashdeskClasses["summary-item-bg"]} flex justify-between items-center gap-2`}
+                          className={`p-2 text-xs border ${cashdeskClasses["summary-item-border"]} rounded-md ${cashdeskClasses["summary-item-bg"]} flex flex-col justify-start items-start`}
                         >
-                          <p className={cashdeskClasses["summary-label-text"]}>
+                          <p
+                            className={`${cashdeskClasses["summary-label-text"]} text-[10px]`}
+                          >
                             {item.label}:
                           </p>
-                          <p className={cashdeskClasses["summary-value-text"]}>
+                          <p
+                            className={`${cashdeskClasses["summary-value-text"]} font-medium`}
+                          >
                             {item.value}
                           </p>
                         </div>
                       ))}
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div
+                      className={`flex flex-col gap-2 ${classes["text-secondary"]} p-2 rounded-md`}
+                    >
                       <Input
-                        label=""
+                        label="Total Stake"
                         value={String(stake || "")}
                         onChange={(e) => {
                           const v = Number(e.target.value || 0);
@@ -812,12 +818,12 @@ const LoadBetsPage = () => {
                       />
                       <div className="grid grid-cols-2 gap-1">
                         <button
-                          className={`p-2 ${cashdeskClasses["button-cancel-bg"]} ${cashdeskClasses["button-cancel-hover"]} border border-rose-500 text-white shadow-lg shadow-rose-600/25 text-sm font-semibold rounded-md h-9 flex justify-center items-center`}
+                          className={`p-2 ${cashdeskClasses["button-cancel-bg"]} ${cashdeskClasses["button-cancel-hover"]} border border-rose-500 text-white shadow-md shadow-rose-600/25 text-xs font-semibold rounded-md h-9 flex justify-center items-center`}
                         >
                           Cancel
                         </button>
                         <button
-                          className={`p-2 ${cashdeskClasses["button-proceed-bg"]} ${cashdeskClasses["button-proceed-hover"]} border border-emerald-500 text-white shadow-lg shadow-emerald-600/25 text-sm font-semibold rounded-md h-9 flex justify-center items-center`}
+                          className={`p-2 ${cashdeskClasses["button-proceed-bg"]} ${cashdeskClasses["button-proceed-hover"]} border border-emerald-500 text-white shadow-md shadow-emerald-600/25 text-xs font-semibold rounded-md h-9 flex justify-center items-center`}
                         >
                           Proceed
                         </button>
