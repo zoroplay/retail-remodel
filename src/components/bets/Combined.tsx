@@ -119,7 +119,7 @@ const Combined: React.FC<CombinedProps> = ({
     >
       {/* Header */}
       <div
-        className={`${betslipClasses["header-bg"]} border-y ${betslipClasses["divider"]} rounded flex flex-col gap-2 max-h-[28vh] overflow-y-auto`}
+        className={`${betslipClasses["header-bg"]} border-y ${betslipClasses["divider"]} rounded flex flex-col gap-2 max-h-[24vh] overflow-y-auto`}
       >
         {selected_bets.length === 0 ? (
           <div className="py-12 flex flex-col items-center justify-center text-center">
@@ -230,7 +230,11 @@ const Combined: React.FC<CombinedProps> = ({
           {combos.map((combo: any, idx: number) => (
             <div
               key={idx}
-              className={`${classes["text-secondary"]} grid grid-cols-[2fr_1fr_1.5fr_1fr_1.5fr] gap-4 p-2 py-1 border-b ${betslipClasses["divider"]} last:border-b-0 hover:${betslipClasses["tab-bg"]}`}
+              className={`${
+                classes["text-secondary"]
+              } grid grid-cols-[2fr_1fr_1.5fr_1fr_1.5fr] gap-4 p-2 py-1 border-b ${[
+                "divider",
+              ]} last:border-b-0 hover:${betslipClasses["tab-bg"]}`}
             >
               {/* Checkbox & Type */}
               <div className="flex items-center gap-1">

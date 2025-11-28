@@ -60,7 +60,7 @@ const BetSlip = (props: Props) => {
         try {
           const result = (await findBet({
             betslipId: text,
-            clientId: environmentConfig.CLIENT_ID,
+            clientId: String(environmentConfig.CLIENT_ID),
           })) as unknown as { data: FindBetResponse };
 
           if (result.data && result.data.success) {
@@ -140,7 +140,7 @@ const BetSlip = (props: Props) => {
         try {
           const result = await findCoupon({
             betslipId: text,
-            clientId: environmentConfig.CLIENT_ID,
+            clientId: String(environmentConfig.CLIENT_ID),
           });
 
           // if (result?.data?.data) {
@@ -413,7 +413,7 @@ const BetSlip = (props: Props) => {
                 disabled={!canPlaceBet}
                 className={`w-full font-semibold py-2 px-4 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm duration-300 ${
                   canPlaceBet
-                    ? `${betslipClasses["button-place-bg"]} ${betslipClasses["button-place-hover"]} border border-emerald-500 ${betslipClasses["button-place-text"]} shadow-lg shadow-emerald-600/25`
+                    ? `${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} border border-emerald-500 ${classes["button-proceed-text"]} shadow-md `
                     : "bg-gradient-to-r from-slate-700 to-slate-600 border border-slate-600 text-slate-400"
                 }`}
               >

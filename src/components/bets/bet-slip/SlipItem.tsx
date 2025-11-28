@@ -34,9 +34,7 @@ const SlipItem = ({ selection, bg_color, border_color, text_color }: Props) => {
   return (
     <div
       key={selection.game.event_id}
-      className={`flex items-center justify-between gap-3 transition-all duration-300 ${
-        bg_color || betslipClasses["header-bg"]
-      } border-b p-2 `}
+      className={`flex items-center justify-between gap-3 transition-all duration-300 ${betslipClasses["header-bg"]} border-b p-2 ${betslipClasses["main-border"]}`}
     >
       <div className="flex w-full gap-1">
         <input

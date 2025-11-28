@@ -166,10 +166,6 @@ export interface ThemeClasses {
     "summary-item-border": string;
     "summary-label-text": string;
     "summary-value-text": string;
-    "button-cancel-bg": string;
-    "button-cancel-hover": string;
-    "button-proceed-bg": string;
-    "button-proceed-hover": string;
     "add-button-bg": string;
     "add-button-hover": string;
     "add-button-border": string;
@@ -185,12 +181,6 @@ export interface ThemeClasses {
     "input-bg": string;
     "input-border": string;
     "input-text": string;
-    "button-primary-bg": string;
-    "button-primary-hover": string;
-    "button-primary-text": string;
-    "button-secondary-bg": string;
-    "button-secondary-hover": string;
-    "button-secondary-text": string;
     "header-text": string;
     "close-button": string;
     "close-button-hover": string;
@@ -455,6 +445,14 @@ export interface ThemeClasses {
   "button-secondary-hover": string;
   "button-secondary-text": string;
   "modal-bg": string;
+  "button-cancel-bg": string;
+  "button-cancel-hover": string;
+  "button-cancel-text": string;
+  "button-cancel-border": string;
+  "button-proceed-bg": string;
+  "button-proceed-hover": string;
+  "button-proceed-text": string;
+  "button-proceed-border": string;
 }
 
 export interface ClientTheme {
@@ -701,14 +699,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
   switch (String(clientId)) {
     case "1": // Red & White theme
       return {
-        "button-primary-bg": "bg-gradient-to-r from-red-600 to-red-700",
-        "button-primary-border": "border border-red-700",
-        "button-primary-hover": "hover:from-red-700 hover:to-red-800",
-        "button-primary-text": "text-white",
-        "button-secondary-bg": "bg-gradient-to-r from-slate-600 to-slate-700",
-        "button-secondary-border": "border border-slate-700",
-        "button-secondary-hover": "hover:from-slate-700 hover:to-slate-800",
-        "button-secondary-text": "text-white",
         app_header: {
           "highlight-indicator":
             "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)",
@@ -722,6 +712,10 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "login-button-text": "text-white",
         },
         sports_sidebar: {
+          "card-border": "border-slate-700",
+          "sport-item-border-l": "border-l-2 border-slate-700",
+          "category-item-active": "bg-red-700 text-white",
+          "account-icon-active": "text-red-500",
           "main-bg":
             "bg-gradient-to-b from-slate-900 to-slate-800 border border-slate-700",
           "search-bg": "bg-gradient-to-r from-red-900 to-red-800",
@@ -767,6 +761,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "button-cancel-hover": "hover:from-red-700 hover:to-red-600",
         },
         sports_page: {
+          "live-game-indicator": "bg-green-500",
           "container-bg": "bg-transparent",
           "card-bg": "bg-red-950/60",
           "card-border": "border-red-800/50",
@@ -822,10 +817,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "summary-item-border": "border-gray-700/50",
           "summary-label-text": "text-gray-300",
           "summary-value-text": "text-white",
-          "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
-          "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
-          "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
-          "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
+          // ...existing code...
           "add-button-bg": "bg-white/20",
           "add-button-hover": "hover:bg-white/30",
           "add-button-border": "border-blue-400",
@@ -841,12 +833,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "input-bg": "bg-gradient-to-r from-slate-800 to-slate-700",
           "input-border": "border-slate-600",
           "input-text": "text-white",
-          "button-primary-bg": "bg-gradient-to-r from-red-600 to-red-700",
-          "button-primary-hover": "hover:from-red-700 hover:to-red-800",
-          "button-primary-text": "text-white",
-          "button-secondary-bg": "bg-gradient-to-r from-slate-600 to-slate-700",
-          "button-secondary-hover": "hover:from-slate-700 hover:to-slate-800",
-          "button-secondary-text": "text-white",
           "header-text": "text-slate-200",
           "close-button": "bg-red-900/40",
           "close-button-hover": "hover:bg-red-800/60",
@@ -1017,7 +1003,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "text-color": "text-gray-200",
         },
         game_options_modal: {
-          "modal-bg": "bg-red-950",
+          // "modal-bg": "bg-red-950", // removed invalid key
           "modal-border": "border-red-800",
           "header-title": "text-white",
           "header-subtitle": "text-red-200",
@@ -1097,6 +1083,23 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "button-primary": "bg-red-600 hover:bg-red-500 text-white",
         "button-secondary":
           "bg-red-900 hover:bg-red-800 text-white border border-red-700",
+        "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
+        "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
+        "button-cancel-text": "text-white",
+        "button-cancel-border": "border-rose-500/80",
+        "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
+        "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
+        "button-proceed-text": "text-white",
+        "button-proceed-border": "border-emerald-500",
+        "modal-bg": "bg-slate-900",
+        "button-primary-bg": "bg-gradient-to-r from-red-600 to-red-700",
+        "button-primary-border": "border border-red-700",
+        "button-primary-hover": "hover:from-red-700 hover:to-red-800",
+        "button-primary-text": "text-white",
+        "button-secondary-bg": "bg-gradient-to-r from-slate-600 to-slate-700",
+        "button-secondary-border": "border border-slate-700",
+        "button-secondary-hover": "hover:from-slate-700 hover:to-slate-800",
+        "button-secondary-text": "text-white",
         card: "bg-red-900/30 border-red-800/40",
         "card-hover": "hover:border-red-600/60 hover:bg-red-900/40",
         "input-bg":
@@ -1108,14 +1111,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
       };
     case "3": // Black & Gold theme
       return {
-        "button-primary-bg": "bg-gradient-to-r from-yellow-600 to-yellow-500",
-        "button-primary-border": "border border-yellow-700",
-        "button-primary-hover": "hover:from-yellow-700 hover:to-yellow-600",
-        "button-primary-text": "text-black",
-        "button-secondary-bg": "bg-gradient-to-r from-slate-700 to-slate-800",
-        "button-secondary-border": "border border-slate-700",
-        "button-secondary-hover": "hover:from-slate-800 hover:to-slate-900",
-        "button-secondary-text": "text-white",
         app_header: {
           "highlight-indicator":
             "linear-gradient(90deg,rgba(17, 18, 18, 1) 0%, rgba(41, 13, 13, 1) 35%, rgba(5, 0, 0, 1) 76%, rgba(41, 7, 7, 1) 100%)",
@@ -1130,23 +1125,24 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         },
         sports_sidebar: {
           "main-bg": "bg-[#161616] ",
-          "card-border": "border-emerald-700/30",
-
+          "card-border": "border-yellow-700/30",
+          "sport-item-border-l": "border-l-yellow-600/70",
+          "category-item-active": "bg-yellow-700 text-black",
+          "account-icon-active": "text-yellow-500",
           "search-bg": "bg-gradient-to-r from-gray-950 to-black",
-          "search-border": "border-emerald-700/40",
-          divider: "bg-emerald-700/20",
+          "search-border": "border-yellow-700/40",
+          divider: "bg-yellow-700/20",
           "item-bg": "bg-gray-900/30",
-          "sport-item-border": "border-emerald-600/20",
-          "sport-item-border-l": "!border-l-emerald-500",
+          "sport-item-border": "border-yellow-600/20",
           "sport-item-bg": "bg-transparent",
           "sport-item-hover": "hover:bg-[#450A0A]/30",
           "sport-item-text": "text-gray-300",
           "sport-item-count-bg": "bg-gray-700/50",
-          "sport-item-count-text": "text-emerald-300",
+          "sport-item-count-text": "text-yellow-300",
           "category-item-bg": "bg-[#161616]",
           "category-item-hover": "hover:bg-[#450A0A]/30",
           "category-item-text": "text-gray-300",
-          "category-item-border": "border-emerald-700/40",
+          "category-item-border": "border-yellow-700/40",
           "category-item-count-bg": "bg-gray-600/50",
           "category-item-count-text": "text-gray-400",
           "tournament-item-bg": "bg-[#161616]",
@@ -1159,9 +1155,9 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         betslip: {
           "main-bg": "bg-gradient-to-b from-black to-gray-950",
           "main-border": "border-yellow-700/40",
-          "header-bg": "bg-black/50",
-          divider: "bg-yellow-700/20",
-          "tab-bg": "bg-gray-800/30",
+          "header-bg": "bg-[#161616]",
+          divider: "bg-yellow-700/40",
+          "tab-bg": "bg-[#161616]",
           "tab-border": "border-yellow-700/40",
           "tab-active-bg": "bg-gradient-to-br from-yellow-500 to-yellow-700",
           "tab-active-text": "text-black",
@@ -1236,10 +1232,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "summary-item-border": "border-gray-700/50",
           "summary-label-text": "text-gray-300",
           "summary-value-text": "text-gray-400",
-          "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
-          "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
-          "button-proceed-bg": "bg-gradient-to-r from-yellow-600 to-yellow-500",
-          "button-proceed-hover": "hover:from-yellow-700 hover:to-yellow-600",
+          // ...existing code...
           "add-button-bg": "bg-white/20",
           "add-button-hover": "hover:bg-white/30",
           "add-button-border": "border-yellow-400",
@@ -1249,18 +1242,13 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "card-bg": "bg-black/60",
           "card-border": "border-yellow-700/30",
           "card-text": "text-slate-200",
-          "column-header-bg": "bg-gray-900/40",
-          "column-header-text": "text-slate-300",
+          "column-header-bg":
+            "bg-gradient-to-r from-[#450A0A]/60 via-[#450A0A]/80 to-[#7F1D1D]/40",
+          "column-header-text": "text-yellow-100",
           "row-hover": "hover:bg-black/80",
           "input-bg": "bg-gradient-to-r from-gray-950 to-slate-950",
           "input-border": "border-slate-800",
           "input-text": "text-white",
-          "button-primary-bg": "bg-gradient-to-r from-yellow-600 to-yellow-500",
-          "button-primary-hover": "hover:from-yellow-700 hover:to-yellow-600",
-          "button-primary-text": "text-black",
-          "button-secondary-bg": "bg-gradient-to-r from-slate-700 to-slate-800",
-          "button-secondary-hover": "hover:from-slate-800 hover:to-slate-900",
-          "button-secondary-text": "text-white",
           "header-text": "text-slate-200",
           "close-button": "bg-gray-900/40",
           "close-button-hover": "hover:bg-gray-800/60",
@@ -1432,29 +1420,29 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "badge-withdraw-text": "text-red-400",
         },
         game_options_modal: {
-          "modal-border": "border-emerald-700/40",
-          "header-title": "text-emerald-400",
+          "modal-border": "border-yellow-700/40",
+          "header-title": "text-yellow-400",
           "header-subtitle": "text-gray-300",
-          "header-vs-text": "text-emerald-500",
+          "header-vs-text": "text-yellow-500",
           "header-date-text": "text-gray-500",
-          "title-text": "text-emerald-300",
-          "subtitle-text": "text-emerald-200",
-          "market-card-bg": "bg-[#450A0A]/20",
-          "market-card-border": "border-[#DC2626]/20",
+          "title-text": "text-yellow-300",
+          "subtitle-text": "text-yellow-200",
+          "market-card-bg": "bg-[#450A0A]/10",
+          "market-card-border": "border-[#DC2626]/10",
           "market-card-hover":
-            "hover:border-[#DC2626]/40 hover:bg-[#450A0A]/40",
-          "market-title": "text-emerald-300",
-          "axis-label-text": "text-emerald-400",
-          "axis-label-bg": "bg-emerald-900/20",
+            "hover:border-[#DC2626]/20 hover:bg-[#450A0A]/20",
+          "market-title": "text-yellow-300",
+          "axis-label-text": "text-yellow-400",
+          "axis-label-bg": "bg-yellow-900/20",
           "odds-button-bg": "bg-gray-200",
-          "odds-button-hover": "hover:bg-emerald-200",
+          "odds-button-hover": "hover:bg-yellow-200",
           "odds-button-text": "text-gray-800",
           "odds-button-border": "border-gray-600/50",
           "odds-button-selected-bg":
-            "bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500",
-          "odds-button-selected-border": "border-emerald-400",
+            "bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500",
+          "odds-button-selected-border": "border-yellow-400",
           "odds-button-selected-text": "text-black",
-          "odds-button-selected-hover": "hover:bg-emerald-400",
+          "odds-button-selected-hover": "hover:bg-yellow-400",
           "odds-button-disabled-bg": "bg-gray-100/90",
           "odds-button-disabled-text": "text-gray-800",
           "odds-button-disabled-border": "border-gray-400",
@@ -1500,7 +1488,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "bg-gradient": "bg-gradient-to-br from-gray-900 to-black",
         "bg-gradient-hover": "hover:from-gray-800 hover:to-gray-900",
         "text-primary": "text-white",
-        "text-secondary": "text-yellow-400",
+        "text-secondary": "text-gray-400",
         "text-muted": "text-yellow-600",
         border: "border-yellow-600/80",
         "border-light": "border-yellow-500",
@@ -1524,10 +1512,27 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "input-text": "text-gray-600",
         "skeleton-bg": "bg-gray-700/50",
         "modal-bg": "bg-[#161616]",
+        "button-primary-bg": "bg-gradient-to-r from-yellow-600 to-yellow-500",
+        "button-primary-border": "border border-yellow-700",
+        "button-primary-hover": "hover:from-yellow-700 hover:to-yellow-600",
+        "button-primary-text": "text-black",
+        "button-secondary-bg": "bg-gradient-to-r from-slate-700 to-slate-800",
+        "button-secondary-border": "border border-slate-700",
+        "button-secondary-hover": "hover:from-slate-800 hover:to-slate-900",
+        "button-secondary-text": "text-white",
+        "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
+        "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
+        "button-cancel-text": "text-white",
+        "button-cancel-border": "border-rose-500/80",
+        "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
+        "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
+        "button-proceed-text": "text-white",
+        "button-proceed-border": "border-emerald-500",
       };
 
     case "5": // Blue & White with touch of Red theme
       return {
+        "modal-bg": "bg-slate-900",
         "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
         "button-primary-border": "border border-blue-700",
         "button-primary-hover": "hover:from-blue-700 hover:to-blue-800",
@@ -1553,6 +1558,10 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "login-button-text": "text-white",
         },
         sports_sidebar: {
+          "card-border": "border-blue-800/50",
+          "sport-item-border-l": "border-l-2 border-blue-800/50",
+          "category-item-active": "bg-blue-700 text-white",
+          "account-icon-active": "text-blue-500",
           "main-bg":
             "bg-gradient-to-b from-slate-900 to-slate-800 border border-slate-700",
           "search-bg": "bg-gradient-to-r from-blue-900 to-blue-800",
@@ -1598,6 +1607,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "button-cancel-hover": "hover:from-red-700 hover:to-red-600",
         },
         sports_page: {
+          "live-game-indicator": "bg-blue-500",
           "container-bg": "bg-transparent",
           "card-bg": "bg-blue-950/60",
           "card-border": "border-blue-800/50",
@@ -1654,10 +1664,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "summary-item-border": "border-gray-700/50",
           "summary-label-text": "text-gray-300",
           "summary-value-text": "text-white",
-          "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
-          "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
-          "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
-          "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
           "add-button-bg": "bg-white/20",
           "add-button-hover": "hover:bg-white/30",
           "add-button-border": "border-blue-400",
@@ -1673,12 +1679,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "input-bg": "bg-gradient-to-r from-slate-800 to-slate-700",
           "input-border": "border-slate-600",
           "input-text": "text-white",
-          "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
-          "button-primary-hover": "hover:from-blue-700 hover:to-blue-800",
-          "button-primary-text": "text-white",
-          "button-secondary-bg": "bg-gradient-to-r from-slate-600 to-slate-700",
-          "button-secondary-hover": "hover:from-slate-700 hover:to-slate-800",
-          "button-secondary-text": "text-white",
           "header-text": "text-slate-200",
           "close-button": "bg-blue-900/40",
           "close-button-hover": "hover:bg-blue-800/60",
@@ -1850,7 +1850,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "badge-withdraw-text": "text-red-400",
         },
         game_options_modal: {
-          "modal-bg": "bg-blue-950",
+          // "modal-bg": "bg-blue-950", // removed invalid key
           "modal-border": "border-blue-800",
           "header-title": "text-slate-800",
           "header-subtitle": "text-slate-600",
@@ -1930,11 +1930,21 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "button-primary": "bg-blue-700 hover:bg-blue-600 text-white",
         "button-secondary":
           "bg-blue-900 hover:bg-blue-800 text-white border border-blue-700",
+        "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
+        "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
+        "button-cancel-text": "text-white",
+        "button-cancel-border": "border-rose-500/80",
+        "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
+        "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
+        "button-proceed-text": "text-white",
+        "button-proceed-border": "border-emerald-500",
+
         card: "bg-blue-900/30 border-blue-800/40",
         "card-hover": "hover:border-blue-600/60 hover:bg-blue-900/40",
       };
     case "9": // Black & Gold theme
       return {
+        "modal-bg": "bg-slate-900",
         "button-primary-bg": "bg-gradient-to-r from-gray-600 to-gray-700",
         "button-primary-border": "border border-gray-700",
         "button-primary-hover": "hover:from-gray-700 hover:to-gray-800",
@@ -1956,8 +1966,11 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "login-button-text": "text-black",
         },
         sports_sidebar: {
-          "main-bg":
-            "bg-gradient-to-b from-slate-900 to-slate-800 border border-slate-700",
+          "card-border": "border-yellow-700/30",
+          "sport-item-border-l": "border-l-2 border-yellow-700/30",
+          "category-item-active": "bg-yellow-700 text-black",
+          "account-icon-active": "text-yellow-500",
+          "main-bg": "bg-[#161616]",
           "search-bg": "bg-gradient-to-r from-gray-950 to-black",
           "search-border": "border-yellow-700/40",
           divider: "bg-yellow-700/20",
@@ -2001,8 +2014,9 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "button-cancel-hover": "hover:from-red-700 hover:to-red-600",
         },
         sports_page: {
+          "live-game-indicator": "bg-yellow-500",
           "container-bg": "bg-transparent",
-          "card-bg": "bg-black/60",
+          "card-bg": "bg-[#161616]",
           "card-border": "border-yellow-700/30",
           "card-hover": "hover:bg-black/80",
           "header-bg": "bg-gray-900/40",
@@ -2054,10 +2068,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "summary-item-border": "border-gray-700/50",
           "summary-label-text": "text-gray-300",
           "summary-value-text": "text-yellow-300",
-          "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
-          "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
-          "button-proceed-bg": "bg-gradient-to-r from-yellow-600 to-yellow-500",
-          "button-proceed-hover": "hover:from-yellow-700 hover:to-yellow-600",
+          // ...existing code...
           "add-button-bg": "bg-white/20",
           "add-button-hover": "hover:bg-white/30",
           "add-button-border": "border-yellow-400",
@@ -2073,12 +2084,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "input-bg": "bg-gradient-to-r from-slate-800 to-slate-700",
           "input-border": "border-slate-600",
           "input-text": "text-white",
-          "button-primary-bg": "bg-gradient-to-r from-gray-600 to-gray-700",
-          "button-primary-hover": "hover:from-gray-700 hover:to-gray-800",
-          "button-primary-text": "text-white",
-          "button-secondary-bg": "bg-gradient-to-r from-slate-600 to-slate-700",
-          "button-secondary-hover": "hover:from-slate-700 hover:to-slate-800",
-          "button-secondary-text": "text-white",
           "header-text": "text-slate-200",
           "close-button": "bg-gray-700/40",
           "close-button-hover": "hover:bg-gray-600/60",
@@ -2301,17 +2306,17 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "odds-button-text": "text-black",
           "odds-button-border": "border-yellow-500",
           "odds-button-selected-bg": "bg-yellow-400",
-          "odds-button-selected-border": "border-yellow-300",
+          "odds-button-selected-border": "border-yellow-200",
           "odds-button-selected-text": "text-black",
           "odds-button-selected-hover": "hover:bg-yellow-300",
-          "odds-button-disabled-bg": "bg-gray-800/50",
-          "odds-button-disabled-text": "text-gray-500",
-          "odds-button-disabled-border": "border-gray-700",
+          "odds-button-disabled-bg": "bg-gray-400/50",
+          "odds-button-disabled-text": "text-gray-700",
+          "odds-button-disabled-border": "border-gray-400",
         },
         "bg-main": "bg-black",
         "bg-secondary": "bg-gray-900",
         "bg-tertiary": "bg-gray-800",
-        "modal-bg": "bg-black",
+
         "bg-gradient": "bg-gradient-to-br from-gray-900 to-black",
         "bg-gradient-hover": "hover:from-gray-800 hover:to-gray-900",
         "text-primary": "text-white",
@@ -2338,6 +2343,14 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "border-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/80 ",
         "input-text": "text-gray-600",
         "skeleton-bg": "bg-gray-700/50",
+        "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
+        "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
+        "button-cancel-text": "text-white",
+        "button-cancel-border": "border-rose-500/80",
+        "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
+        "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
+        "button-proceed-text": "text-white",
+        "button-proceed-border": "border-emerald-500",
       };
     default: // Default Deep Blue theme
       return {
@@ -2354,6 +2367,10 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "login-button-text": "text-white",
         },
         sports_sidebar: {
+          "card-border": "border-gray-300",
+          "sport-item-border-l": "border-l-blue-800",
+          "category-item-active": "bg-blue-600 text-white",
+          "account-icon-active": "text-blue-500",
           "main-bg": "bg-white border border-gray-200",
           "search-bg": "bg-gray-50",
           "search-border": "border-gray-300",
@@ -2367,10 +2384,10 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "sport-item-count-text": "text-slate-600",
           "category-item-bg": "bg-gray-50/50",
           "category-item-border": "border-l-blue-600",
-          "category-item-active": "bg-blue-600",
+          // "category-item-active": "bg-blue-600", // duplicate removed
           "category-item-hover": "hover:bg-gray-100",
           "category-item-text": "text-slate-700",
-          "account-icon-active": "text-blue-500",
+          // "account-icon-active": "text-blue-500", // duplicate removed
           "category-item-count-bg": "bg-gray-200",
           "category-item-count-text": "text-slate-500",
           "tournament-item-bg": "bg-white",
@@ -2400,6 +2417,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "button-cancel-hover": "hover:from-red-700 hover:to-red-600",
         },
         sports_page: {
+          // "live-game-indicator": "bg-blue-500", // duplicate removed
           "container-bg": "bg-transparent",
           "card-bg": "bg-white",
           "card-border": "border-slate-700/50",
@@ -2459,10 +2477,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "summary-item-border": "border-gray-300",
           "summary-label-text": "text-gray-500",
           "summary-value-text": "text-gray-700",
-          "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
-          "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
-          "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
-          "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
+          // ...existing code...
           "add-button-bg": "bg-white/20",
           "add-button-hover": "hover:bg-white/30",
           "add-button-border": "border-blue-400",
@@ -2478,12 +2493,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "input-bg": "bg-gradient-to-r from-slate-50 to-slate-50",
           "input-border": "border-slate-400",
           "input-text": "text-gray-600",
-          "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
-          "button-primary-hover": "hover:from-blue-700 hover:to-blue-800",
-          "button-primary-text": "text-white",
-          "button-secondary-bg": "bg-gradient-to-r from-slate-500 to-slate-600",
-          "button-secondary-hover": "hover:from-slate-600 hover:to-slate-700",
-          "button-secondary-text": "text-white",
           "header-text": "text-gray-900",
           "close-button": "bg-gray-200",
           "close-button-hover": "hover:bg-gray-300",
@@ -2750,7 +2759,15 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "button-secondary-border": "border border-gray-300",
         "button-secondary-hover": "hover:bg-gray-300",
         "button-secondary-text": "text-gray-700",
-        "modal-bg": "bg-gray-100",
+        "modal-bg": "bg-slate-50",
+        "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
+        "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
+        "button-cancel-text": "text-white",
+        "button-cancel-border": "border-rose-500/80",
+        "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
+        "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
+        "button-proceed-text": "text-white",
+        "button-proceed-border": "border-emerald-500",
       };
   }
 };

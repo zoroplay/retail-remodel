@@ -778,15 +778,7 @@ export default function LiveOverviewScreen({
                                                   fixture as PreMatchFixture
                                                 );
                                               }}
-                                              className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1 ${
-                                                classes.game_options_modal[
-                                                  "odds-button-bg"
-                                                ]
-                                              } ${
-                                                classes.game_options_modal[
-                                                  "odds-button-selected-text"
-                                                ]
-                                              } ${
+                                              className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1   ${
                                                 classes.game_options_modal[
                                                   "odds-button-hover"
                                                 ]
@@ -800,7 +792,7 @@ export default function LiveOverviewScreen({
                                                         Number(fixture.gameID))
                                                 )
                                                   ? `${classes.game_options_modal["odds-button-selected-bg"]}   ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
-                                                  : `${classes.game_options_modal["odds-button-border"]}`
+                                                  : `${classes.game_options_modal["odds-button-border"]} ${classes.game_options_modal["odds-button-bg"]} ${classes.game_options_modal["odds-button-text"]}`
                                               }`}
                                             >
                                               <span>

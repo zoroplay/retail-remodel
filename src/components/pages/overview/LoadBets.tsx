@@ -325,13 +325,7 @@ const FixtureDisplay = forwardRef<
                           e.stopPropagation();
                           handleMorePress(fixture as PreMatchFixture);
                         }}
-                        className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1 ${
-                          classes.game_options_modal["odds-button-bg"]
-                        } ${
-                          classes.game_options_modal[
-                            "odds-button-selected-text"
-                          ]
-                        } ${
+                        className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1   ${
                           classes.game_options_modal["odds-button-hover"]
                         } shadow font-semibold transition-colors border-2 ${
                           selected_bets.some(
@@ -341,7 +335,7 @@ const FixtureDisplay = forwardRef<
                                 bet.game.game_id == Number(fixture.gameID))
                           )
                             ? `${classes.game_options_modal["odds-button-selected-bg"]}   ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
-                            : `${classes.game_options_modal["odds-button-border"]}`
+                            : `${classes.game_options_modal["odds-button-border"]} ${classes.game_options_modal["odds-button-bg"]} ${classes.game_options_modal["odds-button-text"]}`
                         }`}
                       >
                         <span>+{fixture.activeMarkets || 0}</span>
@@ -809,12 +803,12 @@ const LoadBetsPage = () => {
                       />
                       <div className="grid grid-cols-2 gap-1">
                         <button
-                          className={`p-2 ${cashdeskClasses["button-cancel-bg"]} ${cashdeskClasses["button-cancel-hover"]} border border-rose-500 text-white shadow-md shadow-rose-600/25 text-xs font-semibold rounded-md h-9 flex justify-center items-center`}
+                          className={`p-2 ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-text"]} border  shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center ${classes["button-cancel-border"]}`}
                         >
                           Cancel
                         </button>
                         <button
-                          className={`p-2 ${cashdeskClasses["button-proceed-bg"]} ${cashdeskClasses["button-proceed-hover"]} border border-emerald-500 text-white shadow-md shadow-emerald-600/25 text-xs font-semibold rounded-md h-9 flex justify-center items-center`}
+                          className={`p-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-border"]} ${classes["button-proceed-text"]} border   shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center`}
                         >
                           Proceed
                         </button>
