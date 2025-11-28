@@ -182,7 +182,7 @@ const AccountMenu = (props: Props) => {
       <span
         className={`relative z-10 transition-colors duration-200 ${
           isActive
-            ? "text-blue-400"
+            ? sidebarClasses["account-icon-active"]
             : "text-slate-400 group-hover:text-blue-300"
         }`}
       >
@@ -192,7 +192,9 @@ const AccountMenu = (props: Props) => {
 
       {/* Active Indicator */}
       {isActive && (
-        <div className="absolute right-2 w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+        <div
+          className={`absolute right-2 w-2 h-2 rounded-full animate-pulse ${sidebarClasses["category-item-active"]}`}
+        />
       )}
     </Link>
   );
@@ -204,12 +206,12 @@ const AccountMenu = (props: Props) => {
       >
         {/* Sidebar Header */}
         <div
-          className={`${sidebarClasses["category-item-bg"]} border-b ${sidebarClasses["sport-item-border"]} px-4 py-3`}
+          className={`${sidebarClasses["category-item-bg"]} border-b ${sidebarClasses["sport-item-border"]} px-4 py-2`}
         >
           <h2
-            className={`${sidebarClasses["sport-item-text"]} font-bold text-sm flex items-center gap-2`}
+            className={`${sidebarClasses["sport-item-text"]} font-bold text-xs flex items-center gap-2`}
           >
-            <User size={20} className="text-blue-400" />
+            <User size={18} className={sidebarClasses["account-icon-active"]} />
             Account Menu
           </h2>
         </div>

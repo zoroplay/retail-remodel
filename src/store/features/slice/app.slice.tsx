@@ -36,9 +36,16 @@ const AppSlice = createSlice({
     ) => {
       state.global_variables = payload;
     },
+    setRefresh: (state) => {
+      state.app_refresh = state.app_refresh > 10 ? 1 : state.app_refresh + 1;
+    },
   },
 });
 
-export const { setTournamentDetails, resetQuery, setGlobalVariables } =
-  AppSlice.actions;
+export const {
+  setTournamentDetails,
+  resetQuery,
+  setGlobalVariables,
+  setRefresh,
+} = AppSlice.actions;
 export default AppSlice.reducer;

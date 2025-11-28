@@ -37,4 +37,5 @@ export interface AppState {
     query: string;
   };
   global_variables: GlobalVariables | null;
+  app_refresh: number;
 }

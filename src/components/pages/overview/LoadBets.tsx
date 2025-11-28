@@ -326,9 +326,13 @@ const FixtureDisplay = forwardRef<
                           handleMorePress(fixture as PreMatchFixture);
                         }}
                         className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1 ${
-                          sportsPageClasses["more-button-text"]
-                        }  ${
-                          sportsPageClasses["more-button-hover"]
+                          classes.game_options_modal["odds-button-bg"]
+                        } ${
+                          classes.game_options_modal[
+                            "odds-button-selected-text"
+                          ]
+                        } ${
+                          classes.game_options_modal["odds-button-hover"]
                         } shadow font-semibold transition-colors border-2 ${
                           selected_bets.some(
                             (bet) =>
@@ -336,7 +340,7 @@ const FixtureDisplay = forwardRef<
                               (bet.game.matchID == Number(fixture.matchID) ||
                                 bet.game.game_id == Number(fixture.gameID))
                           )
-                            ? `${classes.game_options_modal["odds-button-selected-bg"]} ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
+                            ? `${classes.game_options_modal["odds-button-selected-bg"]}   ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
                             : `${classes.game_options_modal["odds-button-border"]}`
                         }`}
                       >
@@ -647,18 +651,18 @@ const LoadBetsPage = () => {
           <section className="flex-1">
             {/* Event Details Form - Modern Betting Platform Design */}
             <div
-              className={`${cashdeskClasses["card-bg"]} border ${cashdeskClasses["card-border"]} rounded-md shadow-2xl overflow-hidden mb-1`}
+              className={`${classes.sports_page["card-bg"]} border ${cashdeskClasses["card-border"]} rounded-md shadow-2xl overflow-hidden mb-1`}
             >
               {/* Header */}
-              <div className={`${cashdeskClasses["header-bg"]} px-4 py-3`}>
+              <div
+                className={`${cashdeskClasses["header-text"]} ${cashdeskClasses["header-bg"]} px-4 py-3`}
+              >
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <div className="w-5 h-5 bg-white/20 rounded-lg flex items-center justify-center">
-                      <Grid size={12} className="text-white" />
+                      <Grid size={12} className="" />
                     </div>
-                    <h2 className="text-white font-bold text-sm">
-                      Quick Bet Entry
-                    </h2>
+                    <h2 className=" font-bold text-sm">Quick Bet Entry</h2>
                   </div>
                   <div className="addFormflex items-center gap-2">
                     <button
@@ -722,7 +726,7 @@ const LoadBetsPage = () => {
               </div>
               <div>
                 <div
-                  className={`p-2 mt-1 ${cashdeskClasses["summary-section-bg"]} border ${cashdeskClasses["summary-section-border"]} rounded-lg rounded-t-none`}
+                  className={`p-2 mt-1 ${cashdeskClasses["summary-section-bg"]} border-t-2 ${cashdeskClasses["card-border"]} border-b-0`}
                 >
                   <div className="grid grid-cols-[2fr_1fr] gap-2">
                     <div className="grid grid-cols-3 gap-2">

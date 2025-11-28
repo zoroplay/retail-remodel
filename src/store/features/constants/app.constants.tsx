@@ -8,4 +8,5 @@ export const InitialAppState: AppState = {
     query: "",
   },
   global_variables: null,
+  app_refresh: 0,
 };

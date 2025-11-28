@@ -47,7 +47,7 @@ import {
 import { apiSlice } from "./services/constants/api.service";
 
 const persistConfig = {
-  key: "retail:v1:40.5",
+  key: "retail:v1:0.5",
   storage,
   transforms: [
     compressTransform(),

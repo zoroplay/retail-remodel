@@ -294,7 +294,7 @@ export const AppHeader: React.FC = ({}) => {
             >
               <div className="flex g focus-within:border-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary transition-all">
                 <div
-                  className={`px-2 py-1 font-bold text-xs h-[36px] flex justify-center items-center bg-gradient-to- bg-slate-800 to-slate-700 shadow transition-all border border-slate-600  ${classes.app_header["inactive-route-indicator"]}`}
+                  className={`px-2 py-1 font-bold text-xs h-[36px] flex justify-center items-center ${classes["input-bg"]} shadow transition-all border ${classes["input-border"]} ${classes["input-text"]}  `}
                 >
                   <span>+234</span>
                 </div>
@@ -305,7 +305,7 @@ export const AppHeader: React.FC = ({}) => {
                   onChange={(e) => handleInputChange(e)}
                   placeholder="Mobile Number"
                   autoComplete="off"
-                  className="w-full h-[36px] border-l-0 text-xs p-2 bg-gradient-to-r from-slate-800 to-slate-700 border border-slate-600 rounded-none outline-none text-gray-200 placeholder-slate-400 transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                  className={`w-full h-[36px] border-l-0 text-xs p-2 ${classes["input-bg"]} border ${classes["border-light"]} rounded-none outline-none ${classes["input-text"]} placeholder-slate-400 transition-all disabled:cursor-not-allowed disabled:opacity-50`}
                 />
               </div>
               <div className="flex">
@@ -316,7 +316,7 @@ export const AppHeader: React.FC = ({}) => {
                   onChange={(e) => handleInputChange(e)}
                   placeholder="Password"
                   autoComplete="off"
-                  className="w-full h-[36px] p-2 bg-gradient-to-r from-slate-800 to-slate-700 border border-slate-600 rounded-none text-gray-200 text-xs placeholder-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                  className={`w-full h-[36px] p-2 ${classes["input-bg"]} rounded-none ${classes["input-border"]} ${classes["input-text"]}  rounded-none text-xs placeholder-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary transition-all disabled:cursor-not-allowed disabled:opacity-50`}
                 />
                 <button
                   type="submit"

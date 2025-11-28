@@ -653,7 +653,7 @@ export default function LiveOverviewScreen({
                                         >
                                           {/* Slanted left border accent */}
                                           <div
-                                            className="absolute left-0 top-0 bottom-0 w-2 bg-blue-800"
+                                            className={`absolute left-0 top-0 bottom-0 w-3 ${sportsPageClasses["live-game-indicator"]} `}
                                             style={{
                                               clipPath:
                                                 "polygon(0% 0%, 100% 0%, 50% 80%, 0% 100%)",
@@ -779,12 +779,16 @@ export default function LiveOverviewScreen({
                                                 );
                                               }}
                                               className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1 ${
-                                                sportsPageClasses[
-                                                  "more-button-text"
+                                                classes.game_options_modal[
+                                                  "odds-button-bg"
                                                 ]
-                                              }  ${
-                                                sportsPageClasses[
-                                                  "more-button-hover"
+                                              } ${
+                                                classes.game_options_modal[
+                                                  "odds-button-selected-text"
+                                                ]
+                                              } ${
+                                                classes.game_options_modal[
+                                                  "odds-button-hover"
                                                 ]
                                               } shadow font-semibold transition-colors border-2 ${
                                                 selected_bets.some(
@@ -795,7 +799,7 @@ export default function LiveOverviewScreen({
                                                       bet.game.game_id ==
                                                         Number(fixture.gameID))
                                                 )
-                                                  ? `${classes.game_options_modal["odds-button-selected-bg"]} ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
+                                                  ? `${classes.game_options_modal["odds-button-selected-bg"]}   ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
                                                   : `${classes.game_options_modal["odds-button-border"]}`
                                               }`}
                                             >

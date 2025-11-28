@@ -58,7 +58,7 @@ export default function OverviewScreen({
 
   // Use prop sportId if provided, otherwise parse from route/search params
   const { tournament_details } = useAppSelector((state) => state.app);
-  const { user } = useAppSelector((state) => state.user);
+  const { app_refresh } = useAppSelector((state) => state.app);
   const { fixtures = [] } = useAppSelector((state) => state.fixtures);
   const dispatch = useAppDispatch();
   const { openModal } = useModal();
@@ -205,6 +205,13 @@ export default function OverviewScreen({
       safeRefetchFixtures();
     }
   }, [tournament_details.tournament_id]);
+
+  // Refetch fixtures when app_refresh changes
+  useEffect(() => {
+    if (!tournament_details.query && refetch) {
+      refetch();
+    }
+  }, [app_refresh, tournament_details.query, refetch]);
 
   // Set up 1-minute polling for both live and pre-match games
   // useEffect(() => {
@@ -422,7 +429,7 @@ export default function OverviewScreen({
             !is_top_bets_loading &&
             displayFixtures.length === 0 && (
               <div className={`flex-1 justify-center items-center p-4`}>
-                <p className={`${sportsPageClasses["empty-text"]} text-lg`}>
+                <p className={`${sportsPageClasses["empty-text"]}`}>
                   No Prematch games available
                 </p>
               </div>
@@ -554,9 +561,13 @@ export default function OverviewScreen({
                               handleMorePress(fixture as PreMatchFixture);
                             }}
                             className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1 ${
-                              sportsPageClasses["more-button-text"]
-                            }  ${
-                              sportsPageClasses["more-button-hover"]
+                              classes.game_options_modal["odds-button-bg"]
+                            } ${
+                              classes.game_options_modal[
+                                "odds-button-selected-text"
+                              ]
+                            } ${
+                              classes.game_options_modal["odds-button-hover"]
                             } shadow font-semibold transition-colors border-2 ${
                               selected_bets.some(
                                 (bet) =>
@@ -565,7 +576,7 @@ export default function OverviewScreen({
                                     Number(fixture.matchID) ||
                                     bet.game.game_id == Number(fixture.gameID))
                               )
-                                ? `${classes.game_options_modal["odds-button-selected-bg"]} ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
+                                ? `${classes.game_options_modal["odds-button-selected-bg"]}   ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
                                 : `${classes.game_options_modal["odds-button-border"]}`
                             }`}
                           >

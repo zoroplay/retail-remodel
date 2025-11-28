@@ -1,5 +1,9 @@
 import SingleSearchInput from "@/components/inputs/SingleSearchInput";
-import { Sport, SportCategory } from "@/data/types/betting.types";
+import {
+  SelectedMarket,
+  Sport,
+  SportCategory,
+} from "@/data/types/betting.types";
 import {
   useQueryFixturesMutation,
   useSportsMenuQuery,
@@ -7,10 +11,18 @@ import {
 import React, { useEffect, useState } from "react";
 import SportItem from "./SportItem";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { setTournamentDetails } from "@/store/features/slice/app.slice";
+import {
+  setRefresh,
+  setTournamentDetails,
+} from "@/store/features/slice/app.slice";
 import { useNavigate } from "react-router-dom";
 import { OVERVIEW } from "@/data/routes/routes";
 import { getClientTheme } from "@/config/theme.config";
+import {
+  addCashDeskFixtures,
+  setCashDeskLoading,
+} from "@/store/features/slice/fixtures.slice";
+import { PreMatchFixture } from "@/store/features/types/fixtures.types";
 
 type Props = {};
 
@@ -25,8 +37,9 @@ const SportsMenu = (props: Props) => {
     ? sportsData?.sports
     : [];
   const dispatch = useAppDispatch();
-  const [queryFixtures, { isLoading }] = useQueryFixturesMutation();
+  const [queryFixtures, { isLoading, data }] = useQueryFixturesMutation();
   const navigate = useNavigate();
+  const pathname = window.location.pathname;
 
   // Sidebar navigation state
   const [selectedSport, setSelectedSport] = useState<Sport | null>(null);
@@ -85,19 +98,40 @@ const SportsMenu = (props: Props) => {
             onChange={(e) => {
               setSearchQuery(e.target.value);
               if (e.target.value.trim() === "") {
-                // If input is cleared, reset the query in the store
                 dispatch(setTournamentDetails({ query: "" }));
+                dispatch(setRefresh());
                 return;
               } else if (e.target.value.trim().length > 3) {
                 return;
               }
             }}
             onSearch={(query) => {
-              console.log("Search triggered");
-              queryFixtures(query);
-              dispatch(setTournamentDetails({ query }));
-              if (window.location.pathname.includes("sports") === false) {
-                navigate(OVERVIEW.HOME);
+              if (pathname === OVERVIEW.CASHDESK) {
+                dispatch(setCashDeskLoading());
+
+                queryFixtures(query)
+                  .unwrap()
+                  .then((response) => {
+                    dispatch(
+                      addCashDeskFixtures({
+                        fixtures: (response?.fixtures ??
+                          []) as unknown as PreMatchFixture[],
+                        selectedMarket: (response?.markets ||
+                          []) as unknown as SelectedMarket[],
+                        sport_id:
+                          Number(
+                            response?.markets.find((market) => market.sportID)
+                              ?.sportID
+                          ) || 0,
+                      })
+                    );
+                  });
+              } else {
+                queryFixtures(query);
+                dispatch(setTournamentDetails({ query }));
+                if (window.location.pathname.includes("sports") === false) {
+                  navigate(OVERVIEW.HOME);
+                }
               }
             }}
             searchState={{

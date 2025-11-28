@@ -67,6 +67,8 @@ export interface ThemeClasses {
     "main-bg": string;
     "search-bg": string;
     "search-border": string;
+    "card-border": string;
+    "sport-item-border-l": string;
     divider: string;
     "item-bg": string;
     "sport-item-border": string;
@@ -77,6 +79,7 @@ export interface ThemeClasses {
     "sport-item-count-text": string;
     "category-item-bg": string;
     "category-item-border": string;
+    "category-item-active": string;
     "category-item-hover": string;
     "category-item-text": string;
     "category-item-count-bg": string;
@@ -87,6 +90,7 @@ export interface ThemeClasses {
     "tournament-item-count-bg": string;
     "tournament-item-count-text": string;
     "tournament-item-border": string;
+    "account-icon-active": string;
   };
   betslip: {
     "main-bg": string;
@@ -141,6 +145,7 @@ export interface ThemeClasses {
     "error-secondary": string;
     "empty-text": string;
     "empty-secondary": string;
+    "live-game-indicator": string;
   };
   cashdesk_page: {
     "container-bg": string;
@@ -356,7 +361,6 @@ export interface ThemeClasses {
     "text-color": string;
   };
   game_options_modal: {
-    "modal-bg": string;
     "modal-border": string;
     "header-title": string;
     "header-subtitle": string;
@@ -450,6 +454,7 @@ export interface ThemeClasses {
   "button-secondary-border": string;
   "button-secondary-hover": string;
   "button-secondary-text": string;
+  "modal-bg": string;
 }
 
 export interface ClientTheme {
@@ -1124,27 +1129,29 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "login-button-text": "text-white",
         },
         sports_sidebar: {
-          "main-bg":
-            "bg-gradient-to-b from-black via-gray-950 to-black border border-gray-500/30",
+          "main-bg": "bg-[#161616] ",
+          "card-border": "border-emerald-700/30",
+
           "search-bg": "bg-gradient-to-r from-gray-950 to-black",
-          "search-border": "border-yellow-700/40",
-          divider: "bg-yellow-700/20",
+          "search-border": "border-emerald-700/40",
+          divider: "bg-emerald-700/20",
           "item-bg": "bg-gray-900/30",
-          "sport-item-border": "border-gray-600/80",
+          "sport-item-border": "border-emerald-600/20",
+          "sport-item-border-l": "!border-l-emerald-500",
           "sport-item-bg": "bg-transparent",
-          "sport-item-hover": "hover:bg-gray-900/50",
-          "sport-item-text": "text-yellow-300",
+          "sport-item-hover": "hover:bg-[#450A0A]/30",
+          "sport-item-text": "text-gray-300",
           "sport-item-count-bg": "bg-gray-700/50",
-          "sport-item-count-text": "text-yellow-300",
-          "category-item-bg": "bg-gray-900/30",
-          "category-item-hover": "hover:bg-gray-800/50",
-          "category-item-text": "text-yellow-200",
-          "category-item-border": "border-yellow-700/40",
+          "sport-item-count-text": "text-emerald-300",
+          "category-item-bg": "bg-[#161616]",
+          "category-item-hover": "hover:bg-[#450A0A]/30",
+          "category-item-text": "text-gray-300",
+          "category-item-border": "border-emerald-700/40",
           "category-item-count-bg": "bg-gray-600/50",
           "category-item-count-text": "text-gray-400",
-          "tournament-item-bg": "bg-gray-900/20",
-          "tournament-item-hover": "hover:bg-gray-800/50",
-          "tournament-item-text": "text-yellow-100",
+          "tournament-item-bg": "bg-[#161616]",
+          "tournament-item-hover": "hover:bg-[#450A0A]/30",
+          "tournament-item-text": "text-gray-300",
           "tournament-item-count-bg": "bg-gray-600/30",
           "tournament-item-count-text": "text-gray-500",
           "tournament-item-border": "border-gray-600/10",
@@ -1152,7 +1159,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         betslip: {
           "main-bg": "bg-gradient-to-b from-black to-gray-950",
           "main-border": "border-yellow-700/40",
-          "header-bg": "bg-gray-900/50",
+          "header-bg": "bg-black/50",
           divider: "bg-yellow-700/20",
           "tab-bg": "bg-gray-800/30",
           "tab-border": "border-yellow-700/40",
@@ -1170,17 +1177,19 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         },
         sports_page: {
           "container-bg": "bg-transparent",
-          "card-bg": "bg-black/60",
+          "card-bg": "bg-[#161616]",
           "card-border": "border-yellow-700/30",
           "card-hover": "hover:bg-black/80",
-          "header-bg": "bg-gray-900/40",
+          "header-bg":
+            "bg-gradient-to-r from-[#450A0A]/60 via-[#450A0A]/80 to-[#7F1D1D]/40",
           "header-border": "border-yellow-700/30",
-          "header-text": "text-yellow-100",
+          "header-text": "text-yellow-200",
           "sport-separator-bg": "bg-gray-900/50",
           "sport-separator-text": "text-yellow-100",
           "sport-separator-border": "border-yellow-700/40",
-          "date-separator-bg": "bg-gray-900/30",
-          "date-separator-text": "text-yellow-200",
+          "date-separator-bg": "bg-red-900/40",
+
+          "date-separator-text": "text-yellow-100",
           "date-separator-border": "border-yellow-700/30",
           "time-text": "text-gray-300",
           "time-text-live": "text-green-400",
@@ -1202,27 +1211,31 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "error-secondary": "text-gray-400",
           "empty-text": "text-yellow-300",
           "empty-secondary": "text-gray-400",
+          "live-game-indicator": "bg-yellow-500",
         },
         cashdesk_page: {
           "container-bg": "bg-transparent",
-          "card-bg": "bg-black/60",
+          "card-bg": "bg-[#161616]",
           "card-border": "border-yellow-700/30",
-          "header-bg": "bg-gradient-to-r from-black via-gray-900 to-black",
-          "header-text": "text-white",
-          "column-header-bg": "bg-gray-900/40",
-          "column-header-text": "text-slate-300",
+          "header-bg":
+            "bg-gradient-to-r from-[#450A0A]/60 via-[#450A0A]/80 to-[#7F1D1D]/40",
+          "header-text": "text-yellow-200",
+          "column-header-bg": "bg-red-900/40",
+          "column-header-text": "text-yellow-100",
           "column-header-border": "border-yellow-700/30",
           "row-hover": "hover:bg-black/80",
-          "input-bg": "bg-gradient-to-r from-gray-950 to-slate-950",
-          "input-border": "border-slate-800",
-          "input-text": "text-white",
-          "summary-section-bg": "bg-gradient-to-r from-black/50 to-gray-950/30",
+          "input-bg":
+            "bg-gradient-to-r from-slate-50 to-slate-50 placeholder-slate-400 ",
+          "input-border":
+            "border-slate-400 focus:border-blue-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary",
+          "input-text": "text-gray-600",
+          "summary-section-bg": "bg-[#161616]",
           "summary-section-border": "border-yellow-700/30",
           "summary-item-bg":
             "bg-gradient-to-r from-gray-600/20 to-slate-500/30",
           "summary-item-border": "border-gray-700/50",
           "summary-label-text": "text-gray-300",
-          "summary-value-text": "text-yellow-300",
+          "summary-value-text": "text-gray-400",
           "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
           "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
           "button-proceed-bg": "bg-gradient-to-r from-yellow-600 to-yellow-500",
@@ -1419,31 +1432,32 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "badge-withdraw-text": "text-red-400",
         },
         game_options_modal: {
-          "modal-bg": "bg-black",
-          "modal-border": "border-yellow-700/40",
-          "header-title": "text-yellow-400",
+          "modal-border": "border-emerald-700/40",
+          "header-title": "text-emerald-400",
           "header-subtitle": "text-gray-300",
-          "header-vs-text": "text-yellow-500",
+          "header-vs-text": "text-emerald-500",
           "header-date-text": "text-gray-500",
-          "title-text": "text-yellow-300",
-          "subtitle-text": "text-yellow-200",
-          "market-card-bg": "bg-gray-900/70",
-          "market-card-border": "border-yellow-600/40",
-          "market-card-hover": "hover:border-yellow-500 hover:bg-gray-900/90",
-          "market-title": "text-yellow-300",
-          "axis-label-text": "text-yellow-400",
-          "axis-label-bg": "bg-yellow-900/20",
-          "odds-button-bg": "bg-gray-800",
-          "odds-button-hover": "hover:bg-gray-700",
-          "odds-button-text": "text-yellow-300",
-          "odds-button-border": "border-yellow-600/50",
-          "odds-button-selected-bg": "bg-yellow-500",
-          "odds-button-selected-border": "border-yellow-400",
+          "title-text": "text-emerald-300",
+          "subtitle-text": "text-emerald-200",
+          "market-card-bg": "bg-[#450A0A]/20",
+          "market-card-border": "border-[#DC2626]/20",
+          "market-card-hover":
+            "hover:border-[#DC2626]/40 hover:bg-[#450A0A]/40",
+          "market-title": "text-emerald-300",
+          "axis-label-text": "text-emerald-400",
+          "axis-label-bg": "bg-emerald-900/20",
+          "odds-button-bg": "bg-gray-200",
+          "odds-button-hover": "hover:bg-emerald-200",
+          "odds-button-text": "text-gray-800",
+          "odds-button-border": "border-gray-600/50",
+          "odds-button-selected-bg":
+            "bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500",
+          "odds-button-selected-border": "border-emerald-400",
           "odds-button-selected-text": "text-black",
-          "odds-button-selected-hover": "hover:bg-yellow-400",
-          "odds-button-disabled-bg": "bg-gray-800/50",
-          "odds-button-disabled-text": "text-gray-500",
-          "odds-button-disabled-border": "border-gray-700",
+          "odds-button-selected-hover": "hover:bg-emerald-400",
+          "odds-button-disabled-bg": "bg-gray-100/90",
+          "odds-button-disabled-text": "text-gray-800",
+          "odds-button-disabled-border": "border-gray-400",
         },
         modal: {
           change_password: {
@@ -1488,7 +1502,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "text-primary": "text-white",
         "text-secondary": "text-yellow-400",
         "text-muted": "text-yellow-600",
-        border: "border-yellow-700",
+        border: "border-yellow-600/80",
         "border-light": "border-yellow-500",
         primary: "text-yellow-500",
         "primary-bg": "bg-yellow-600",
@@ -1506,9 +1520,10 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "input-bg":
           "bg-gradient-to-r from-slate-50 to-slate-50 placeholder-slate-400 ",
         "input-border":
-          "border-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/80 ",
+          "border-slate-400 focus:border-blue-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary",
         "input-text": "text-gray-600",
         "skeleton-bg": "bg-gray-700/50",
+        "modal-bg": "bg-[#161616]",
       };
 
     case "5": // Blue & White with touch of Red theme
@@ -2268,7 +2283,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "badge-withdraw-text": "text-red-400",
         },
         game_options_modal: {
-          "modal-bg": "bg-black",
           "modal-border": "border-yellow-700/40",
           "header-title": "text-yellow-500",
           "header-subtitle": "text-gray-300",
@@ -2297,6 +2311,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "bg-main": "bg-black",
         "bg-secondary": "bg-gray-900",
         "bg-tertiary": "bg-gray-800",
+        "modal-bg": "bg-black",
         "bg-gradient": "bg-gradient-to-br from-gray-900 to-black",
         "bg-gradient-hover": "hover:from-gray-800 hover:to-gray-900",
         "text-primary": "text-white",
@@ -2352,8 +2367,10 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "sport-item-count-text": "text-slate-600",
           "category-item-bg": "bg-gray-50/50",
           "category-item-border": "border-l-blue-600",
+          "category-item-active": "bg-blue-600",
           "category-item-hover": "hover:bg-gray-100",
           "category-item-text": "text-slate-700",
+          "account-icon-active": "text-blue-500",
           "category-item-count-bg": "bg-gray-200",
           "category-item-count-text": "text-slate-500",
           "tournament-item-bg": "bg-white",
@@ -2415,8 +2432,9 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "skeleton-secondary": "bg-slate-800/30",
           "error-text": "text-red-400",
           "error-secondary": "text-gray-400",
-          "empty-text": "text-white",
+          "empty-text": "text-gray-500",
           "empty-secondary": "text-gray-400",
+          "live-game-indicator": "bg-blue-500",
         },
         cashdesk_page: {
           "container-bg": "bg-transparent",
@@ -2637,7 +2655,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "badge-withdraw-text": "text-red-700",
         },
         game_options_modal: {
-          "modal-bg": "bg-gray-100",
           "modal-border": "border-gray-300",
           "header-title": "text-slate-800",
           "header-subtitle": "text-slate-600",
@@ -2733,6 +2750,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "button-secondary-border": "border border-gray-300",
         "button-secondary-hover": "hover:bg-gray-300",
         "button-secondary-text": "text-gray-700",
+        "modal-bg": "bg-gray-100",
       };
   }
 };

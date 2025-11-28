@@ -22,6 +22,7 @@ export function ToastComponent() {
       toastOptions={{
         className: "toast",
         duration: 3000,
+        style: { fontSize: "12px" },
       }}
     />
   );

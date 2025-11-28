@@ -111,14 +111,12 @@ const QuickBets = ({ formData: _form, total, index, is_empty_form }: Props) => {
         display_name: outcome?.displayName || "",
       });
     }
-    // Find outcome by display name and add to quick bet entries
     if (formData.fixture && text) {
       const outcome = formData.fixture.outcomes?.find(
         (o: any) => o.displayName === text
       );
 
       if (outcome) {
-        // Check if bet is already selected or in quick entries
         const isAlreadySelected = (selected_bets || []).some(
           (bet: any) =>
             bet.game_id === formData?.fixture?.gameID &&
@@ -126,8 +124,6 @@ const QuickBets = ({ formData: _form, total, index, is_empty_form }: Props) => {
         );
 
         if (!isAlreadySelected) {
-          // Clear the smart code after successful addition
-          console.log("Adding bet to quick entries:", outcome);
           setFormData((prev) => ({
             ...prev,
             odds: String(outcome.odds || ""),
@@ -141,37 +137,20 @@ const QuickBets = ({ formData: _form, total, index, is_empty_form }: Props) => {
             bonus_list: [],
           });
           !is_empty_form && dispatch(addCashDeskItem());
-
-          // Remove from quick entries
-
-          showToast({
-            type: "success",
-            title: "Bet Added!",
-            description: `${outcome.marketName} @ ${formData.fixture?.name} added to your slip`,
-          });
         } else {
-          console.log("Bet already selected or in quick entries:", outcome);
-          // Clear smart code and show info
           setFormData((prev) => ({
             ...prev,
             odds: String(outcome.odds || ""),
           }));
 
-          // Show info toast
           showToast({
             type: "info",
-            title: isAlreadySelected
-              ? "Bet Already Selected"
-              : "Already in Quick Entry",
-            description: isAlreadySelected
-              ? "This bet is already in your slip"
-              : "This bet is already in quick entry",
+            title: "Bet Already Selected",
+            description: "This bet is already in your slip",
           });
         }
       } else {
-        // Outcome not found, clear only smart code and show error
         setFormData((prev) => ({ ...prev, smartCode: "" }));
-        // Show error toast
         showToast({
           type: "error",
           title: "Invalid Outcome",

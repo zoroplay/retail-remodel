@@ -47,7 +47,7 @@ const SportItem = ({ sport, onSportClick }: Props) => {
       {/* Sport Header */}
       <div
         onClick={toggleExpansion}
-        className={`flex items-center justify-between pl-2 pr-2 py-1.5 border-l-4 ${classes["border"]} shadow-lg ${sidebarClasses["sport-item-bg"]} ${sidebarClasses["sport-item-hover"]} ${sidebarClasses["sport-item-text"]} ${sidebarClasses["sport-item-border"]} cursor-pointer transition-colors duration-200`}
+        className={`flex items-center justify-between pl-2 pr-2 py-1.5 border-l-4 ${classes["border"]} shadow-lg ${sidebarClasses["sport-item-bg"]} ${sidebarClasses["sport-item-hover"]} ${sidebarClasses["sport-item-text"]} ${sidebarClasses["sport-item-border"]} ${sidebarClasses["sport-item-border-l"]}  cursor-pointer transition-colors duration-200`}
       >
         <div className="flex items-center gap-2">
           {/* Optionally add a sport icon here */}
