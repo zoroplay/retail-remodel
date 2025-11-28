@@ -247,7 +247,7 @@ const Deposit = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["page-bg"]} ${pageClasses["page-text"]} p-2`}
+      className={`h-[calc(100vh-100px)] overflow-y-auto ${pageClasses["page-bg"]} ${pageClasses["page-text"]} p-2`}
     >
       <div className="flex flex-col gap-2">
         {/* Header Section */}
@@ -276,7 +276,7 @@ const Deposit = () => {
 
         {/* Payment Methods Table */}
         <div
-          className={`${pageClasses["card-bg"]} ${pageClasses["card-border"]} border rounded overflow-hidden`}
+          className={`${pageClasses["card-bg"]} ${pageClasses["card-border"]} border rounded-md overflow-hidden`}
         >
           {filteredPaymentMethods.length === 0 ? (
             <div className="text-center py-12">
@@ -295,9 +295,10 @@ const Deposit = () => {
               </p>
             </div>
           ) : (
-            <div
-              className={`overflow-x-auto border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} `}
-            >
+            <>
+              {/* <div
+              className={`overflow-x-auto border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} rounded-md overflow-hidden`}
+            > */}
               {/* Table Header */}
               <div
                 className={`border ${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} ${classes.sports_page["header-text"]} border-b ${pageClasses["card-border"]} !border-l-transparent  !border-l-4 px-2 grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-2 font-semibold text-xs ${pageClasses["table-header-text"]}`}
@@ -374,7 +375,7 @@ const Deposit = () => {
 
                       {/* Description */}
                       <div
-                        className={`text-[10px] ${pageClasses["label-text"]} ${classes["border-light"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
+                        className={`text-[10px] ${pageClasses["label-text"]} ${classes["border"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
                       >
                         {item.provider === "paystack" &&
                           "(Card/bank) Instant Credit"}
@@ -397,20 +398,20 @@ const Deposit = () => {
 
                       {/* Fee */}
                       <div
-                        className={`font-semibold text-xs ${classes["border-light"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
+                        className={`font-semibold text-xs ${classes["border"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
                       >
                         FREE
                       </div>
 
                       {/* Minimum Amount */}
                       <div
-                        className={`font-semibold text-xs ${classes["border-light"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
+                        className={`font-semibold text-xs ${classes["border"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
                       >
                         N50
                       </div>
 
                       <div
-                        className={`font-semibold text-xs ${classes["border-light"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
+                        className={`font-semibold text-xs ${classes["border"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
                       >
                         {/* Deposit Button */}
                         <button
@@ -428,7 +429,8 @@ const Deposit = () => {
                   </div>
                 );
               })}
-            </div>
+              {/* </div> */}
+            </>
           )}
         </div>
       </div>

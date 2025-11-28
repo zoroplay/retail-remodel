@@ -645,7 +645,7 @@ const LoadBetsPage = () => {
           <section className="flex-1">
             {/* Event Details Form - Modern Betting Platform Design */}
             <div
-              className={`${classes.sports_page["card-bg"]} border ${cashdeskClasses["card-border"]} rounded-md shadow-2xl overflow-hidden mb-1`}
+              className={`${classes.sports_page["card-bg"]} border ${classes.sports_page["card-border"]} rounded-md shadow-2xl overflow-hidden mb-1`}
             >
               {/* Header */}
               <div

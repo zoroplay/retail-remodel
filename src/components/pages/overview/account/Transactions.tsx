@@ -332,7 +332,7 @@ const TransactionsPage = () => {
 
       {/* Transaction Table - Scrollable Section */}
       <div
-        className={`rounded-md ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  flex flex-col h-full border ${pageClasses["card-border"]}`}
+        className={`rounded-md overflow-hidden ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  flex flex-col h-full border ${pageClasses["card-border"]}`}
       >
         {/* Table Header - Static */}
         <div
