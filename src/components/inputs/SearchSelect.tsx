@@ -142,13 +142,15 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(target) &&
-        (!dropdownMenuRef.current || !dropdownMenuRef.current.contains(target))
-      ) {
-        // setIsOpen(false);
-      }
+
+            if (
+              dropdownRef.current &&
+              !dropdownRef.current.contains(target) &&
+              (!dropdownMenuRef.current ||
+                !dropdownMenuRef.current.contains(target))
+            ) {
+              setIsOpen(false);
+            }
     };
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);

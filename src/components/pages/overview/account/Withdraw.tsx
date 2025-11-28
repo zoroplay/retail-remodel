@@ -224,10 +224,10 @@ const BankWithdrawal = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-2">
+        <div className="grid lg:grid-cols-2 gap-2 justify-center items-start">
           {/* Left Side - Instructions */}
           <div
-            className={`${pageClasses["form-bg"]} backdrop-blur-sm rounded-lg p-2 border ${pageClasses["form-border"]}`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  backdrop-blur-sm rounded-lg p-2 border `}
           >
             <h2
               className={`text-sm font-semibold mb-3 flex items-center gap-2 ${pageClasses["form-text"]}`}
@@ -314,7 +314,7 @@ const BankWithdrawal = () => {
 
           {/* Right Side - Withdrawal Form */}
           <div
-            className={`${pageClasses["form-bg"]} backdrop-blur-sm rounded-lg p-2 border flex flex-col gap-2 ${pageClasses["form-border"]}`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  backdrop-blur-sm rounded-lg p-2 border flex flex-col gap-2`}
           >
             {/* User Info */}
             <div
@@ -399,7 +399,6 @@ const BankWithdrawal = () => {
                 <SearchSelect
                   label="Select Bank"
                   value={[inputObject.bankCode]}
-                  text_color={"text-gray-600"}
                   isLoading={banksLoading}
                   options={banks.map((bank: any) => ({
                     id: bank.code,
@@ -416,9 +415,9 @@ const BankWithdrawal = () => {
                   }}
                   height={"h-[36px]"}
                   placeholder={""} // className="w-full"
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={`border ${pageClasses["input-border"]}`}
-                  className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  bg_color={classes["input-bg"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
                 />
               </div>
 
@@ -526,7 +525,7 @@ const BankWithdrawal = () => {
                     !amount ||
                     Number(amount) < 100
                   }
-                  className={`flex-1 ${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]} disabled:opacity-50 disabled:cursor-not-allowed ${pageClasses["button-primary-text"]} font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs shadow-lg`}
+                  className={`flex-1 ${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} disabled:opacity-50 disabled:cursor-not-allowed ${classes["button-proceed-text"]} font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs shadow-lg`}
                 >
                   {withdrawalLoading ? (
                     <>

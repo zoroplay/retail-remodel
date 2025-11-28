@@ -205,7 +205,7 @@ const DepositForm = () => {
         <div className="grid lg:grid-cols-2 gap-2">
           {/* Left Side - Instructions */}
           <div
-            className={`${pageClasses["form-bg"]} backdrop-blur-sm rounded-lg p-2 border ${pageClasses["form-border"]}`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg p-2 border `}
           >
             <h2
               className={`text-sm font-semibold mb-3 flex items-center gap-2 ${pageClasses["form-text"]}`}
@@ -301,7 +301,7 @@ const DepositForm = () => {
 
           {/* Right Side - Payment Form */}
           <div
-            className={`${pageClasses["form-bg"]} backdrop-blur-sm rounded-lg p-2 border flex flex-col gap-2 ${pageClasses["form-border"]}`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg p-2 border flex flex-col gap-2 `}
           >
             {/* Provider Header */}
             <div
@@ -448,7 +448,7 @@ const DepositForm = () => {
                 <button
                   type="submit"
                   disabled={isLoading || !amount || Number(amount) < minDeposit}
-                  className={`flex-1  disabled:opacity-50 disabled:cursor-not-allowed py-2 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} font-medium rounded-md transition-all shadow-md border py-2 px-4  duration-200 flex items-center justify-center gap-2 text-xs `}
+                  className={`flex-1  disabled:opacity-50 disabled:cursor-not-allowed py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} font-medium rounded-md transition-all shadow-md border py-2 px-4  duration-200 flex items-center justify-center gap-2 text-xs `}
                 >
                   {isLoading ? (
                     <>

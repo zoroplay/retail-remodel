@@ -295,10 +295,12 @@ const Deposit = () => {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div
+              className={`overflow-x-auto border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} `}
+            >
               {/* Table Header */}
               <div
-                className={`${pageClasses["table-header-bg"]} border-b ${pageClasses["card-border"]} border-l-transparent border-l-4 px-2 grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-2 font-semibold text-xs ${pageClasses["table-header-text"]}`}
+                className={`border ${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} ${classes.sports_page["header-text"]} border-b ${pageClasses["card-border"]} !border-l-transparent  !border-l-4 px-2 grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-2 font-semibold text-xs ${pageClasses["table-header-text"]}`}
               >
                 <div className="flex justify-start items-center">
                   Payment Method

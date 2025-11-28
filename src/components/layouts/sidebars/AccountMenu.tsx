@@ -167,7 +167,7 @@ const AccountMenu = (props: Props) => {
         group flex items-center gap-2 px-4 py-2 text-xs transition-all duration-200
         ${sidebarClasses["tournament-item-hover"]} border-b ${
         sidebarClasses["tournament-item-border"]
-      } last:border-b-0
+      } ${classes.sports_page["date-separator-text"]}  last:border-b-0
         relative overflow-hidden
         ${
           isActive
@@ -183,7 +183,7 @@ const AccountMenu = (props: Props) => {
         className={`relative z-10 transition-colors duration-200 ${
           isActive
             ? sidebarClasses["account-icon-active"]
-            : "text-slate-400 group-hover:text-blue-300"
+            : " group-hover:text-blue-300"
         }`}
       >
         {item.icon}
@@ -206,11 +206,9 @@ const AccountMenu = (props: Props) => {
       >
         {/* Sidebar Header */}
         <div
-          className={`${sidebarClasses["category-item-bg"]} border-b ${sidebarClasses["sport-item-border"]} px-4 py-2`}
+          className={`${classes.sports_page["header-bg"]} border-b ${classes.sports_page["header-text"]} ${classes.sports_page["header-border"]} border-b ${sidebarClasses["sport-item-border"]} px-4 py-2`}
         >
-          <h2
-            className={`${sidebarClasses["sport-item-text"]} font-bold text-xs flex items-center gap-2`}
-          >
+          <h2 className={` font-bold text-xs flex items-center gap-2`}>
             <User size={18} className={sidebarClasses["account-icon-active"]} />
             Account Menu
           </h2>
@@ -225,9 +223,9 @@ const AccountMenu = (props: Props) => {
             >
               {/* Section Header */}
               <div
-                className={`${classes["bg-secondary"]} px-4 py-2 shadow-sm relative`}
+                className={`${classes.sports_page["date-separator-text"]}  ${classes.sports_page["date-separator-bg"]} ${classes.sports_page["date-separator-border"]} px-4 py-2 shadow-sm relative`}
               >
-                <h3 className="text-white font-bold text-[11px] uppercase tracking-wider">
+                <h3 className="font-bold text-[11px] uppercase tracking-wider">
                   {section.title}
                 </h3>
                 {/* Subtle bottom border for visual separation */}

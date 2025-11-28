@@ -75,6 +75,8 @@ export const USER_ACTIONS = {
   PAYOUT_COMMISSION: "/commission/:client_id/payout-commission",
   DEPOSIT_COMMISSION: "/commission/:client_id/deposit-commission",
   GET_AGENT_USERS: "/retail/:client_id/agent-users?agentId=:agent_id",
+  SUPER_AGENT_COMMISSION:
+    "/commission/:client_id/preview-super-agent-commission",
 };
 export const WALLET_ACTIONS = {
   GET_PAYMENT_METHODS: "/user/wallet/:client_id/payment-methods",

@@ -99,9 +99,9 @@ const UserList = () => {
     return (
       <Fragment key={userData.id}>
         <tr
-          className={`border-b ${pageClasses["row-border"]} ${pageClasses["row-hover"]} transition-colors`}
+          className={`border-b ${classes.bet_list_page["card-border"]} ${classes.bet_list_page["row-hover"]} text-xs transition-colors`}
         >
-          <td className="px-4 py-3">
+          <td className="px-4 py-2">
             <div className="flex items-center gap-2">
               <span
                 className="text-xs text-gray-400"
@@ -111,7 +111,7 @@ const UserList = () => {
               </span>
             </div>
           </td>
-          <td className="px-4 py-3">
+          <td className="px-4 py-2">
             <div
               className="flex items-center gap-2"
               style={{ marginLeft: `${level * 20}px` }}
@@ -152,24 +152,24 @@ const UserList = () => {
               </span>
             </div>
           </td>
-          <td className="px-4 py-3">
+          <td className="px-4 py-2">
             <span className={`text-sm font-medium ${pageClasses["row-text"]}`}>
               {userData.username}
             </span>
           </td>
-          <td className="px-4 py-3">
+          <td className="px-4 py-2">
             <span className={`text-sm ${pageClasses["info-label-text"]}`}>
               {userData.firstName || ""} {userData.lastName || ""}
             </span>
           </td>
-          <td className="px-4 py-3">
+          <td className="px-4 py-2">
             <span
               className={`text-sm font-semibold ${pageClasses["balance-text"]}`}
             >
               ₦{(userData.balance ?? 0).toFixed(2)}
             </span>
           </td>
-          <td className="px-4 py-3">
+          <td className="px-4 py-2">
             <div className="flex items-center gap-2">
               <button
                 className={`p-1.5 ${pageClasses["header-icon-bg"]} ${pageClasses["row-hover"]} ${pageClasses["header-icon-text"]} rounded transition-colors`}
@@ -207,18 +207,18 @@ const UserList = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["page-bg"]} ${pageClasses["page-text"]}`}
+      className={`h-[calc(100vh-110px)] overflow-y-auto  ${pageClasses["page-text"]}`}
     >
       <div className="max-w-7xl mx-auto p-4">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
           <div
-            className={`w-12 h-12 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
+            className={`w-10 h-10 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
           >
-            <Users size={24} className={pageClasses["header-icon-text"]} />
+            <Users size={20} className={pageClasses["header-icon-text"]} />
           </div>
           <div>
-            <h1 className={`text-lg font-bold ${pageClasses["header-text"]}`}>
+            <h1 className={`text-base font-bold ${pageClasses["header-text"]}`}>
               User List
             </h1>
             <p className={`${pageClasses["subtitle-text"]} text-xs`}>
@@ -229,7 +229,7 @@ const UserList = () => {
 
         {/* Filters */}
         <div
-          className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg p-4 border ${pageClasses["card-border"]} mb-4`}
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  backdrop-blur-sm rounded-lg p-4 border  mb-4`}
         >
           <div className="grid md:grid-cols-2 gap-3">
             {/* Role Filter */}
@@ -252,11 +252,11 @@ const UserList = () => {
                 ]}
                 onChange={(e) => setRoleFilter(e[0] as string)}
                 placeholder={""}
-                height="h-[42px]"
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
-                className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} transition-all disabled:opacity-50`}
+                bg_color={classes["input-bg"]}
+                text_color={classes["input-text"]}
+                border_color={`border ${classes["input-border"]}`}
+                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                height="h-[36px]"
               />
             </div>
 
@@ -268,11 +268,11 @@ const UserList = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by username (min 3 characters)"
-                height="h-[42px]"
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
-                className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} transition-all disabled:opacity-50`}
+                bg_color={classes["input-bg"]}
+                text_color={classes["input-text"]}
+                border_color={`border ${classes["input-border"]}`}
+                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                height="h-[36px]"
                 onSearch={function (query: string): void {
                   throw new Error("Function not implemented.");
                 }}
@@ -289,41 +289,41 @@ const UserList = () => {
 
         {/* Table */}
         <div
-          className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} overflow-hidden`}
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} overflow-hidden`}
         >
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead
-                className={`${pageClasses["column-header-bg"]} border-b ${pageClasses["card-border"]}`}
+                className={`${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} w-full text-xs ${classes.sports_page["header-text"]} `}
               >
                 <tr>
                   <th
-                    className={`px-4 py-3 text-left text-xs font-semibold ${pageClasses["column-header-text"]} uppercase tracking-wider`}
+                    className={`px-4 py-2 text-left font-semibold  uppercase tracking-wider`}
                   >
                     ID
                   </th>
                   <th
-                    className={`px-4 py-3 text-left text-xs font-semibold ${pageClasses["column-header-text"]} uppercase tracking-wider`}
+                    className={`px-4 py-2 text-left font-semibold  uppercase tracking-wider`}
                   >
                     User Type
                   </th>
                   <th
-                    className={`px-4 py-3 text-left text-xs font-semibold ${pageClasses["column-header-text"]} uppercase tracking-wider`}
+                    className={`px-4 py-2 text-left font-semibold  uppercase tracking-wider`}
                   >
                     Username
                   </th>
                   <th
-                    className={`px-4 py-3 text-left text-xs font-semibold ${pageClasses["column-header-text"]} uppercase tracking-wider`}
+                    className={`px-4 py-2 text-left font-semibold  uppercase tracking-wider`}
                   >
                     Name
                   </th>
                   <th
-                    className={`px-4 py-3 text-left text-xs font-semibold ${pageClasses["column-header-text"]} uppercase tracking-wider`}
+                    className={`px-4 py-2 text-left font-semibold  uppercase tracking-wider`}
                   >
                     Balance
                   </th>
                   <th
-                    className={`px-4 py-3 text-left text-xs font-semibold ${pageClasses["column-header-text"]} uppercase tracking-wider`}
+                    className={`px-4 py-2 text-left font-semibold  uppercase tracking-wider`}
                   >
                     Actions
                   </th>

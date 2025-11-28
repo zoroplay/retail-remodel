@@ -240,12 +240,10 @@ const BetListPage = () => {
     //     />
     //   }
     // >
-    <div
-      className={`w-full ${pageClasses["container-bg"]} flex flex-col gap-2 pt-2`}
-    >
+    <div className={`w-full flex flex-col gap-2 pt-2`}>
       {/* Filters */}
       <div
-        className={`${pageClasses["card-bg"]} ${classes["text-secondary"]} p-2 rounded-md border ${pageClasses["card-border"]}`}
+        className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  p-2 rounded-md border `}
       >
         <div className="flex gap-2 items-end flex-wrap">
           {/* <div className="flex flex-col text-gray-400">
@@ -280,7 +278,8 @@ const BetListPage = () => {
               font-semibold
               text_color={classes["input-text"]}
               bg_color={classes["input-bg"]}
-              // height="h-[42px]"
+              border_color={classes["input-border"]}
+              height="h-[36px]"
               // className="bg-gray-700 text-white px-3 py-2 rounded-md"
             />
           </div>
@@ -303,12 +302,12 @@ const BetListPage = () => {
                 value={pageSize}
                 onChange={(e) => setPageSize(e.target.value)}
                 className="bg-gray-700 text-white px-3 py-2 rounded-md"
-              >
+                >
                 {[10, 15, 20, 25, 30].map((n) => (
                   <option key={n} value={n}>
-                    {n}
+                  {n}
                   </option>
-                ))}
+                  ))}
               </select>
             </div> */}
           <div className="flex flex-row items-center gap-4 ">
@@ -329,6 +328,7 @@ const BetListPage = () => {
                 text_color={classes["input-text"]}
                 border_color={`border ${classes["input-border"]}`}
                 className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                height="h-[36px]"
               />
             </div>
           </div>
@@ -352,7 +352,7 @@ const BetListPage = () => {
 
       {/* Summary */}
       <div
-        className={`flex justify-between items-center ${pageClasses["card-bg"]} p-4 py-2 rounded-md border ${pageClasses["card-border"]}`}
+        className={`flex justify-between items-center ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} p-4 py-2 rounded-md border `}
       >
         <p className={`${pageClasses["card-text"]} text-xs font-semibold`}>
           No. Bets: {bets.length}
@@ -370,10 +370,12 @@ const BetListPage = () => {
       </div>
 
       {/* Table */}
-      <div className={`overflow-x-auto border ${pageClasses["card-border"]}`}>
+      <div
+        className={`overflow-x-auto border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-md`}
+      >
         <table className="min-w-full text-left text-xs ">
           <thead
-            className={`${pageClasses["column-header-bg"]} text-xs ${pageClasses["column-header-text"]}`}
+            className={`${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} w-full text-xs ${pageClasses["column-header-text"]}`}
           >
             <tr>
               <th className="p-2"></th>
@@ -420,7 +422,7 @@ const BetListPage = () => {
               bets.map((bet, _index) => (
                 <tr
                   key={bet.betslip_id || _index}
-                  className={`border-b text-xs ${pageClasses["card-border"]} border-l-4 border-l-transparent hover:border-l-blue-500/80 ${pageClasses["row-hover"]}`}
+                  className={`border-b text-xs ${pageClasses["card-border"]}  w-full border-l-transparent ${pageClasses["row-hover"]}`}
                 >
                   {bet.status === 0 &&
                   AppHelper.isWithinMinutes(bet.created, 5) ? (
@@ -471,50 +473,54 @@ const BetListPage = () => {
             )}
           </tbody>
         </table>
-      </div>
 
-      {/* Pagination */}
-      <div
-        className={`flex justify-between items-center p-4 ${pageClasses["card-text"]}`}
-      >
-        <div className="text-xs">
-          Page {currentPage} of {totalPages}
-        </div>
-
-        {/* Pagination Controls */}
-        <div className="flex flex-row items-center gap-4">
-          <span className="text-xs">
+        <div className={`w-full h-0.5 ${classes.betslip["divider"]}`} />
+        {/* Pagination */}
+        <div
+          className={`flex text-[11px] font-semibold justify-between items-center px-4 p-2 ${pageClasses["card-text"]}`}
+        >
+          <div className="">
             Page {currentPage} of {totalPages}
-          </span>
+          </div>
 
-          <div className="flex flex-row items-center gap-2">
-            {/* Previous Page Button */}
-            <button
-              type="button"
-              onClick={handlePrevPage}
-              disabled={!hasPrevPage}
-              className={`p-1 rounded ${
-                hasPrevPage
-                  ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]}`
-                  : `${pageClasses["input-bg"]} opacity-50`
-              }`}
-            >
-              <ChevronLeft size={20} color={hasPrevPage ? "white" : "gray"} />
-            </button>
+          {/* Pagination Controls */}
+          <div className="flex flex-row items-center gap-4">
+            <span className="">
+              Page {currentPage} of {totalPages}
+            </span>
 
-            {/* Next Page Button */}
-            <button
-              type="button"
-              onClick={handleNextPage}
-              disabled={!hasNextPage}
-              className={`p-1 rounded ${
-                hasNextPage
-                  ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]}`
-                  : `${pageClasses["input-bg"]} opacity-50`
-              }`}
-            >
-              <ChevronRight size={20} color={hasNextPage ? "white" : "gray"} />
-            </button>
+            <div className="flex flex-row items-center gap-2">
+              {/* Previous Page Button */}
+              <button
+                type="button"
+                onClick={handlePrevPage}
+                disabled={!hasPrevPage}
+                className={`p-1 rounded ${
+                  hasPrevPage
+                    ? `${classes["button-primary-bg"]} ${classes["button-primary-hover"]}`
+                    : `${pageClasses["input-bg"]} opacity-50`
+                }`}
+              >
+                <ChevronLeft size={20} color={hasPrevPage ? "white" : "gray"} />
+              </button>
+
+              {/* Next Page Button */}
+              <button
+                type="button"
+                onClick={handleNextPage}
+                disabled={!hasNextPage}
+                className={`p-1 rounded ${
+                  hasNextPage
+                    ? `${classes["button-primary-bg"]} ${classes["button-primary-hover"]}`
+                    : `${pageClasses["input-bg"]} opacity-50`
+                }`}
+              >
+                <ChevronRight
+                  size={20}
+                  color={hasNextPage ? "white" : "gray"}
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>

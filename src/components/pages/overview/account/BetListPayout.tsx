@@ -258,7 +258,7 @@ const BetListPayoutPage = () => {
     >
       {/* Filters */}
       <div
-        className={`${pageClasses["card-bg"]} p-2 rounded-md border ${pageClasses["card-border"]}`}
+        className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  p-2 rounded-md border `}
       >
         <div className="flex gap-2 items-end flex-wrap">
           {/* <div className="flex flex-col text-gray-400">
@@ -367,7 +367,7 @@ const BetListPayoutPage = () => {
 
       {/* Summary */}
       <div
-        className={`flex justify-between items-center ${pageClasses["card-bg"]} p-4 py-2 rounded-md border ${pageClasses["card-border"]}`}
+        className={`flex justify-between items-center ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  p-4 py-2 rounded-md border`}
       >
         <p className={`${pageClasses["card-text"]} text-xs font-semibold`}>
           No. Bets: {bets.length}
@@ -385,10 +385,12 @@ const BetListPayoutPage = () => {
       </div>
 
       {/* Table */}
-      <div className={`overflow-x-auto border ${pageClasses["card-border"]}`}>
+      <div
+        className={`overflow-x-auto border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} rounded-md border`}
+      >
         <table className="min-w-full text-left text-xs">
           <thead
-            className={`${pageClasses["column-header-bg"]} ${pageClasses["column-header-text"]}`}
+            className={`${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} ${pageClasses["column-header-text"]} w-full text-xs`}
           >
             <tr>
               <th className="p-3">Betslip</th>
@@ -454,16 +456,17 @@ const BetListPayoutPage = () => {
             )}
           </tbody>
         </table>
+        <div className={`w-full h-0.5 ${classes.betslip["divider"]}`} />
         <div
-          className={`flex justify-between items-center p-4 ${pageClasses["card-text"]}`}
+          className={`flex justify-between items-center px-4 p-2 ${pageClasses["card-text"]} text-[11px] font-semibold`}
         >
-          <div className="text-xs">
+          <div className="">
             Page {currentPage} of {totalPages}
           </div>
 
           {/* Pagination Controls */}
           <div className="flex flex-row items-center gap-4">
-            <span className="text-xs">
+            <span className="">
               Page {currentPage} of {totalPages}
             </span>
 
@@ -475,8 +478,8 @@ const BetListPayoutPage = () => {
                 disabled={!hasPrevPage}
                 className={`p-1 rounded ${
                   hasPrevPage
-                    ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]}`
-                    : `${pageClasses["input-bg"]} opacity-50`
+                    ? `${classes["button-primary-bg"]} ${classes["button-primary-hover"]}`
+                    : `${classes["input-bg"]} opacity-50`
                 }`}
               >
                 <ChevronLeft size={20} color={hasPrevPage ? "white" : "gray"} />
@@ -489,8 +492,8 @@ const BetListPayoutPage = () => {
                 disabled={!hasNextPage}
                 className={`p-1 rounded ${
                   hasNextPage
-                    ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]}`
-                    : `${pageClasses["input-bg"]} opacity-50`
+                    ? `${classes["button-primary-bg"]} ${classes["button-primary-hover"]}`
+                    : `${classes["input-bg"]} opacity-50`
                 }`}
               >
                 <ChevronRight

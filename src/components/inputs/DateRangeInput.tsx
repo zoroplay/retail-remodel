@@ -794,7 +794,7 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
       )}
 
       <div
-        className={`w-full ${bg_color} text-[13px] ${height} border rounded-md focus-within:ring-2 ${getBorderColor()} flex items-center justify-between pl-1 transition-all duration-200 ${
+        className={`w-full ${bg_color} ${text_color} text-[13px] ${height} border rounded-md focus-within:ring-2 ${getBorderColor()} flex items-center justify-between pl-1 transition-all duration-200 ${
           isFocused
             ? `ring-2 ring-[${border_color.replace("border-", "")}]`
             : ""

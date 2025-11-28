@@ -352,6 +352,10 @@ export class AppHelper {
       new RegExp(":client_id", "g"),
       getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID) ?? ""
     );
+    result = result.replace(
+      new RegExp(":clientId", "g"),
+      getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID) ?? ""
+    );
 
     // Then replace all other parameters
     for (const [key, value] of Object.entries(params)) {

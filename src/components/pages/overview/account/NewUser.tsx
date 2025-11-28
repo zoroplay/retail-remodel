@@ -126,18 +126,18 @@ const NewUser = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["page-bg"]} ${pageClasses["page-text"]}`}
+      className={`h-[calc(100vh-110px)] overflow-y-auto  ${pageClasses["page-text"]}`}
     >
       <div className="p-4">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
           <div
-            className={`w-12 h-12 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
+            className={`w-10 h-10 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
           >
-            <UserPlus size={24} className={pageClasses["header-icon-text"]} />
+            <UserPlus size={20} className={pageClasses["header-icon-text"]} />
           </div>
           <div>
-            <h1 className={`text-lg font-bold ${pageClasses["header-text"]}`}>
+            <h1 className={`text-base font-bold ${pageClasses["header-text"]}`}>
               New {usertype === "cashier" ? "Cashier" : "Player"}
             </h1>
             <p className={`${pageClasses["subtitle-text"]} text-xs`}>
@@ -148,7 +148,7 @@ const NewUser = () => {
 
         {/* Form */}
         <div
-          className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4`}
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4`}
         >
           <form onSubmit={submitForm} className="space-y-4">
             {/* Personal Information */}
@@ -168,9 +168,11 @@ const NewUser = () => {
                   onChange={handleChange}
                   placeholder="Enter first name"
                   required
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={pageClasses["input-border"]}
-                  text_color={pageClasses["input-text"]}
+                  bg_color={classes["input-bg"]}
+                  text_color={classes["input-text"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  height="h-[36px]"
                 />
 
                 <Input
@@ -181,9 +183,11 @@ const NewUser = () => {
                   onChange={handleChange}
                   placeholder="Enter last name"
                   required
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={pageClasses["input-border"]}
-                  text_color={pageClasses["input-text"]}
+                  bg_color={classes["input-bg"]}
+                  text_color={classes["input-text"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  height="h-[36px]"
                 />
 
                 <div>
@@ -201,10 +205,11 @@ const NewUser = () => {
                       }))
                     }
                     placeholder={""}
-                    bg_color={pageClasses["input-bg"]}
-                    text_color={pageClasses["input-text"]}
-                    border_color={`border ${pageClasses["input-border"]}`}
-                    className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} transition-all disabled:opacity-50`}
+                    bg_color={classes["input-bg"]}
+                    text_color={classes["input-text"]}
+                    border_color={`border ${classes["input-border"]}`}
+                    className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                    height="h-[36px]"
                   />
                 </div>
 
@@ -240,9 +245,11 @@ const NewUser = () => {
                   onChange={handleChange}
                   placeholder="Enter email"
                   required
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={pageClasses["input-border"]}
-                  text_color={pageClasses["input-text"]}
+                  bg_color={classes["input-bg"]}
+                  text_color={classes["input-text"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  height="h-[36px]"
                 />
 
                 <Input
@@ -254,9 +261,11 @@ const NewUser = () => {
                   onChange={handleChange}
                   placeholder="Enter phone number"
                   required
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={pageClasses["input-border"]}
-                  text_color={pageClasses["input-text"]}
+                  bg_color={classes["input-bg"]}
+                  text_color={classes["input-text"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  height="h-[36px]"
                 />
 
                 {/* <div className="md:col-span-2">
@@ -293,9 +302,11 @@ const NewUser = () => {
                   onChange={handleChange}
                   placeholder="Enter username"
                   required
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={pageClasses["input-border"]}
-                  text_color={pageClasses["input-text"]}
+                  bg_color={classes["input-bg"]}
+                  text_color={classes["input-text"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  height="h-[36px]"
                 />
 
                 <Input
@@ -307,9 +318,11 @@ const NewUser = () => {
                   onChange={handleChange}
                   placeholder="Enter password"
                   required
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={pageClasses["input-border"]}
-                  text_color={pageClasses["input-text"]}
+                  bg_color={classes["input-bg"]}
+                  text_color={classes["input-text"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  height="h-[36px]"
                 />
 
                 <Input
@@ -320,9 +333,11 @@ const NewUser = () => {
                   onChange={handleChange}
                   placeholder="Currency"
                   disabled
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={pageClasses["input-border"]}
-                  text_color={pageClasses["input-text"]}
+                  bg_color={classes["input-bg"]}
+                  text_color={classes["input-text"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  height="h-[36px]"
                 />
 
                 <div>
@@ -337,10 +352,11 @@ const NewUser = () => {
                       }))
                     }
                     placeholder={""}
-                    bg_color={pageClasses["input-bg"]}
-                    text_color={pageClasses["input-text"]}
-                    border_color={`border ${pageClasses["input-border"]}`}
-                    className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} transition-all disabled:opacity-50`}
+                    bg_color={classes["input-bg"]}
+                    text_color={classes["input-text"]}
+                    border_color={`border ${classes["input-border"]}`}
+                    className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                    height="h-[36px]"
                   />
                 </div>
               </div>

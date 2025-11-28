@@ -42,7 +42,7 @@ const SportItem = ({ sport, onSportClick }: Props) => {
 
   return (
     <div
-      className={`border ${sidebarClasses["sport-item-border"]} shadow-lg overflow-hidden mb-0.5`}
+      className={`border ${classes.sports_page["date-separator-text"]}  ${sidebarClasses["sport-item-border"]} shadow-lg overflow-hidden mb-0.5`}
     >
       {/* Sport Header */}
       <div

@@ -661,7 +661,7 @@ const LoadBetsPage = () => {
                   <div className="addFormflex items-center gap-2">
                     <button
                       onClick={addForm}
-                      className={`${cashdeskClasses["add-button-bg"]} border ${cashdeskClasses["add-button-border"]} ${cashdeskClasses["add-button-hover"]} text-white text-xs font-medium px-3 py-1.5 rounded-full transition`}
+                      className={`${cashdeskClasses["add-button-bg"]} border ${cashdeskClasses["add-button-border"]} ${cashdeskClasses["add-button-hover"]} text-white font-medium text-[10px] px-3 py-1.5 rounded-full transition`}
                     >
                       Add Another
                     </button>

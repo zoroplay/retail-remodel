@@ -114,13 +114,9 @@ const Combined: React.FC<CombinedProps> = ({
   }, 0);
 
   return (
-    <div
-      className={`${betslipClasses["header-bg"]} border ${betslipClasses["tab-border"]} rounded-lg mb-4`}
-    >
+    <div className={`border ${classes["border"]} rounded-lg mb-4`}>
       {/* Header */}
-      <div
-        className={`${betslipClasses["header-bg"]} border-y ${betslipClasses["divider"]} rounded flex flex-col gap-2 max-h-[24vh] overflow-y-auto`}
-      >
+      <div className={`flex flex-col gap-2 max-h-[24vh] overflow-y-auto`}>
         {selected_bets.length === 0 ? (
           <div className="py-12 flex flex-col items-center justify-center text-center">
             <div className="w-14 h-14 bg-slate-700/50 rounded-full flex items-center justify-center mb-4">

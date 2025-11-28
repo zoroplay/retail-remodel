@@ -142,7 +142,7 @@ const TransactionsPage = () => {
     <div className="flex flex-col justify-between h-full p-2 gap-2">
       {/* Filters and Actions Section - Static */}
       <div
-        className={`p-2 ${pageClasses["card-bg"]} border border-gray-300 rounded-lg ${pageClasses["card-border"]}`}
+        className={`p-2 ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  border border-gray-300 rounded-lg ${pageClasses["card-border"]}`}
       >
         {/* Transaction Filters */}
         <div className="flex gap-2">
@@ -175,11 +175,12 @@ const TransactionsPage = () => {
                   value={transactionType}
                   onChange={(e) => setTransactionType(e.target.value)}
                   placeholder="Select type"
-                  bg_color={pageClasses["input-bg"]}
-                  border_color={`border ${pageClasses["input-border"]}`}
-                  className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  name={""}
+                  bg_color={classes["input-bg"]}
+                  text_color={classes["input-text"]}
+                  border_color={`border ${classes["input-border"]}`}
+                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
                   height="h-[36px]"
+                  name={""}
                 />
               </div>
               <div
@@ -189,7 +190,6 @@ const TransactionsPage = () => {
                   <Select
                     label="Page Size"
                     value={[pageSize]}
-                    text_color={classes["input-text"]}
                     options={[
                       { id: "10", name: "10" },
                       { id: "15", name: "15" },
@@ -201,8 +201,9 @@ const TransactionsPage = () => {
                     placeholder={""} // className="w-full"
                     height="h-[36px]"
                     bg_color={classes["input-bg"]}
+                    text_color={classes["input-text"]}
                     border_color={`border ${classes["input-border"]}`}
-                    className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                    className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
                   />
                 </div>
 
@@ -212,8 +213,9 @@ const TransactionsPage = () => {
                     value={dateRange}
                     onChange={setDateRange}
                     placeholder="DD/MM/YYYY"
-                    bg_color={pageClasses["input-bg"]}
-                    border_color={`border ${pageClasses["input-border"]}`}
+                    bg_color={classes["input-bg"]}
+                    text_color={classes["input-text"]}
+                    border_color={`border ${classes["input-border"]}`}
                     height="h-[36px]"
 
                     // height="h-[42px]"
@@ -330,10 +332,12 @@ const TransactionsPage = () => {
 
       {/* Transaction Table - Scrollable Section */}
       <div
-        className={`${pageClasses["card-bg"]} flex flex-col h-full border ${pageClasses["card-border"]}`}
+        className={`rounded-md ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  flex flex-col h-full border ${pageClasses["card-border"]}`}
       >
         {/* Table Header - Static */}
-        <div className={`${pageClasses["column-header-bg"]} text-xs px-4 py-2`}>
+        <div
+          className={` ${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} w-full text-xs ${pageClasses["column-header-text"]} text-xs px-4 py-2`}
+        >
           <div className="flex flex-row">
             <span
               className={`${pageClasses["column-header-text"]} font-semibold w-24`}
@@ -455,10 +459,12 @@ const TransactionsPage = () => {
         </div>
 
         {/* Table Footer - Static */}
-        <div className={`${pageClasses["footer-bg"]} px-4 py-2`}>
+        <div
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  px-4 py-2`}
+        >
           <div className="flex flex-row justify-between items-center">
             <span
-              className={`${pageClasses["card-text"]} font-semibold text-xs`}
+              className={`${pageClasses["card-text"]} font-semibold text-[11px]`}
             >
               Number of rows: {transactions?.length}
             </span>
