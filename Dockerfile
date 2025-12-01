@@ -5,7 +5,7 @@ COPY package*.json pnpm-lock.yaml* ./
 
 # Development stage
 FROM base AS development
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY . .
 EXPOSE 3000 24678
 CMD ["npm", "run", "dev"]
@@ -31,7 +31,7 @@ ENV VITE_APP_MQTT_PASSWORD=$VITE_APP_MQTT_PASSWORD
 ENV VITE_APP_MQTT_CLIENTID=$VITE_APP_MQTT_CLIENTID
 ENV VITE_APP_SITE_KEY=$VITE_APP_SITE_KEY
 
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY . .
 RUN npm run build
 
