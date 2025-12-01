@@ -32,7 +32,7 @@ ENV VITE_APP_MQTT_CLIENTID=$VITE_APP_MQTT_CLIENTID
 ENV VITE_APP_SITE_KEY=$VITE_APP_SITE_KEY
 
 COPY . .
-RUN npm ci --silent
+RUN npm install --silent
 RUN npm run build
 
 # Production stage
