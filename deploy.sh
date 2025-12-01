@@ -1,31 +1,30 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -e  # Exit on any error
+# Deployment script for maxbet-retail
+set -e
 
-# Change to correct directory..
-cd ~/pos-web-1
+echo "Starting deployment..."
 
-# Rename .env file to avoid Docker Compose parsing issues
-# All environment variables are defined in docker-compose.yml
-if [ -f .env ]; then
-    mv .env .env.backup
-fi
+# Navigate to project directory
+cd ~/gcp-retail
 
-# Create network if it doesn't exist
-docker network create sbenet || true
-
-# Stop existing containers
-docker compose down || true
+# Set default PORT if not exists
+export PORT=${PORT:-8042}
 
 # Pull latest images
+echo "Pulling latest Docker images..."
 docker compose pull
 
-# Start services
+# Stop existing containers
+echo "Stopping existing containers..."
+docker compose down
+
+# Start new containers
+echo "Starting new containers..."
 docker compose up -d
 
-# Show running containers
-docker ps
+# Clean up old images
+echo "Cleaning up old Docker images..."
+docker image prune -f
 
-echo "Deployment completed successfully"
-
-     
+echo "Deployment completed successfully!"

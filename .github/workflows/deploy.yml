@@ -2,9 +2,9 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ main , staging ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, staging ]
+    branches: [ main]
 
 permissions:
   contents: write
@@ -95,8 +95,18 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          build-args: |
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+            GIT_COMMIT=${{ github.sha }}
+            VERSION=${{ needs.version.outputs.version }}
+            VITE_APP_API_BASE_URL=https://api.staging.sportsbookengine.com/api/v2
+            VITE_APP_CLIENT_ID=4
+            VITE_APP_MQTT_URI="wss://emqx.sportsbookengine.com/mqtt"
+            VITE_APP_MQTT_USERNAME="ui"
+            VITE_APP_MQTT_PASSWORD="sportsbook123"
+            VITE_APP_MQTT_CLIENTID="cubebet_m"
+            VITE_APP_SITE_KEY=SBE
+          no-cache: true
 
   release:
     needs: [version, build]
@@ -116,8 +126,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
-          npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/github @semantic-release/exec @semantic-release/git
+          npm install --legacy-peer-deps
+          npm install --save-dev --legacy-peer-deps semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/github @semantic-release/exec @semantic-release/git
 
       - name: Create release config
         run: |
@@ -150,7 +160,7 @@ jobs:
         run: npx semantic-release
 
   deploy:
-    needs: [version, build, release]
+    needs: [version, build]
     runs-on: [self-hosted, linux, x64]
     environment: GCP CI
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
@@ -181,19 +191,32 @@ jobs:
           # Update docker-compose with new image version
           sed -i "s|image: ghcr.io.*|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$NEXT_VERSION|g" docker-compose.yml
 
+      - name: Use production environment file
+        run: |
+          cp .env.production .env
+
       - name: Deploy to GCP server
         run: |
           # Create directory on server
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/pos-web-1'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/gcp-retail/'
           
           # Copy files to server
-          scp -o StrictHostKeyChecking=no .env ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/pos-web-1
-          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/pos-web-1
-          scp -o StrictHostKeyChecking=no deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/pos-web-1
+          scp -o StrictHostKeyChecking=no .env ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
+          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
+          scp -o StrictHostKeyChecking=no deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
           
           # Login to GitHub Container Registry on server and execute deployment
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            chmod +x ~/pos-web-1/deploy.sh
-            bash ~/pos-web-1/deploy.sh
+            chmod +x ~/gcp-retail/deploy.sh
+            bash ~/gcp-retail/deploy.sh
+          'cp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
+
+          scp -o StrictHostKeyChecking=no deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
+          
+          # Login to GitHub Container Registry on server and execute deployment
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            chmod +x ~/gcp-retail/deploy.sh
+            bash ~/gcp-retail/deploy.sh
           '

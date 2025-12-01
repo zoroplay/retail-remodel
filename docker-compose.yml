@@ -1,26 +1,24 @@
 services:
-  pos-web:
-    image: ghcr.io/zoroplay/pos-web-1:latest
-    container_name: pos-web-1
-    hostname: pos-web
-    networks:
-      - sbenet
+  gcp-retail-app:
+    image: ghcr.io/zoroplay/gcp-retail:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
     ports:
-      - "0.0.0.0:3000:3000"
-    restart: on-failure
-    environment:
-      - NEXT_PUBLIC_ACCESS_TOKEN=b_winners_access_token
-      - NEXT_PUBLIC_REFRESH_TOKEN=b_winners_refresh_token
-      - NEXT_PUBLIC_CLIENT_ID=4
-      - NEXT_PUBLIC_BASE_URL=https://api.staging.sportsbookengine.com
-      - NEXT_PUBLIC_VERSION_1=/api/v1
-      - NEXT_PUBLIC_VERSION_2=/api/v2
-      - NEXT_PUBLIC_MQTT_URI=wss://emqx.sportsbookengine.com/mqtt
-      - NEXT_PUBLIC_MQTT_USERNAME=ui
-      - NEXT_PUBLIC_MQTT_PASSWORD=sportsbook123
-      - NEXT_PUBLIC_MQTT_URI_IP=192.168.1.1
-      - NEXT_PUBLIC_MQTT_CLIENTID=cubebet_m
+      - "8042:8080"
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - gcp-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080"]
+      timeout: 10s
+      interval: 30s
+      retries: 3
+      start_period: 40s
 
 networks:
-  sbenet:
-    external: true
+  gcp-network:
+    driver: bridge
