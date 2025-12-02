@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/zoroplay/retail-remodel/compare/v1.0.0...v1.0.1) (2025-12-02)
+
+
+### Bug Fixes
+
+* SSH key setup and deployment path consistency ([a211cff](https://github.com/zoroplay/retail-remodel/commit/a211cff61553302bfb62433fd218e9cd778de833))
+
 # 1.0.0 (2025-12-02)
 
 
