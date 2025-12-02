@@ -7,7 +7,7 @@ import {
   Market,
   OutcomeType,
 } from "../../../data/types/betting.types";
-import { Fixture } from "../types/responses";
+import { Fixture, PoolFixtures } from "../types/responses";
 
 export interface SportsDto {
   sport_id: string;
@@ -62,6 +62,20 @@ export interface FixturesResponse {
   selectedMarket: SelectedMarket[];
   markets: Market[];
   outcomeTypes: OutcomeType[];
+}
+
+export interface PoolFixturesResponse {
+  success: boolean;
+  message: string;
+  total: number;
+  fixtures: PoolFixtures[];
+  weekInfo: {
+    year: number;
+    week: number;
+    weekNo: string;
+    fixtureCount: number;
+    status: string;
+  };
 }
 export interface FixtureResponse extends Fixture {}
 export interface FetchFixtureResponse extends PreMatchFixture {

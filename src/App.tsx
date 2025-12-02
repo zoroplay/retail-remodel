@@ -38,6 +38,7 @@ import OnlineDepositPage from "./components/pages/overview/account/OnlineDeposit
 import { getClientTheme } from "./config/theme.config";
 import LiveOverviewScreen from "./components/pages/overview/LiveOverview";
 import Withdraw from "./components/pages/overview/account/Withdraw";
+import PoolOverviewScreen from "./components/pages/overview/PoolOverview";
 
 // Route constants
 
@@ -130,6 +131,14 @@ function App() {
                 element={
                   <SportsLayout>
                     <OverviewScreen />
+                  </SportsLayout>
+                }
+              />
+              <Route
+                path={OVERVIEW.SPORTS_POOL}
+                element={
+                  <SportsLayout>
+                    <PoolOverviewScreen />
                   </SportsLayout>
                 }
               />

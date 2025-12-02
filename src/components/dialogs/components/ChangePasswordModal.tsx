@@ -75,7 +75,7 @@ const ChangePasswordModal = ({ onClose }: Props) => {
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      className={`max-w-md !w-full backdrop-blur-xl border ${modalClasses["modal-border"]} shadow-2xl ${modalClasses["modal-shadow"]}`}
+      className={`max-w-md !w-full backdrop-blur-xl  shadow-md ${modalClasses["modal-shadow"]}`}
       footer={
         <div className="flex gap-2">
           <button
@@ -95,7 +95,7 @@ const ChangePasswordModal = ({ onClose }: Props) => {
         </div>
       }
     >
-      <div className={`flex flex-col`}>
+      <div className={`flex flex-col ${classes["text-primary"]}`}>
         {/* Modal Header */}
         <div
           className={`flex items-center justify-between p-2 border-b ${modalClasses["header-border"]}`}

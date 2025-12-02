@@ -172,7 +172,7 @@ const AccountMenu = (props: Props) => {
         ${
           isActive
             ? `${sidebarClasses["category-item-bg"]} ${sidebarClasses["category-item-text"]} border-l-4 ${sidebarClasses["category-item-border"]} shadow-sm`
-            : `${sidebarClasses["tournament-item-text"]} hover:border-l-4 hover:border-l-slate-500`
+            : `${sidebarClasses["tournament-item-text"]} hover:border-l-4 ${classes["item-hover-border-l"]}`
         }
       `}
     >
@@ -181,9 +181,7 @@ const AccountMenu = (props: Props) => {
 
       <span
         className={`relative z-10 transition-colors duration-200 ${
-          isActive
-            ? sidebarClasses["account-icon-active"]
-            : " group-hover:text-blue-300"
+          isActive ? sidebarClasses["account-icon-active"] : " "
         }`}
       >
         {item.icon}

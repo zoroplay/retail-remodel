@@ -13,6 +13,8 @@ import {
 // import moment from "moment";
 import DateRangeInput from "@/components/inputs/DateRangeInput";
 import { getClientTheme } from "@/config/theme.config";
+import { useSuperAgentCommissionQuery } from "@/store/services/user.service";
+import PaginatedTable from "@/components/common/PaginatedTable";
 
 interface SalesData {
   channel: string;
@@ -43,6 +45,7 @@ const Sales = () => {
   );
   const [salesData, setSalesData] = useState<SalesData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  useSuperAgentCommissionQuery({ user_id: user?.id || 0 });
 
   const formatCurrency = (amount: number) => {
     return `₦${amount.toLocaleString("en-US", {
@@ -116,24 +119,22 @@ const Sales = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["page-bg"]}`}
+      className={`h-[calc(100vh-110px)] overflow-y-auto ${classes["text-primary"]}`}
     >
       <div className="max-w-7xl mx-auto p-4">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
           <div
-            className={`w-12 h-12 rounded-lg flex items-center justify-center ${pageClasses["header-icon-bg"]}`}
+            className={`w-10 h-10 rounded-lg flex items-center justify-center ${pageClasses["header-icon-bg"]}`}
           >
             <ShoppingCart
-              size={24}
+              size={20}
               className={pageClasses["header-icon-text"]}
             />
           </div>
           <div>
-            <h1 className={`text-lg font-bold ${pageClasses["header-text"]}`}>
-              Sales Report
-            </h1>
-            <p className={`text-xs ${pageClasses["subtitle-text"]}`}>
+            <h1 className={`text-lg font-bold`}>Sales Report</h1>
+            <p className={`text-xs ${classes["text-secondary"]}`}>
               View sales analysis by channel and product
             </p>
           </div>
@@ -142,7 +143,7 @@ const Sales = () => {
         {/* Tabs */}
         {user?.role === "Shop" && (
           <div
-            className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-2 mb-4`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-2 mb-4`}
           >
             <div className="flex gap-2 overflow-x-auto">
               <button
@@ -181,14 +182,12 @@ const Sales = () => {
 
         {/* Filters */}
         <div
-          className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4 mb-4`}
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4 mb-4`}
         >
           <div className="grid md:grid-cols-2 gap-3 mb-3">
             {/* Period Selection */}
             <div>
-              <label
-                className={`text-xs font-semibold mb-2 block ${pageClasses["info-label-text"]}`}
-              >
+              <label className={`text-xs font-semibold mb-2 block`}>
                 Select Period
               </label>
               <div className="flex gap-2">
@@ -289,9 +288,7 @@ const Sales = () => {
               // text_color="text-gray-200"
               // border_color="border border-slate-600"
               // text_color={pageClasses["input-text"]}
-              bg_color={pageClasses["input-bg"]}
-              text_color={pageClasses["input-text"]}
-              border_color={`border ${pageClasses["input-border"]}`}
+
               // height="h-[42px]"
 
               // className="bg-gray-700 text-white px-3 py-2 rounded-md"
@@ -430,116 +427,51 @@ const Sales = () => {
         </div>
 
         {/* Sales Table */}
-        <div
-          className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} overflow-hidden`}
-        >
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead
-                className={`${pageClasses["column-header-bg"]} border-b ${pageClasses["card-border"]}`}
-              >
-                <tr>
-                  <th
-                    className={`px-4 py-3 text-left text-xs font-semibold uppercase ${pageClasses["column-header-text"]}`}
-                  >
-                    Channel
-                  </th>
-                  <th
-                    className={`px-4 py-3 text-right text-xs font-semibold uppercase ${pageClasses["column-header-text"]}`}
-                  >
-                    Stake
-                  </th>
-                  <th
-                    className={`px-4 py-3 text-right text-xs font-semibold uppercase ${pageClasses["column-header-text"]}`}
-                  >
-                    Winnings
-                  </th>
-                  <th
-                    className={`px-4 py-3 text-right text-xs font-semibold uppercase ${pageClasses["column-header-text"]}`}
-                  >
-                    Gross Profit
-                  </th>
-                  <th
-                    className={`px-4 py-3 text-right text-xs font-semibold uppercase ${pageClasses["column-header-text"]}`}
-                  >
-                    Net Revenue
-                  </th>
-                  <th
-                    className={`px-4 py-3 text-right text-xs font-semibold uppercase ${pageClasses["column-header-text"]}`}
-                  >
-                    Tickets
-                  </th>
-                  <th
-                    className={`px-4 py-3 text-right text-xs font-semibold uppercase ${pageClasses["column-header-text"]}`}
-                  >
-                    Cancelled
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading ? (
-                  <tr>
-                    <td colSpan={7} className="px-4 py-12 text-center">
-                      <div className="text-sm text-gray-400">Loading...</div>
-                    </td>
-                  </tr>
-                ) : salesData.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="px-4 py-12 text-center">
-                      <div className="text-sm text-gray-400">
-                        No sales data available. Click "Generate Report" to load
-                        data.
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
-                  salesData.map((row, index) => (
-                    <tr
-                      key={index}
-                      className={`border-b ${pageClasses["row-border"]} ${pageClasses["row-hover"]} transition-colors`}
-                    >
-                      <td
-                        className={`px-4 py-3 text-sm font-medium ${pageClasses["row-text"]}`}
-                      >
-                        {row.channel}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm text-right ${pageClasses["row-text"]}`}
-                      >
-                        {formatCurrency(row.totalStake)}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm text-right ${pageClasses["info-value-text"]}`}
-                      >
-                        {formatCurrency(row.totalWinnings)}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm text-right ${pageClasses["info-value-text"]}`}
-                      >
-                        {formatCurrency(row.grossProfit)}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm text-right ${pageClasses["info-value-text"]}`}
-                      >
-                        {formatCurrency(row.netRevenue)}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm text-right ${pageClasses["row-text"]}`}
-                      >
-                        {row.totalTickets.toLocaleString()}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-sm text-right ${pageClasses["info-value-text"]}`}
-                      >
-                        {row.totalCancelled.toLocaleString()}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        {/* Table */}
+        <PaginatedTable
+          columns={[
+            {
+              id: "channel",
+              name: "Channel",
+            },
+            {
+              id: "stake",
+              name: "Stake",
+            },
+            {
+              id: "winnings",
+              name: "Winnings",
+            },
+            {
+              id: "gross_profit",
+              name: "Gross Profit",
+            },
+
+            {
+              id: "net_revenue",
+              name: "Net Revenue",
+            },
+            {
+              id: "tickets",
+              name: "Tickets",
+            },
+            {
+              id: "cancelled",
+              name: "Cancelled",
+            },
+          ]}
+          className="grid-cols-7"
+          data={salesData.map((sale) => ({
+            channel: sale?.channel,
+            stake: sale?.totalStake,
+            winnings: sale?.totalWinnings,
+            gross_profit: sale?.grossProfit,
+            net_revenue: sale?.netRevenue,
+            tickets: sale?.totalTickets,
+            cancelled: sale?.totalCancelled,
+          }))}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

@@ -58,7 +58,7 @@ const Modal: React.FC<CustomModalProps> = ({
                 <motion.div
                   // Always horizontally center at the top, with margin from the top
                   key="modal-content"
-                  className={`relative z-[10570]  w-full ${classes["modal-bg"]} rounded-lg shadow-lg p-0  max-h-[90vh] flex flex-col mt-8 ${className}`}
+                  className={`relative z-[10570]  w-full ${classes["text-primary"]} ${classes["modal-bg"]} ${classes.sports_page["card-border"]} border rounded-lg shadow-lg p-0  max-h-[90vh] flex flex-col mt-8 ${className}`}
                   role="dialog"
                   aria-modal="true"
                   tabIndex={-1}

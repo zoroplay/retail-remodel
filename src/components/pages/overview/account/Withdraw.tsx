@@ -204,21 +204,19 @@ const BankWithdrawal = () => {
   };
 
   return (
-    <div className={`${pageClasses["page-bg"]} ${pageClasses["page-text"]}`}>
+    <div className={`${pageClasses["page-bg"]} ${classes["text-primary"]}`}>
       <div className="p-2 flex flex-col gap-2">
         {/* Header */}
         <div className="flex items-center gap-3 p-2">
           <button
             onClick={handleGoBack}
-            className={`p-2 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} rounded-lg transition-colors backdrop-blur-sm border ${pageClasses["form-border"]}`}
+            className={`p-2 ${classes.user_management_page["header-icon-bg"]} ${pageClasses["button-secondary-hover"]} rounded-lg transition-colors backdrop-blur-sm border ${pageClasses["form-border"]} ${classes["text-secondary"]}`}
           >
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h1 className={`text-base font-bold ${pageClasses["form-text"]}`}>
-              Withdraw Funds
-            </h1>
-            <p className={`text-xs ${pageClasses["label-text"]}`}>
+            <h1 className={`text-base font-bold`}>Withdraw Funds</h1>
+            <p className={`text-xs ${classes["text-secondary"]}`}>
               Withdraw funds to your bank account
             </p>
           </div>
@@ -230,25 +228,20 @@ const BankWithdrawal = () => {
             className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  backdrop-blur-sm rounded-lg p-2 border `}
           >
             <h2
-              className={`text-sm font-semibold mb-3 flex items-center gap-2 ${pageClasses["form-text"]}`}
+              className={`text-sm font-semibold mb-3 flex items-center gap-2 ${classes["text-primary"]}`}
             >
-              <Shield
-                className={pageClasses["button-primary-text"]}
-                size={18}
-              />
+              <Shield className={classes["text-secondary"]} size={18} />
               Important Information
             </h2>
 
-            <div className="space-y-2.5">
-              <div className="flex gap-2.5">
+            <div className={`space-y-2.5 ${classes["text-secondary"]}`}>
+              <div className={`flex gap-2.5 `}>
                 <div
                   className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   1
                 </div>
-                <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
-                >
+                <p className={`text-xs leading-relaxed`}>
                   For easier and faster process verification, please ensure your
                   bank account information matches the details in your account.
                 </p>
@@ -259,9 +252,7 @@ const BankWithdrawal = () => {
                 >
                   2
                 </div>
-                <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
-                >
+                <p className={`text-xs leading-relaxed`}>
                   In line with regulations, winnings above{" "}
                   <strong>₦400,000</strong> require a valid means of ID for your
                   withdrawal to be processed promptly.
@@ -273,9 +264,7 @@ const BankWithdrawal = () => {
                 >
                   3
                 </div>
-                <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
-                >
+                <p className={`text-xs leading-relaxed`}>
                   Minimum withdrawal amount is <strong>₦100</strong>
                 </p>
               </div>
@@ -285,9 +274,7 @@ const BankWithdrawal = () => {
                 >
                   4
                 </div>
-                <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
-                >
+                <p className={`text-xs leading-relaxed`}>
                   Account details are verified automatically after entering
                   10-digit account number
                 </p>
@@ -321,9 +308,7 @@ const BankWithdrawal = () => {
               className={`${pageClasses["info-bg"]} rounded-lg p-2 border ${pageClasses["info-border"]} flex flex-col gap-1`}
             >
               <div className="flex justify-between items-center">
-                <span className={`text-xs ${pageClasses["balance-text"]}`}>
-                  Current Balance:
-                </span>
+                <span className={`text-xs `}>Current Balance:</span>
                 <span
                   className={`text-base font-bold ${pageClasses["balance-value"]}`}
                 >
@@ -332,10 +317,10 @@ const BankWithdrawal = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className={`text-xs ${pageClasses["balance-text"]}`}>
+                <span className={`text-xs $${classes["text-secondary"]}`}>
                   Email:
                 </span>
-                <span className={`text-xs ${pageClasses["form-text"]}`}>
+                <span className={`text-xs ${classes["text-secondary"]}`}>
                   {user?.email}
                 </span>
               </div>
@@ -343,16 +328,14 @@ const BankWithdrawal = () => {
 
             {/* Quick Amount Selection */}
             <div className="flex flex-col gap-1">
-              <label
-                className={`block text-xs font-semibold ${pageClasses["form-text"]}`}
-              >
+              <label className={`block text-xs font-semibold `}>
                 Quick Amount Selection
               </label>
               <div className="grid grid-cols-5 gap-1">
                 <button
                   type="button"
                   onClick={() => updateAmount(0)}
-                  className={`${pageClasses["quick-button-bg"]} ${pageClasses["quick-button-hover"]} border ${pageClasses["quick-button-border"]} ${pageClasses["quick-button-text"]} text-xs py-1.5 pb-1 rounded-md transition-all duration-200 hover:scale-105`}
+                  className={`${pageClasses["quick-button-bg"]} ${pageClasses["quick-button-hover"]} border ${pageClasses["quick-button-border"]} ${pageClasses["quick-button-text"]} py-1 h-7 flex justify-center items-center rounded-lg text-[11px] transition-all duration-200 hover:scale-105`}
                 >
                   Clear
                 </button>
@@ -361,7 +344,7 @@ const BankWithdrawal = () => {
                     key={quickAmount}
                     type="button"
                     onClick={() => updateAmount(quickAmount)}
-                    className={`${pageClasses["quick-button-bg"]} ${pageClasses["quick-button-hover"]} border ${pageClasses["quick-button-border"]} ${pageClasses["quick-button-text"]} text-xs py-1.5 pb-1 rounded-md transition-all duration-200 hover:scale-105`}
+                    className={`${pageClasses["quick-button-bg"]} ${pageClasses["quick-button-hover"]} border ${pageClasses["quick-button-border"]} ${pageClasses["quick-button-text"]} text-[11px] h-7 flex justify-center items-center py-1 rounded-lg transition-all duration-200 hover:scale-105`}
                   >
                     +₦{formatNumber(quickAmount)}
                   </button>
@@ -379,19 +362,10 @@ const BankWithdrawal = () => {
                   onChange={handleAmountChange}
                   placeholder="Min 100"
                   name="amount"
-                  bg_color={classes["input-bg"]}
-                  text_color={classes["input-text"]}
-                  border_color={`border ${classes["input-border"]}`}
-                  height="h-[36px]"
-                  className={`w-full rounded-lg ${classes["input-text"]} transition-all duration-200`}
+                  className={`w-full rounded-lg transition-all duration-200`}
                   type="num_select"
                   num_select_placeholder="NGN"
                 />
-                {amount && (
-                  <p className={`text-xs mt-1 ${pageClasses["label-text"]}`}>
-                    Amount: {currency} {formatNumber(amount)}
-                  </p>
-                )}
               </div>
 
               {/* Bank Selection */}
@@ -413,11 +387,8 @@ const BankWithdrawal = () => {
                       accountName: "",
                     }));
                   }}
-                  height={"h-[36px]"}
                   placeholder={""} // className="w-full"
-                  bg_color={classes["input-bg"]}
-                  border_color={`border ${classes["input-border"]}`}
-                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                  className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                 />
               </div>
 
@@ -443,11 +414,7 @@ const BankWithdrawal = () => {
                   onSearch={() => {}}
                   placeholder="Enter 10-digit account number"
                   name={"accountNumber"}
-                  bg_color={classes["input-bg"]}
-                  text_color={classes["input-text"]}
-                  border_color={`border ${classes["input-border"]}`}
-                  height={"h-[36px]"}
-                  className={`w-full rounded-lg ${classes["input-text"]} transition-all duration-200`}
+                  className={`w-full rounded-lg transition-all duration-200`}
                 />
               </div>
 
@@ -460,11 +427,7 @@ const BankWithdrawal = () => {
                   placeholder="Account name will appear after verification"
                   disabled
                   name={"accountName"}
-                  bg_color={classes["input-bg"]}
-                  text_color={classes["input-text"]}
-                  border_color={`border ${classes["input-border"]}`}
-                  height={"h-[36px]"}
-                  className={`w-full rounded-lg ${classes["input-text"]} transition-all duration-200`}
+                  className={`w-full rounded-lg transition-all duration-200`}
                 />
                 {verified && inputObject.accountName && (
                   <CheckCircle
@@ -479,7 +442,7 @@ const BankWithdrawal = () => {
                 className={`${pageClasses["info-bg"]} rounded-lg p-2 space-y-1 border ${pageClasses["info-border"]}`}
               >
                 <div className="flex justify-between text-xs">
-                  <span className={pageClasses["balance-text"]}>Fees:</span>
+                  <span>Fees:</span>
                   <span
                     className={`${pageClasses["balance-value"]} font-medium`}
                   >
@@ -487,18 +450,14 @@ const BankWithdrawal = () => {
                   </span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className={pageClasses["balance-text"]}>
-                    Minimum Withdrawal:
-                  </span>
-                  <span className={`${pageClasses["form-text"]} font-medium`}>
+                  <span className={`}`}>Minimum Withdrawal:</span>
+                  <span className={`${classes["text-secondary"]} font-medium`}>
                     {currency} 100
                   </span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className={pageClasses["balance-text"]}>
-                    Processing Time:
-                  </span>
-                  <span className={`${pageClasses["form-text"]} font-medium`}>
+                  <span>Processing Time:</span>
+                  <span className={`${classes["text-secondary"]}  font-medium`}>
                     24-48 hours
                   </span>
                 </div>

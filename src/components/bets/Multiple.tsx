@@ -36,7 +36,7 @@ const Multiple: React.FC<MultipleProps> = ({ globalVar }) => {
   return (
     <div className="flex flex-col gap-2">
       <div
-        className={` border ${betslipClasses["slip-item-divider"]} rounded-lg  flex flex-col gap-2 max-h-[48vh] overflow-y-auto`}
+        className={`  ${betslipClasses["slip-item-divider"]} rounded-lg  flex flex-col gap-2 max-h-[48vh] overflow-y-auto`}
       >
         {selected_bets.length === 0 ? (
           <div className="py-16 flex flex-col items-center justify-center text-center">

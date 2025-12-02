@@ -460,19 +460,25 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
             </h3>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex justify-start gap-4">
-                <span className={classes["label-text"]}>Betslip ID:</span>
+                <span className={`${theme.classes["text-secondary"]}`}>
+                  Betslip ID:
+                </span>
                 <span className={`font-mono ${classes["value-text"]}`}>
                   {betslip.betslipId}
                 </span>
               </div>
               <div className="flex justify-start gap-4">
-                <span className={classes["label-text"]}>Date:</span>
+                <span className={`${theme.classes["text-secondary"]}`}>
+                  Date:
+                </span>
                 <span className={classes["value-text"]}>
                   {AppHelper.formatDate(betslip.created)}
                 </span>
               </div>
               <div className="flex justify-start gap-4 col-span-2">
-                <span className={classes["label-text"]}>Bet Type:</span>
+                <span className={`${theme.classes["text-secondary"]}`}>
+                  Bet Type:
+                </span>
                 <span className={classes["value-text"]}>
                   {betslip.bet_category}
                 </span>
@@ -489,7 +495,9 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
             </h3>
             <div className="flex flex-col text-xs gap-2">
               <div className="flex justify-between">
-                <span className={classes["label-text"]}>Stake:</span>
+                <span className={`${theme.classes["text-secondary"]}`}>
+                  Stake:
+                </span>
                 <span className={`font-semibold ${classes["value-text"]}`}>
                   <CurrencyFormatter
                     amount={Number(betslip.stake)}
@@ -500,7 +508,9 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
               </div>
 
               <div className="flex justify-between">
-                <span className={classes["label-text"]}>Total Odds:</span>
+                <span className={`${theme.classes["text-secondary"]}`}>
+                  Total Odds:
+                </span>
                 <span className={`font-semibold ${classes["value-text"]}`}>
                   {formatNumber(Number(betslip.totalOdd))}
                 </span>
@@ -510,7 +520,9 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
               />
 
               <div className={`flex justify-between  px-1`}>
-                <span className={`font-semibold ${classes["label-text"]}`}>
+                <span
+                  className={`font-semibold ${theme.classes["text-secondary"]}`}
+                >
                   {betslip?.paid_out === 0 ? "Possible Win:" : "Paid Amount:"}
                 </span>
                 <span className={`font-bold ${classes["win-text"]}`}>
@@ -537,7 +549,7 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
               {betslip.selections.map((selection, index) => (
                 <div
                   key={index}
-                  className={`${classes["item-bg"]} rounded-md p-2 flex flex-col gap-2 border ${classes["item-border"]} shadow-sm`}
+                  className={`${theme.classes.deposit_page["info-bg"]} rounded-md p-2 flex flex-col gap-2 border ${classes["item-border"]} shadow-sm`}
                 >
                   <div className="flex-1 gap-1  flex flex-col">
                     <p
@@ -560,13 +572,17 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
 
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className={classes["label-text"]}>Market: </span>
+                      <span className={`${theme.classes["text-secondary"]}`}>
+                        Market:{" "}
+                      </span>
                       <span className={classes["value-text"]}>
                         {selection.marketName}
                       </span>
                     </div>
                     <div>
-                      <span className={classes["label-text"]}>Odds: </span>
+                      <span className={`${theme.classes["text-secondary"]}`}>
+                        Odds:{" "}
+                      </span>
                       <span
                         className={`font-semibold ${classes["value-text"]}`}
                       >
@@ -574,7 +590,9 @@ const CouponDetails: React.FC<Props> = ({ onClose }) => {
                       </span>
                     </div>
                     <div className="col-span-2">
-                      <span className={classes["label-text"]}>Pick: </span>
+                      <span className={`${theme.classes["text-secondary"]}`}>
+                        Pick:{" "}
+                      </span>
                       <span className={classes["value-text"]}>
                         {selection.outcomeName}
                       </span>

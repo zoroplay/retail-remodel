@@ -18,6 +18,7 @@ import {
   ENVIRONMENT_VARIABLES,
 } from "../../../../store/services/configs/environment.config";
 import { getClientTheme } from "../../../../config/theme.config";
+import PaginatedTable from "@/components/common/PaginatedTable";
 
 const Deposit = () => {
   const { classes } = getClientTheme();
@@ -274,165 +275,114 @@ const Deposit = () => {
           </p>
         </div>
 
-        {/* Payment Methods Table */}
-        <div
-          className={`${pageClasses["card-bg"]} ${pageClasses["card-border"]} border rounded-md overflow-hidden`}
-        >
-          {filteredPaymentMethods.length === 0 ? (
-            <div className="text-center py-12">
-              <div
-                className={`w-16 h-16 ${classes["bg-secondary"]} rounded-full flex items-center justify-center mx-auto mb-6`}
-              >
-                <CreditCard className={classes["text-secondary"]} size={24} />
-              </div>
-              <h3
-                className={`text-xl font-semibold ${classes["text-secondary"]} mb-2`}
-              >
-                No Payment Methods Available
-              </h3>
-              <p className={classes["text-secondary"]}>
-                Please contact support for assistance setting up payment options
-              </p>
-            </div>
-          ) : (
-            <>
-              {/* <div
-              className={`overflow-x-auto border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} rounded-md overflow-hidden`}
-            > */}
-              {/* Table Header */}
-              <div
-                className={`border ${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} ${classes.sports_page["header-text"]} border-b ${pageClasses["card-border"]} !border-l-transparent  !border-l-4 px-2 grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-2 font-semibold text-xs ${pageClasses["table-header-text"]}`}
-              >
-                <div className="flex justify-start items-center">
-                  Payment Method
-                </div>
-                <div
-                  className={`border-l py-2 ${classes["border-light"]} pl-4 flex justify-start items-center`}
-                >
-                  Description
-                </div>
-                <div
-                  className={`border-l py-2 ${classes["border-light"]} pl-4 flex justify-start items-center`}
-                >
-                  Fee
-                </div>
-                <div
-                  className={`border-l py-2 ${classes["border-light"]} pl-4 flex justify-start items-center`}
-                >
-                  Min. Amount
-                </div>
-                <div
-                  className={`border-l py-2 ${classes["border-light"]} pl-4 flex justify-start items-center`}
-                ></div>
-              </div>
-
-              {/* Table Rows */}
-              {filteredPaymentMethods.map((item, index) => {
-                const providerInfo = getProviderInfo(item.provider);
-
-                return (
-                  <div
-                    key={item.id || index}
-                    className={`border-b border-l-4 border-l-transparent ${pageClasses["card-border"]} px-2  ${pageClasses["row-hover"]} transition-colors`}
-                  >
-                    <div className="grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-2 items-center">
-                      {/* Payment Method with Logo */}
-                      <div className="flex items-center gap-2 py-2">
-                        <div className="w-10 h-10 rounded flex items-center justify-center overflow-hidden bg-white p-1">
-                          <img
-                            src={providerInfo.image}
-                            alt={`${providerInfo.name} logo`}
-                            className="w-full h-full object-contain"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = "none";
-                              const parent = target.parentElement;
-                              if (parent) {
-                                parent.innerHTML = `<span class="text-xs font-bold">${item.provider.toUpperCase()}</span>`;
-                              }
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <div
-                            className={`font-semibold text-xs ${pageClasses["row-text"]}`}
-                          >
-                            {providerInfo.name}
-                          </div>
-                          <div
-                            className={`text-[10px] ${pageClasses["label-text"]}`}
-                          >
-                            {item.provider === "paystack" &&
-                              "(Card/bank) Instant Credit"}
-                            {item.provider === "opay" &&
-                              "Instant Credit on deposits via Opay app and Opay agent shop"}
-                            {item.provider !== "paystack" &&
-                              item.provider !== "opay" &&
-                              providerInfo.description}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Description */}
-                      <div
-                        className={`text-[10px] ${pageClasses["label-text"]} ${classes["border"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
-                      >
-                        {item.provider === "paystack" &&
-                          "(Card/bank) Instant Credit"}
-                        {item.provider === "interswitch" && "Instant Credit"}
-                        {item.provider === "opay" &&
-                          "Instant Credit on deposits via Opay app and Opay agent shop"}
-                        {item.provider === "quickteller" && "Instant Credit"}
-                        {item.provider === "transfer" &&
-                          "Deposit may take up to 24 hours to reflect"}
-                        {item.provider === "zenith" && "Instant Credit"}
-                        {![
-                          "paystack",
-                          "interswitch",
-                          "opay",
-                          "quickteller",
-                          "transfer",
-                          "zenith",
-                        ].includes(item.provider) && "Instant Credit"}
-                      </div>
-
-                      {/* Fee */}
-                      <div
-                        className={`font-semibold text-xs ${classes["border"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
-                      >
-                        FREE
-                      </div>
-
-                      {/* Minimum Amount */}
-                      <div
-                        className={`font-semibold text-xs ${classes["border"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
-                      >
-                        N50
-                      </div>
-
-                      <div
-                        className={`font-semibold text-xs ${classes["border"]} border-l pl-4 py-2 h-full flex justify-start items-center`}
-                      >
-                        {/* Deposit Button */}
-                        <button
-                          onClick={() => handleDepositClick(item.provider)}
-                          className={`${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} px-3 py-1.5 rounded-md transition-all shadow-md border font-semibold text-[10px] flex items-center justify-center gap-2`}
-                        >
-                          Deposit
-                          <Plus
-                            size={14}
-                            className="bg-white rounded-full text-blue-600"
-                          />
-                        </button>
-                      </div>
+        <PaginatedTable
+          columns={[
+            {
+              id: "method",
+              name: "Payment Method",
+              className: "flex items-center gap-2 py-2 col-span-2",
+              render: (_: any, row: any) => (
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded flex items-center justify-center overflow-hidden bg-white p-1">
+                    <img
+                      src={row?.image || "row.name"}
+                      alt={`${row?.name} logo`}
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = "none";
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `<span class=\"text-xs font-bold\">${row.provider.toUpperCase()}</span>`;
+                        }
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <div className={`font-semibold text-xs`}>{row?.name}</div>
+                    <div className={`text-[10px] ${pageClasses["label-text"]}`}>
+                      {row?.description}
                     </div>
                   </div>
-                );
-              })}
-              {/* </div> */}
-            </>
-          )}
-        </div>
+                </div>
+              ),
+            },
+            {
+              id: "desc",
+              name: "Description",
+              className: `text-[10px] ${pageClasses["label-text"]} col-span-3 h-full flex justify-start items-center`,
+              render: (_: any, row: any) => row?.extraDescription,
+            },
+            {
+              id: "fee",
+              name: "Fee",
+              className: `font-semibold text-xs h-full flex justify-start items-center`,
+              render: () => "FREE",
+            },
+            {
+              id: "min",
+              name: "Min. Amount",
+              className: `font-semibold text-xs  h-full flex justify-start items-center`,
+              render: () => "N50",
+            },
+            {
+              id: "action",
+              name: "",
+              className: `font-semibold text-xs h-full flex justify-start items-center`,
+              render: (_: any, row: any) => (
+                <button
+                  onClick={() => handleDepositClick(row?.provider)}
+                  className={`${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} px-3 py-1.5 rounded-md transition-all shadow-md border font-semibold text-[10px] flex items-center justify-center gap-2`}
+                >
+                  Deposit
+                  <Plus
+                    size={14}
+                    className="bg-white rounded-full text-blue-600"
+                  />
+                </button>
+              ),
+            },
+          ]}
+          className="grid-cols-8"
+          data={filteredPaymentMethods.map((item) => {
+            const providerInfo = getProviderInfo(item.provider);
+            return {
+              ...item,
+              image: providerInfo.image,
+              name: providerInfo.name,
+              description:
+                item.provider === "paystack"
+                  ? "(Card/bank) Instant Credit"
+                  : item.provider === "opay"
+                  ? "Instant Credit on deposits via Opay app and Opay agent shop"
+                  : providerInfo.description,
+              extraDescription:
+                item.provider === "paystack"
+                  ? "(Card/bank) Instant Credit"
+                  : item.provider === "interswitch"
+                  ? "Instant Credit"
+                  : item.provider === "opay"
+                  ? "Instant Credit on deposits via Opay app and Opay agent shop"
+                  : item.provider === "quickteller"
+                  ? "Instant Credit"
+                  : item.provider === "transfer"
+                  ? "Deposit may take up to 24 hours to reflect"
+                  : item.provider === "zenith"
+                  ? "Instant Credit"
+                  : [
+                      "paystack",
+                      "interswitch",
+                      "opay",
+                      "quickteller",
+                      "transfer",
+                      "zenith",
+                    ].includes(item.provider)
+                  ? "Instant Credit"
+                  : "Instant Credit",
+            };
+          })}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

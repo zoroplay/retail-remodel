@@ -25,6 +25,9 @@ const CashDeskSlice = createSlice({
     addCashDeskItem: (state) => {
       state.form_data.push(initialCashDeskFormData);
     },
+    clearCashDeskItems: (state) => {
+      state.form_data = [initialCashDeskFormData];
+    },
     setCashDeskItem: (
       state,
       {
@@ -55,6 +58,7 @@ export const {
   removeCashDeskItem,
   addCashDeskItem,
   setCashDeskItem,
+  clearCashDeskItems,
 } = CashDeskSlice.actions;
 
 export default CashDeskSlice.reducer;

@@ -5,6 +5,7 @@ import {
   SportCategory,
 } from "@/data/types/betting.types";
 import {
+  usePoolFixturesQuery,
   useQueryFixturesMutation,
   useSportsMenuQuery,
 } from "@/store/services/bets.service";
@@ -33,14 +34,39 @@ const SportsMenu = (props: Props) => {
     end_date: "",
     timeoffset: "0",
   });
-  const sports_data = Array.isArray(sportsData?.sports)
-    ? sportsData?.sports
-    : [];
   const dispatch = useAppDispatch();
   const [queryFixtures, { isLoading, data }] = useQueryFixturesMutation();
+
+  // Helper to get ISO week number
+  function getWeekNumber(date: Date): number {
+    const tempDate = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    );
+    const dayNum = tempDate.getUTCDay() || 7;
+    tempDate.setUTCDate(tempDate.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(tempDate.getUTCFullYear(), 0, 1));
+    return Math.ceil(
+      ((tempDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
+    );
+  }
+
+  const { data: poolData } = usePoolFixturesQuery({
+    week: getWeekNumber(new Date()),
+    year: new Date().getFullYear(),
+  });
   const navigate = useNavigate();
   const pathname = window.location.pathname;
 
+  const sports_data: Sport[] = Array.isArray(sportsData?.sports)
+    ? [
+        {
+          sportID: "pool",
+          sportName: "Pool Games",
+          total: Number(poolData?.total || 0),
+        },
+        ...sportsData?.sports,
+      ]
+    : [];
   // Sidebar navigation state
   const [selectedSport, setSelectedSport] = useState<Sport | null>(null);
   const [selectedCategory, setSelectedCategory] =
@@ -88,7 +114,12 @@ const SportsMenu = (props: Props) => {
   return (
     <section className="sticky top-[100px]">
       <aside
-        className={`lg:w-72 w-full ${classes.sports_sidebar["main-bg"]} overflow-hidden shadow-2xl`}
+        className={`lg:w-72 w-full ${
+          classes.sports_sidebar["main-bg"]
+        } border-b ${classes.sports_sidebar["card-border"].replace(
+          "border-",
+          "border-l"
+        )} overflow-hidden shadow-2xl`}
       >
         <div className="flex-1 items-center justify-center gap-2 p-2">
           {/* Restore SingleSearchInput at the top */}

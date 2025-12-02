@@ -10,12 +10,12 @@ export interface GetTransactionsDto {
 }
 export interface GetBetListDto {
   betslipId: string;
-  clientId: string;
   from: string;
   p: number;
   status: string;
   to: string;
   userId: number;
+  perPage: number;
 }
 
 export interface GetTransactionsResponse {

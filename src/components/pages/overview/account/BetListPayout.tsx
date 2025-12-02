@@ -13,6 +13,11 @@ import {
 import Select from "../../../inputs/Select";
 import AccountMenu from "@/components/layouts/sidebars/AccountMenu";
 import { getClientTheme } from "@/config/theme.config";
+import PaginatedTable from "@/components/common/PaginatedTable";
+import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import { MODAL_COMPONENTS, MODAL_FUNCTION_ENUM } from "@/store/features/types";
+import { MdCancel } from "react-icons/md";
+import { useModal } from "@/hooks/useModal";
 
 // interface Bet {
 //   betslip_id: ReactNode;
@@ -60,24 +65,26 @@ const BetListPayoutPage = () => {
   const [pageSize, setPageSize] = useState("15");
   const [outcome, setOutcome] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const { openModal } = useModal();
 
   // Lazy fetch hook - will be triggered by filter changes
   const [fetchBetListPayout, { data, isLoading }] =
     useLazyFetchBetHistoryQuery();
 
   // Use API data if available, otherwise use empty array
-  const bets = data?.data?.tickets || [];
-  const totalSales = data?.data?.totalSales || "0";
-  const totalWon = data?.data?.totalWon || "0";
-  console.log("data", JSON.stringify(data));
 
   // Pagination helpers
   const totalBets = data?.data?.meta?.total || 0;
   const totalPages = Math.ceil(totalBets / parseInt(pageSize)) || 1;
   const hasNextPage = data?.data?.meta?.nextPage !== null;
+
+  const bets = data?.data?.tickets || [];
+  const total = data?.data?.meta?.total || 1;
+  const lastPage =
+    data?.data?.meta?.lastPage || Math.ceil(total / parseInt(pageSize)) || 1;
   const hasPrevPage = data?.data?.meta?.prevPage !== null;
-  const nextPage = data?.data?.meta?.nextPage;
-  const prevPage = data?.data?.meta?.prevPage;
+  const nextPage = data?.data?.meta?.nextPage || 0;
+  const prevPage = data?.data?.meta?.prevPage || 0;
 
   const handleNextPage = () => {
     if (hasNextPage && nextPage) {
@@ -254,7 +261,7 @@ const BetListPayoutPage = () => {
     //   }
     // >
     <div
-      className={`w-full ${pageClasses["container-bg"]} flex flex-col gap-2 pt-2`}
+      className={`w-full ${pageClasses["container-bg"]} flex flex-col gap-2 pt-2 ${classes["text-primary"]}`}
     >
       {/* Filters */}
       <div
@@ -275,7 +282,7 @@ const BetListPayoutPage = () => {
             />
           </div> */}
 
-          <div className="flex flex-col text-gray-400 w-full max-w-[400px]">
+          <div className="flex flex-col w-full max-w-[400px]">
             <DateRangeInput
               // type="date"
               value={{
@@ -290,10 +297,6 @@ const BetListPayoutPage = () => {
                   endDate: e.endDate,
                 })
               }
-              bg_color={classes["input-bg"]}
-              text_color={classes["input-text"]}
-              border_color={`border ${classes["input-border"]}`}
-              height="h-[36px]"
 
               // className="bg-gray-700 text-white px-3 py-2 rounded-md"
             />
@@ -325,12 +328,11 @@ const BetListPayoutPage = () => {
                 ))}
               </select>
             </div> */}
-          <div className="flex flex-row items-center gap-4 text-gray-400">
+          <div className="flex flex-row items-center gap-4">
             <div className="w-44">
               <Select
                 label="Page Size"
                 value={[pageSize]}
-                text_color={classes["input-text"]}
                 options={[
                   { id: "10", name: "10" },
                   { id: "15", name: "15" },
@@ -340,10 +342,7 @@ const BetListPayoutPage = () => {
                 ]}
                 onChange={(e) => setPageSize(e[0] as string)}
                 placeholder={""} // className="w-full"
-                bg_color={classes["input-bg"]}
-                border_color={`border ${classes["input-border"]}`}
-                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                height="h-[36px]"
+                className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
               />
             </div>
           </div>
@@ -369,12 +368,8 @@ const BetListPayoutPage = () => {
       <div
         className={`flex justify-between items-center ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  p-4 py-2 rounded-md border`}
       >
-        <p className={`${pageClasses["card-text"]} text-xs font-semibold`}>
-          No. Bets: {bets.length}
-        </p>
-        <div
-          className={`flex gap-4 text-xs tracking-wider ${pageClasses["card-text"]}`}
-        >
+        <p className={`text-xs font-semibold`}>No. Bets: {bets.length}</p>
+        <div className={`flex gap-4 text-xs tracking-wider `}>
           {outcomeLegend.map((item, index) => (
             <div key={index} className="flex items-center gap-1">
               <div className={`w-4 h-4 ${item.color} rounded-sm`} />
@@ -385,126 +380,115 @@ const BetListPayoutPage = () => {
       </div>
 
       {/* Table */}
-      <div
-        className={`overflow-x-auto border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} rounded-md border`}
-      >
-        <table className="min-w-full text-left text-xs">
-          <thead
-            className={`${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} ${pageClasses["column-header-text"]} w-full text-xs`}
-          >
-            <tr>
-              <th className="p-3">Betslip</th>
-              <th className="p-3">User</th>
-              <th className="p-3">Bet Type</th>
-              <th className="p-3">Date</th>
-              <th className="p-3">Amount</th>
-              <th className="p-3">Outcome</th>
-              <th className="p-3">Winnings</th>
-            </tr>
-          </thead>
-          <tbody className={pageClasses["card-text"]}>
-            {bets.length === 0 ? (
-              <tr>
-                <td colSpan={7} className="p-8">
-                  <div className="flex flex-col items-center justify-center gap-4">
-                    <div
-                      className={`w-14 h-14 ${pageClasses["input-bg"]} rounded-full flex items-center justify-center`}
-                    >
-                      <FileText
-                        size={26}
-                        className={pageClasses["card-text"]}
-                      />
-                    </div>
-                    <div className="text-center">
-                      <p
-                        className={`text-base font-semibold ${pageClasses["card-text"]} mb-1`}
-                      >
-                        No payouts found
-                      </p>
-                      <p
-                        className={`text-xs ${pageClasses["card-text"]} opacity-60`}
-                      >
-                        {isLoading
-                          ? "Loading..."
-                          : "Try adjusting your filters or date range"}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              bets.map((bet, _index) => (
-                <tr
-                  key={bet.betslip_id || _index}
-                  className={`border-b ${pageClasses["card-border"]} ${pageClasses["row-hover"]} border-l-4 border-l-transparent hover:border-l-blue-500/80`}
+      <PaginatedTable
+        columns={[
+          {
+            id: "idx",
+            name: "",
+            render: (_: any, row: any) => {
+              row.outcomes === 0 &&
+              AppHelper.isWithinMinutes(row.created, 5) ? (
+                <td
+                  className="p-1 underline cursor-pointer text-red-600"
+                  onClick={() => {
+                    openModal({
+                      modal_name: MODAL_COMPONENTS.CONFIRMATION_MODAL,
+                      ref: row.betslip_id,
+                      title: "Cancel Bet",
+                      description: "Are you sure you want to cancel this bet?",
+                      modal_function: MODAL_FUNCTION_ENUM.CANCEL_TICKET,
+                    });
+                  }}
                 >
-                  <td className="p-3">{bet.betslip_id}</td>
-                  <td className="p-3">{bet.username}</td>
-                  <td className="p-3">{bet.bet_category_desc}</td>
-                  <td className="p-3">{AppHelper.formatDate(bet.created)}</td>
-                  <td className="p-3">{bet.stake}</td>
-                  <td className="p-3">
-                    <div
-                      className={`w-4 h-4 ${getOutcomeColor(
-                        bet.status
-                      )} rounded-sm`}
-                    />
-                  </td>
-                  <td className="p-3">{bet.possible_win}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-        <div className={`w-full h-0.5 ${classes.betslip["divider"]}`} />
-        <div
-          className={`flex justify-between items-center px-4 p-2 ${pageClasses["card-text"]} text-[11px] font-semibold`}
-        >
-          <div className="">
-            Page {currentPage} of {totalPages}
-          </div>
-
-          {/* Pagination Controls */}
-          <div className="flex flex-row items-center gap-4">
-            <span className="">
-              Page {currentPage} of {totalPages}
-            </span>
-
-            <div className="flex flex-row items-center gap-2">
-              {/* Previous Page Button */}
-              <button
-                type="button"
-                onClick={handlePrevPage}
-                disabled={!hasPrevPage}
-                className={`p-1 rounded ${
-                  hasPrevPage
-                    ? `${classes["button-primary-bg"]} ${classes["button-primary-hover"]}`
-                    : `${classes["input-bg"]} opacity-50`
-                }`}
-              >
-                <ChevronLeft size={20} color={hasPrevPage ? "white" : "gray"} />
-              </button>
-
-              {/* Next Page Button */}
-              <button
-                type="button"
-                onClick={handleNextPage}
-                disabled={!hasNextPage}
-                className={`p-1 rounded ${
-                  hasNextPage
-                    ? `${classes["button-primary-bg"]} ${classes["button-primary-hover"]}`
-                    : `${classes["input-bg"]} opacity-50`
-                }`}
-              >
-                <ChevronRight
-                  size={20}
-                  color={hasNextPage ? "white" : "gray"}
+                  <MdCancel fontSize={20} />
+                </td>
+              ) : (
+                <td className="p-2"></td>
+              );
+            },
+          },
+          {
+            id: "betslip_id",
+            name: "Betslip",
+            className: "col-span-2",
+          },
+          {
+            id: "username",
+            name: "User",
+            className: "col-span-2",
+          },
+          {
+            id: "bet_category_desc",
+            name: "Bet Type",
+            className: "col-span-2",
+          },
+          {
+            id: "date",
+            name: "Date",
+            className: " col-span-3",
+          },
+          {
+            id: "amount",
+            name: "Amount",
+            className: "col-span-2",
+          },
+          {
+            id: "outcomes",
+            name: "Outcome",
+            className: "col-span-2",
+            render: (_: any, row: any) => (
+              <div className="px-2">
+                <div
+                  className={`w-4 h-4 ${getOutcomeColor(
+                    row.outcomes
+                  )} rounded-sm`}
                 />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+              </div>
+            ),
+          },
+          {
+            id: "possible_win",
+            name: "Winnings",
+            className: "col-span-2",
+          },
+        ]}
+        className="grid-cols-[repeat(16,minmax(0,1fr))]"
+        pagination={{
+          total,
+          perPage: parseInt(pageSize),
+          currentPage: currentPage,
+          lastPage,
+          nextPage,
+          prevPage,
+          onPageChange: (page: number) => {
+            setCurrentPage(page);
+          },
+        }}
+        data={bets.map((bet) => ({
+          idx: "",
+          betslip_id: bet.betslip_id,
+          date: AppHelper.formatDate(bet.created),
+          username: bet.username,
+          bet_category_desc: bet.bet_category_desc,
+          outcomes: bet?.status,
+          amount: (
+            <CurrencyFormatter
+              amount={bet.stake}
+              className={""}
+              spanClassName={""}
+            />
+          ),
+          possible_win: (
+            <CurrencyFormatter
+              amount={bet.possible_win}
+              className={""}
+              spanClassName={""}
+            />
+          ),
+          bet: bet,
+        }))}
+        isLoading={isLoading}
+      />
 
       {/* Pagination */}
     </div>

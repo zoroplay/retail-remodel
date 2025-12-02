@@ -19,6 +19,7 @@ import {
   SportsHighlightResponse,
   FetchFixtureResponse,
   SportsDto,
+  PoolFixturesResponse,
 } from "./data/betting.types";
 import { REQUEST_ACTIONS } from "./constants/request-types";
 import { setFixtures } from "../features/slice/fixtures.slice";
@@ -202,7 +203,10 @@ const BetsApiSlice = apiSlice.injectEndpoints({
       GetTransactionsDto
     >({
       query: (data) => ({
-        url: `${BETTING_ACTIONS.GET_TRANSACTIONS}`,
+        url: AppHelper.buildQueryUrl(BETTING_ACTIONS.GET_TRANSACTIONS, {
+          limit: data.page_size,
+          page: data.page,
+        }),
         method: REQUEST_ACTIONS.POST,
         body: data,
       }),
@@ -210,9 +214,9 @@ const BetsApiSlice = apiSlice.injectEndpoints({
     fetchBetList: builder.query<GetBetListResponse, GetBetListDto>({
       query: (data) => ({
         url: AppHelper.buildQueryUrl(BETTING_ACTIONS.GET_BET_LIST, {
-          client_id: data.clientId,
           page: data.p,
-        }).replace(":client_id", String(data.clientId)),
+          limit: data.perPage,
+        }),
         method: REQUEST_ACTIONS.POST,
         body: data,
       }),
@@ -299,6 +303,18 @@ const BetsApiSlice = apiSlice.injectEndpoints({
         method: REQUEST_ACTIONS.GET,
       }),
     }),
+    poolFixtures: builder.query<
+      PoolFixturesResponse,
+      { week: number; year: number }
+    >({
+      query: ({ week, year }) => ({
+        url: AppHelper.buildQueryUrl(BETTING_ACTIONS.POOL_GAMES, {
+          week,
+          year,
+        }),
+        method: REQUEST_ACTIONS.GET,
+      }),
+    }),
     // Live betting endpoints
     // getLiveEvents: builder.query<any, { sport_id?: string; status?: string }>({
     //   query: (data) => ({
@@ -370,4 +386,6 @@ export const {
   useQueryFixturesMutation,
   useSportsQuery,
   useTopBetsQuery,
+  useLazyPoolFixturesQuery,
+  usePoolFixturesQuery,
 } = BetsApiSlice;

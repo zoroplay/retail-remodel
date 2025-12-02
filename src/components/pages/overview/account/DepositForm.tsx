@@ -182,21 +182,19 @@ const DepositForm = () => {
   };
 
   return (
-    <div className={`${pageClasses["page-bg"]} ${pageClasses["page-text"]}`}>
+    <div className={`${pageClasses["page-bg"]} ${classes["text-primary"]}`}>
       <div className="p-2 flex flex-col gap-2">
         {/* Header */}
         <div className="flex items-center gap-3 p-2">
           <button
             onClick={handleGoBack}
-            className={`p-2 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} rounded-lg transition-colors backdrop-blur-sm border ${pageClasses["form-border"]}`}
+            className={`p-2 ${classes.user_management_page["header-icon-bg"]} ${pageClasses["button-secondary-hover"]} rounded-lg transition-colors backdrop-blur-sm border ${pageClasses["form-border"]} ${classes["text-secondary"]}`}
           >
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h1 className={`text-base font-bold ${pageClasses["form-text"]}`}>
-              Deposit Funds
-            </h1>
-            <p className={`text-xs ${pageClasses["label-text"]}`}>
+            <h1 className={`text-base font-bold `}>Deposit Funds</h1>
+            <p className={`text-xs ${classes["text-secondary"]}`}>
               Complete your deposit using {providerInfo.name}
             </p>
           </div>
@@ -210,10 +208,7 @@ const DepositForm = () => {
             <h2
               className={`text-sm font-semibold mb-3 flex items-center gap-2 ${pageClasses["form-text"]}`}
             >
-              <Shield
-                className={pageClasses["button-primary-text"]}
-                size={18}
-              />
+              <Shield className={classes["text-secondary"]} size={18} />
               How to Fund Your Wallet
             </h2>
 
@@ -225,7 +220,7 @@ const DepositForm = () => {
                   1
                 </div>
                 <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
+                  className={`${classes["text-secondary"]} text-xs leading-relaxed`}
                 >
                   Enter your desired deposit amount
                 </p>
@@ -237,7 +232,7 @@ const DepositForm = () => {
                   2
                 </div>
                 <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
+                  className={`${classes["text-secondary"]} text-xs leading-relaxed`}
                 >
                   Click "Make Payment" to proceed
                 </p>
@@ -249,7 +244,7 @@ const DepositForm = () => {
                   3
                 </div>
                 <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
+                  className={`${classes["text-secondary"]} text-xs leading-relaxed`}
                 >
                   Enter your bank account/card details
                 </p>
@@ -261,7 +256,7 @@ const DepositForm = () => {
                   4
                 </div>
                 <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
+                  className={`${classes["text-secondary"]} text-xs leading-relaxed`}
                 >
                   Enter your PIN and OTP when prompted
                 </p>
@@ -273,7 +268,7 @@ const DepositForm = () => {
                   5
                 </div>
                 <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
+                  className={`${classes["text-secondary"]} text-xs leading-relaxed`}
                 >
                   Confirm your details and complete payment
                 </p>
@@ -307,7 +302,7 @@ const DepositForm = () => {
             <div
               className={`bg-gradient-to-r ${providerInfo.color} p-2 rounded-lg`}
             >
-              <div className="flex items-center justify-between text-white">
+              <div className="flex items-center justify-between ">
                 <div className="flex items-center gap-2.5">
                   <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                     <img
@@ -341,9 +336,7 @@ const DepositForm = () => {
               className={`${pageClasses["info-bg"]} rounded-lg p-2 border relative ${pageClasses["info-border"]} flex flex-col gap-1`}
             >
               <div className="flex justify-between items-center">
-                <span className={`text-xs ${pageClasses["balance-text"]}`}>
-                  Current Balance:
-                </span>
+                <span className={`text-xs`}>Current Balance:</span>
                 <span
                   className={`text-base font-bold ${pageClasses["balance-value"]}`}
                 >
@@ -352,10 +345,8 @@ const DepositForm = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className={`text-xs ${pageClasses["balance-text"]}`}>
-                  Email:
-                </span>
-                <span className={`text-xs ${pageClasses["form-text"]}`}>
+                <span className={`text-xs `}>Email:</span>
+                <span className={`text-xs ${classes["text-secondary"]}`}>
                   {user?.email}
                 </span>
               </div>
@@ -363,9 +354,7 @@ const DepositForm = () => {
 
             {/* Quick Amount Selection */}
             <div className="flex flex-col gap-1">
-              <label
-                className={`block text-xs font-semibold ${pageClasses["form-text"]}`}
-              >
+              <label className={`block text-xs font-semibold`}>
                 Quick Amount Selection
               </label>
               <div className="grid grid-cols-5 gap-1">
@@ -385,7 +374,7 @@ const DepositForm = () => {
             {/* Amount Input */}
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
               <div>
-                <div className={`relative ${pageClasses["form-text"]}`}>
+                <div className={`relative `}>
                   {/* <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs font-medium">
                     {currency}
                   </span> */}
@@ -401,7 +390,6 @@ const DepositForm = () => {
                     bg_color={classes["input-bg"]}
                     text_color={classes["input-text"]}
                     border_color={`border ${classes["input-border"]}`}
-                    height={"h-[36px]"}
                     className={`w-full rounded-lg ${classes["input-text"]} transition-all duration-200`}
                     type="num_select"
                     num_select_placeholder={"NGN"}
@@ -419,7 +407,7 @@ const DepositForm = () => {
                 className={`${pageClasses["info-bg"]} rounded-lg p-2 space-y-1 border ${pageClasses["info-border"]}`}
               >
                 <div className="flex justify-between text-xs">
-                  <span className={pageClasses["balance-text"]}>Fees:</span>
+                  <span>Fees:</span>
                   <span
                     className={`${pageClasses["balance-value"]} font-medium`}
                   >
@@ -427,16 +415,14 @@ const DepositForm = () => {
                   </span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className={pageClasses["balance-text"]}>
-                    Minimum Deposit:
-                  </span>
-                  <span className={`${pageClasses["form-text"]} font-medium`}>
+                  <span>Minimum Deposit:</span>
+                  <span className={`${classes["text-secondary"]} font-medium`}>
                     {currency} {formatNumber(minDeposit)}
                   </span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className={pageClasses["balance-text"]}>Currency:</span>
-                  <span className={`${pageClasses["form-text"]} font-medium`}>
+                  <span>Currency:</span>
+                  <span className={`${classes["text-secondary"]} font-medium`}>
                     {currency}
                   </span>
                 </div>

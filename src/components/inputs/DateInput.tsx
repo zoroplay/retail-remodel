@@ -20,7 +20,8 @@ import { cn } from "@/lib/utils";
 
 import { motion } from "framer-motion";
 import { AppHelper } from "@/lib/helper";
-
+import { getClientTheme } from "@/config/theme.config";
+const { classes } = getClientTheme();
 interface DateInputProps {
   value?: Date;
   onChange: ({ target }: { target: { value: string; name: string } }) => void;
@@ -386,7 +387,7 @@ const DateInput: React.FC<DateInputProps> = (props) => {
   const paddingDays = Array(firstDayOfWeek).fill(null);
   const getBorderColor = () => {
     if (error) return "border-[#ff6347]"; // tomato
-    if (isFocused) return border_color; // use the same color as border
+    if (isFocused) return classes["input-ring"]; // use the same color as border
     return border_color; // gray-200
   };
 
@@ -424,10 +425,10 @@ const DateInput: React.FC<DateInputProps> = (props) => {
       )}
 
       <div
-        className={`w-full ${bg_color} ${height} border rounded-md focus:outline-none focus:ring-2 ${getBorderColor()} flex items-center justify-between pl-2 transition-all duration-200 ${
-          isFocused
-            ? `ring-2 ring-[${border_color.replace("border-", "")}]`
-            : ""
+        className={`w-full ${bg_color} ${height} border rounded-md focus:outline-none ${
+          classes["input-focus-within"]
+        } ${getBorderColor()} flex items-center justify-between pl-2 transition-all duration-200 ${
+          isFocused ? classes["input-ring"] : ""
         }`}
         onClick={() => {
           setIsFocused(true);

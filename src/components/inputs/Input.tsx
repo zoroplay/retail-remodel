@@ -13,10 +13,12 @@ import { AppHelper } from "../../lib/helper";
 import { cn } from "../../lib/utils";
 import { useTheme } from "../providers/ThemeProvider";
 import { Eye, EyeClosed } from "lucide-react";
+import { getClientTheme } from "@/config/theme.config";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.locale("en");
+const { classes } = getClientTheme();
 
 type Props = {
   placeholder: string;
@@ -218,9 +220,9 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
       isChecking,
       check_box,
       checked,
-      border_color = "border-gray-300",
-      bg_color = "bg-whie",
-      text_color = "text-gray-700",
+      border_color = `${classes["input-border"]}`,
+      bg_color = classes["input-bg"],
+      text_color = classes["input-text"],
       accent_color = "text-gray-500",
       height = "h-[42px]",
       isLoading = false,
@@ -244,20 +246,17 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
     const { theme } = useTheme();
 
     const getBorderColor = () => {
-      if (showError || error)
-        return "border-[#ff6347] border ring-2 ring-[#ff6347]"; // tomato
-      if (isFocused)
-        return `${border_color} ring-2 ring-[tomato] outline-2 outline-[tomato] border-[tomato] border border ring-2 ring-[${border_color.replace(
-          "border-",
-          ""
-        )}]`; // use the same color as border
+      if (showError || error) return "!border-[#ff6347] border ring-[#ff6347]"; // tomato
+      if (isFocused) return `${border_color} ${classes["input-ring"]}`; // use the same color as border
       return `${border_color} border `; // gray-200
     };
 
-    const inputStyle = `flex ${height} text-black ${bg_color} text-black w-full ${rounded} border border text-xs ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 transition-all  ${getBorderColor()} ${
+    const inputStyle = `flex ${height} text-black ${bg_color} text-black w-full ${rounded} border border text-xs ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground ${
+      classes["input-focus-within"]
+    } disabled:cursor-not-allowed disabled:opacity-50 transition-all  ${getBorderColor()} ${
       AppHelper.isDarkColor(bg_color)
-        ? `hover:bg-blue-500/50 focus-within:bg-blue-500 ${text_color}`
-        : `hover:bg-blue-50/10 focus-within:bg-blue-50 ${text_color}`
+        ? `hover:bg-blue-500/50 ${text_color}`
+        : `hover:bg-blue-50/10  ${text_color}`
     } `;
 
     const [phoneNo, setPhoneNumber] = useState(value);
@@ -370,7 +369,14 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
     return (
       <>
         {password || type === "password" ? (
-          <div className="flex flex-col gap-0.5 w-full">
+          <div
+            className="flex flex-col gap-0.5 w-full"
+            tabIndex={-1}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget))
+                setIsFocused(false);
+            }}
+          >
             {label && (
               <InputLabel
                 label={label}
@@ -379,7 +385,14 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
                 optionalLabel={optionalLabel}
               />
             )}
-            <div className={`${inputStyle} ${className} overflow-hidden`}>
+            <div
+              className={`${inputStyle} ${className} overflow-hidden`}
+              tabIndex={-1}
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget))
+                  setIsFocused(false);
+              }}
+            >
               {doCopy ? (
                 <input
                   required
@@ -391,7 +404,11 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
                   value={value}
                   type={showPassword ? "text" : "password"}
                   className={`outline-none border-none disabled:cursor-not-allowed disabled:opacity-50 !bg-transparent w-full focus:!bg-transparent focus-within:!bg-transparent focus-visible:!bg-transparent  px-3 py-2`}
-                  onBlur={handleBlur}
+                  onBlur={(e) => {
+                    setIsFocused(false);
+                    handleBlur(e);
+                  }}
+                  onFocus={() => setIsFocused(true)}
                   disabled={disabled}
                   onInvalid={handleInvalid}
                 />
@@ -409,7 +426,11 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
                   onPaste={(e) => e.preventDefault()}
                   type={showPassword ? "text" : "password"}
                   className={`outline-none border-none disabled:cursor-not-allowed disabled:opacity-50 !bg-transparent w-full focus:!bg-transparent focus-within:!bg-transparent focus-visible:!bg-transparent  px-3 py-2`}
-                  onBlur={handleBlur}
+                  onBlur={(e) => {
+                    setIsFocused(false);
+                    handleBlur(e);
+                  }}
+                  onFocus={() => setIsFocused(true)}
                   onInvalid={handleInvalid}
                 />
               )}
@@ -524,7 +545,14 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
             </div>
           </div>
         ) : num_select || type === "num_select" ? (
-          <div className="flex flex-col gap-0.5 w-full">
+          <div
+            className="flex flex-col gap-0.5 w-full"
+            tabIndex={-1}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget))
+                setIsFocused(false);
+            }}
+          >
             {label && (
               <InputLabel
                 label={label}
@@ -533,7 +561,14 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
                 optionalLabel={optionalLabel}
               />
             )}
-            <div className={`${inputStyle} overflow-hidden`}>
+            <div
+              className={`${inputStyle} overflow-hidden`}
+              tabIndex={-1}
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget))
+                  setIsFocused(false);
+              }}
+            >
               <input
                 required={required}
                 name={name}
@@ -544,11 +579,18 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
                 placeholder={placeholder}
                 type={type}
                 className="outline-none !bg-transparent w-full focus:!bg-transparent focus-within:!bg-transparent focus-visible:!bg-transparent  px-3 py-2"
-                onBlur={handleBlur}
+                onBlur={(e) => {
+                  setIsFocused(false);
+                  handleBlur(e);
+                }}
+                onFocus={() => setIsFocused(true)}
                 onInvalid={handleInvalid}
               />
               <div
-                onClick={() => setShowPassword((prev) => !prev)}
+                onClick={() => {
+                  setShowPassword((prev) => !prev);
+                  setIsFocused(true);
+                }}
                 className="w-14  min-w-[3rem] cursor-pointer text-gray-900 h-full flex justify-center items-center p-2 px-3"
               >
                 {typeof num_select_placeholder === "string" ? (
@@ -723,7 +765,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
               onChange={handlePhoneNumberChange}
               placeholder={placeholder}
               className={`${inputStyle} ${className} ${
-                showError || error ? "border-2 border-[tomato]" : ""
+                showError || error ? "border-[tomato]" : ""
               } px-3 py-2`}
               onBlur={handleBlur}
               onInvalid={handleInvalid}

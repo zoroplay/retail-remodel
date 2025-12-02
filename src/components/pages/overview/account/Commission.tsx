@@ -160,21 +160,17 @@ const Commission = () => {
     color: string;
   }) => (
     <div
-      className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4`}
+      className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border p-2`}
     >
       <div
-        className={`flex items-center gap-3 mb-4 border-b ${pageClasses["section-header-border"]} pb-3`}
+        className={`flex items-center gap-2 mb-2 border-b ${classes["border"]} pb-2`}
       >
         <div
           className={`w-10 h-10 ${color} rounded-lg flex items-center justify-center`}
         >
-          <Icon size={20} className="text-white" />
+          <Icon size={20} />
         </div>
-        <h3
-          className={`text-sm font-bold ${pageClasses["section-header-text"]}`}
-        >
-          {title}
-        </h3>
+        <h3 className={`text-sm font-bold`}>{title}</h3>
       </div>
 
       {data ? (
@@ -278,7 +274,7 @@ const Commission = () => {
         </div>
       ) : (
         <div
-          className={`text-center py-8 ${pageClasses["subtitle-text"]} text-sm`}
+          className={`text-center py-8 ${classes["text-secondary"]} text-sm`}
         >
           {isLoading ? "Loading..." : "No data available"}
         </div>
@@ -288,21 +284,19 @@ const Commission = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["page-bg"]} ${pageClasses["page-text"]}`}
+      className={`h-[calc(100vh-110px)] overflow-y-auto  ${classes["text-primary"]}`}
     >
       <div className="max-w-7xl mx-auto p-4">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
           <div
-            className={`w-12 h-12 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
+            className={`w-10 h-10 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
           >
-            <BarChart3 size={24} className={pageClasses["header-icon-text"]} />
+            <BarChart3 size={20} className={classes["text-secondary"]} />
           </div>
           <div>
-            <h1 className={`text-lg font-bold ${pageClasses["header-text"]}`}>
-              Commission Report
-            </h1>
-            <p className={`${pageClasses["subtitle-text"]} text-xs`}>
+            <h1 className={`text-lg font-bold`}>Commission Report</h1>
+            <p className={`${classes["text-secondary"]} text-xs`}>
               View your commission breakdown
             </p>
           </div>
@@ -310,7 +304,7 @@ const Commission = () => {
 
         {/* Report Type Selector */}
         <div
-          className={`${pageClasses["card-bg"]} backdrop-blur-sm ${pageClasses["row-text"]} rounded-lg border ${pageClasses["card-border"]} p-4 mb-4`}
+          className={`${classes.sports_page["card-bg"]} backdrop-blur-sm  rounded-lg border ${classes.sports_page["card-border"]} p-4 mb-4`}
         >
           <div className="grid md:grid-cols-3 gap-3">
             <div>
@@ -327,10 +321,7 @@ const Commission = () => {
                 ]}
                 onChange={(e) => setReportType(e[0] as string)}
                 placeholder={""}
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
-                className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} transition-all disabled:opacity-50`}
+                className={`w-full border rounded-lg px-3 py-2  transition-all disabled:opacity-50`}
               />
             </div>
 
@@ -345,10 +336,7 @@ const Commission = () => {
                 ]}
                 onChange={(e) => setPeriod(e[0] as string)}
                 placeholder={""}
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
-                className={`w-full border ${pageClasses["input-border"]} rounded-lg px-3 py-2 ${pageClasses["input-text"]} transition-all disabled:opacity-50`}
+                className={`w-full border rounded-lg px-3 py-2  transition-all disabled:opacity-50`}
               />
             </div>
 
@@ -363,9 +351,6 @@ const Commission = () => {
                   setStartDate((prev) => e.startDate ?? prev);
                   setEndDate((prev) => e.endDate ?? prev);
                 }}
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
               />
             </div>
           </div>

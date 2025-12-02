@@ -190,6 +190,22 @@ export interface Fixture {
   sportName: string;
   outcomes: Outcome[];
 }
+export interface PoolFixtures {
+  id: number;
+  matchID: number;
+  gameID: number;
+  homeTeam: string;
+  awayTeam: string;
+  score: string;
+  result: string;
+  eventDate: string;
+  eventTime: string;
+  schedule: string;
+  odds: number;
+  status: string;
+  week: number;
+  weekNo: string;
+}
 
 export interface FixturesResponse {
   fixtures: Fixture[];

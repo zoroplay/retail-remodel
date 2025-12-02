@@ -145,7 +145,23 @@ const UserApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getAgentUsers: builder.query<
-      { success: boolean; data: User[] },
+      {
+        success: boolean;
+        data: {
+          balance: number;
+          clientId: number;
+          code: string;
+          commission_balance: number;
+          email: string;
+          firstName: string;
+          id: number;
+          lastName: string;
+          phone_number: string;
+          role_id: number;
+          rolename: string;
+          username: string;
+        }[];
+      },
       { agentId: number; clientId: number }
     >({
       query: ({ agentId, clientId }) => ({
@@ -154,6 +170,14 @@ const UserApiSlice = apiSlice.injectEndpoints({
           agent_id: agentId,
         }),
         method: REQUEST_ACTIONS.GET,
+      }),
+    }),
+    superAgentCommission: builder.query<any, { user_id: number }>({
+      query: ({ user_id }) => ({
+        url: AppHelper.buildQueryUrl(USER_ACTIONS.SUPER_AGENT_COMMISSION, {
+          user_id,
+        }),
+        method: REQUEST_ACTIONS.POST,
       }),
     }),
   }),
@@ -173,4 +197,5 @@ export const {
   usePayoutCommissionMutation,
   useDepositCommissionMutation,
   useGetAgentUsersQuery,
+  useSuperAgentCommissionQuery,
 } = UserApiSlice;
