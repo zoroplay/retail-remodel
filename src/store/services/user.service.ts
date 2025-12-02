@@ -162,11 +162,10 @@ const UserApiSlice = apiSlice.injectEndpoints({
           username: string;
         }[];
       },
-      { agentId: number; clientId: number }
+      { agentId: number }
     >({
-      query: ({ agentId, clientId }) => ({
+      query: ({ agentId }) => ({
         url: AppHelper.buildQueryUrl(USER_ACTIONS.GET_AGENT_USERS, {
-          client_id: clientId,
           agent_id: agentId,
         }),
         method: REQUEST_ACTIONS.GET,

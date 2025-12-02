@@ -15,6 +15,8 @@ import { CheckCheck, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import { getClientTheme } from "@/config/theme.config";
 import PaginatedTable from "@/components/common/PaginatedTable";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import { useAppSelector } from "@/hooks/useAppDispatch";
+import { useGetAgentUsersQuery } from "@/store/services/user.service";
 
 interface Transaction {
   id: string;
@@ -34,9 +36,25 @@ const TransactionsPage = () => {
   const [amountType, setAmountType] = useState<"all" | "credits" | "debits">(
     "all"
   );
+  const [cashier, setCashier] = useState<number | null>(null);
+  const { user } = useAppSelector((state) => state.user);
+
   const [transactionType, setTransactionType] = useState("");
   const [normalChecked, setNormalChecked] = useState(true);
   const [virtualBetsChecked, setVirtualBetsChecked] = useState(true);
+  const {
+    data: agent_users,
+    isLoading: isLoadingAgentUsers,
+    error,
+  } = useGetAgentUsersQuery(
+    {
+      agentId: user?.id || 0,
+    },
+    {
+      skip: !user?.id,
+    }
+  );
+  const users = Array.isArray(agent_users?.data) ? agent_users?.data : [];
 
   // Set default date range: 2 days ago to today
   const getDefaultDateRange = () => {
@@ -69,36 +87,6 @@ const TransactionsPage = () => {
   const nextPage = data?.meta?.nextPage;
   const prevPage = data?.meta?.prevPage;
 
-  const handleNextPage = () => {
-    if (hasNextPage && nextPage) {
-      setCurrentPage(nextPage);
-      // Auto-fetch when page changes
-      fetchTransactions({
-        clientId: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID)!,
-        endDate: dateRange.endDate,
-        page_size: parseInt(pageSize),
-        startDate: dateRange.startDate,
-        type: amountType,
-        page: nextPage,
-      });
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (hasPrevPage && prevPage) {
-      setCurrentPage(prevPage);
-      // Auto-fetch when page changes
-      fetchTransactions({
-        clientId: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID)!,
-        endDate: dateRange.endDate,
-        page_size: parseInt(pageSize),
-        startDate: dateRange.startDate,
-        type: amountType,
-        page: prevPage,
-      });
-    }
-  };
-
   // Auto-fetch when filters change
   useEffect(() => {
     fetchTransactions({
@@ -108,8 +96,9 @@ const TransactionsPage = () => {
       startDate: dateRange.startDate,
       type: amountType,
       page: currentPage,
+      userId: cashier !== null ? Number(cashier) : null,
     });
-  }, [dateRange, pageSize, amountType, currentPage]); // Re-fetch when any filter changes
+  }, [dateRange, pageSize, amountType, currentPage, cashier]); // Re-fetch when any filter changes
 
   const handleCancel = () => {
     // Reset all filters to defaults
@@ -151,8 +140,8 @@ const TransactionsPage = () => {
         {/* Transaction Filters */}
         <div className="flex gap-2">
           {/* First Row - Amounts and Transaction Type */}
-          <div className="flex flex-col lg:flex-row justify-start flex-wrap items-start gap-2">
-            <div className="flex justify-start items-center gap-2">
+          <div className="flex flex-col lg:flex-row justify-start flex-wrap items-start gap-4">
+            <div className="flex justify-start items-center gap-4">
               {/* <div className="flex flex-row items-center gap-4">
                 <Input
                   label="Amounts"
@@ -171,21 +160,23 @@ const TransactionsPage = () => {
                   name={""}
                 />
               </div> */}
-              <div className={`flex flex-row items-center gap-4`}>
-                <Input
-                  label="Transaction"
-                  value={transactionType}
-                  onChange={(e) => setTransactionType(e.target.value)}
-                  placeholder="Select type"
-                  bg_color={classes["input-bg"]}
-                  text_color={classes["input-text"]}
-                  border_color={`border ${classes["input-border"]}`}
-                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  name={""}
-                />
-              </div>
-              <div className={`flex flex-row items-center gap-2 w-full`}>
-                <div className="w-44">
+              <div
+                className={`grid 2xl:grid-cols-6 xl:grid-cols-5  lg:grid-cols-4 items-center gap-2 w-full`}
+              >
+                <div className={`flex flex-row items-center gap-4`}>
+                  <Input
+                    label="Transaction"
+                    value={transactionType}
+                    onChange={(e) => setTransactionType(e.target.value)}
+                    placeholder="Select type"
+                    bg_color={classes["input-bg"]}
+                    text_color={classes["input-text"]}
+                    border_color={`border ${classes["input-border"]}`}
+                    className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                    name={""}
+                  />
+                </div>
+                <div className="">
                   <Select
                     label="Page Size"
                     value={[pageSize]}
@@ -202,12 +193,25 @@ const TransactionsPage = () => {
                   />
                 </div>
 
-                <div className={`w-[400px] `}>
+                <div className={`min-w-[400px] col-span-2`}>
                   <DateRangeInput
                     label="Transaction Date"
                     value={dateRange}
                     onChange={setDateRange}
                     placeholder="DD/MM/YYYY"
+                  />
+                </div>
+                <div className="">
+                  <Select
+                    label="Cashier"
+                    value={cashier !== null ? [cashier.toString()] : []}
+                    options={users.map((user) => ({
+                      id: user.id.toString(),
+                      name: user.username,
+                    }))}
+                    onChange={(e) => setCashier(Number(e[0]))}
+                    placeholder={""} // className="w-full"
+                    className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                   />
                 </div>
                 <div className="flex flex-row items-center justify-center gap-4 h-full">
@@ -253,7 +257,7 @@ const TransactionsPage = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-row justify-between items-end">
+        <div className="flex flex-row justify-between items-end pt-2">
           <div className="flex flex-row justify-between">
             <div className="flex flex-row items-center gap-8">
               <div>

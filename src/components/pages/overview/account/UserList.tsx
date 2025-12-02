@@ -43,7 +43,6 @@ const UserList = () => {
   const { data, isLoading, error } = useGetAgentUsersQuery(
     {
       agentId: user?.id || 0,
-      clientId: Number(environmentConfig.CLIENT_ID),
     },
     {
       skip: !user?.id,

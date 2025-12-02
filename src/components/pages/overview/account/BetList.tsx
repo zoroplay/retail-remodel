@@ -19,6 +19,7 @@ import { useAppDispatch } from "@/store/hooks/useAppDispatch";
 import { setBetslip as set_betlist } from "@/store/features/slice/betting.slice";
 import PaginatedTable from "@/components/common/PaginatedTable";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import { useGetAgentUsersQuery } from "@/store/services/user.service";
 
 const BetListPage = () => {
   const { classes } = getClientTheme();
@@ -26,7 +27,7 @@ const BetListPage = () => {
   // Filter states
   const [dateFilter, setDateFilter] = useState("Bet");
   const { openModal } = useModal();
-
+  const [cashier, setCashier] = useState<number | null>(null);
   // Set default date range: 2 days ago to tomorrow
   const getDefaultDateRange = () => {
     const today = new Date();
@@ -50,6 +51,19 @@ const BetListPage = () => {
   const [outcome, setOutcome] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
+  const {
+    data: agent_users,
+    isLoading: isLoadingAgentUsers,
+    error,
+  } = useGetAgentUsersQuery(
+    {
+      agentId: user?.id || 0,
+    },
+    {
+      skip: !user?.id,
+    }
+  );
+  const users = Array.isArray(agent_users?.data) ? agent_users?.data : [];
   const [fetchBetList, { data, isLoading }] = useLazyFetchBetListQuery();
 
   const bets = data?.data?.tickets || [];
@@ -70,9 +84,9 @@ const BetListPage = () => {
       p: Number(currentPage),
 
       status: outcome || "",
-      userId: Number(user?.id), // You might want to get this from user context
+      userId: cashier ? cashier : Number(user?.id), // You might want to get this from user context
     });
-  }, [dateRange, pageSize, outcome, currentPage, betslip]); // Re-fetch when any filter changes
+  }, [dateRange, pageSize, outcome, currentPage, betslip, cashier]); // Re-fetch when any filter changes
 
   // // Auto-refresh every 15 seconds
   // useEffect(() => {
@@ -202,7 +216,7 @@ const BetListPage = () => {
       <div
         className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  p-2 rounded-md border `}
       >
-        <div className="flex gap-2 items-end flex-wrap">
+        <div className="grid grid-cols-4 gap-2 items-end flex-wrap">
           {/* <div className="flex flex-col text-gray-400">
             <Input
               label="Date"
@@ -217,7 +231,7 @@ const BetListPage = () => {
             />
           </div> */}
 
-          <div className="flex flex-col  w-full max-w-[400px]">
+          <div className="flex flex-col col-span-2 w-full min--w-[400px]">
             <DateRangeInput
               // type="date"
               value={{
@@ -232,39 +246,11 @@ const BetListPage = () => {
                   endDate: e.endDate,
                 })
               }
-
-              // className="bg-gray-700 text-white px-3 py-2 rounded-md"
             />
           </div>
 
-          {/* <div className="flex flex-col">
-              <label className="text-sm text-gray-400">To</label>
-              <input
-                type="date"
-                value={dateRange.endDate}
-                onChange={(e) =>
-                  setDateRange({ ...dateRange, endDate: e.target.value })
-                }
-                className="bg-gray-700 text-white px-3 py-2 rounded-md"
-              />
-            </div> */}
-
-          {/* <div className="flex flex-col">
-              <label className="text-sm text-gray-400">Page Size</label>
-              <select
-                value={pageSize}
-                onChange={(e) => setPageSize(e.target.value)}
-                className="bg-gray-700 text-white px-3 py-2 rounded-md"
-                >
-                {[10, 15, 20, 25, 30].map((n) => (
-                  <option key={n} value={n}>
-                  {n}
-                  </option>
-                  ))}
-              </select>
-            </div> */}
           <div className="flex flex-row items-center gap-4 ">
-            <div className="w-44">
+            <div className="w-full">
               <Select
                 label="Page Size"
                 value={[pageSize]}
@@ -280,6 +266,19 @@ const BetListPage = () => {
                 className={`w-full border rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
               />
             </div>
+          </div>
+          <div className="">
+            <Select
+              label="Cashier"
+              value={cashier !== null ? [cashier.toString()] : []}
+              options={users.map((user) => ({
+                id: user.id.toString(),
+                name: user.username,
+              }))}
+              onChange={(e) => setCashier(Number(e[0]))}
+              placeholder={""} // className="w-full"
+              className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
+            />
           </div>
           {/* 
           <div className="ml-auto flex gap-3">

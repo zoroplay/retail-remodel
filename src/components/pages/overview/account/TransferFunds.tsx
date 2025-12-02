@@ -57,7 +57,6 @@ const TransferFunds = () => {
   const { data, isLoading } = useGetAgentUsersQuery(
     {
       agentId: user?.id || 0,
-      clientId: Number(environmentConfig.CLIENT_ID),
     },
     {
       skip: !user?.id,
