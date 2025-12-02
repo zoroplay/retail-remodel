@@ -5,7 +5,7 @@ import streetbet_logo from "../images/streetbet-logo.png";
 import header_bg from "../images/header-bg.png";
 import environmentConfig from "@/store/services/configs/environment.config";
 let logo = sbe_logo;
-switch (environmentConfig.CLIENT_ID) {
+switch (Number(environmentConfig.CLIENT_ID)) {
   case 13:
     logo = streetbet_logo;
     break;

@@ -13,7 +13,10 @@ import {
 // import moment from "moment";
 import DateRangeInput from "@/components/inputs/DateRangeInput";
 import { getClientTheme } from "@/config/theme.config";
-import { useSuperAgentCommissionQuery } from "@/store/services/user.service";
+import {
+  useSuperAgentCommissionQuery,
+  useTotalSuperAgentCommissionQuery,
+} from "@/store/services/user.service";
 import PaginatedTable from "@/components/common/PaginatedTable";
 
 interface SalesData {
@@ -46,6 +49,7 @@ const Sales = () => {
   const [salesData, setSalesData] = useState<SalesData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   useSuperAgentCommissionQuery({ user_id: user?.id || 0 });
+  useTotalSuperAgentCommissionQuery({ user_id: user?.id || 0 });
 
   const formatCurrency = (amount: number) => {
     return `₦${amount.toLocaleString("en-US", {

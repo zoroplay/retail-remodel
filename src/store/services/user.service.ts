@@ -171,11 +171,28 @@ const UserApiSlice = apiSlice.injectEndpoints({
         method: REQUEST_ACTIONS.GET,
       }),
     }),
-    superAgentCommission: builder.query<any, { user_id: number }>({
+    superAgentCommission: builder.query<
+      any,
+      { user_id: number; from: string; to: string }
+    >({
       query: ({ user_id }) => ({
         url: AppHelper.buildQueryUrl(USER_ACTIONS.SUPER_AGENT_COMMISSION, {
           user_id,
         }),
+        method: REQUEST_ACTIONS.POST,
+      }),
+    }),
+    totalSuperAgentCommission: builder.query<
+      any,
+      { user_id: number; from: string; to: string }
+    >({
+      query: ({ user_id }) => ({
+        url: AppHelper.buildQueryUrl(
+          USER_ACTIONS.TOTAL_SUPER_AGENT_COMMISSION,
+          {
+            user_id,
+          }
+        ),
         method: REQUEST_ACTIONS.POST,
       }),
     }),
@@ -197,4 +214,5 @@ export const {
   useDepositCommissionMutation,
   useGetAgentUsersQuery,
   useSuperAgentCommissionQuery,
+  useTotalSuperAgentCommissionQuery,
 } = UserApiSlice;

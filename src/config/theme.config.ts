@@ -1545,7 +1545,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "card-bg": "bg-[#161616]",
         "primary-hover": "hover:bg-yellow-500",
         accent: "text-yellow-400",
-        "light-divider": "bg-gray-300",
+        "light-divider": "bg-yellow-300/40",
         "dark-divider": "bg-gray-700",
         "accent-bg": "bg-yellow-500",
         "button-primary":
@@ -2027,7 +2027,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "select-option-bg":
           "bg-gradient-to-br from-yellow-800 to-yellow-900 text-white",
         "item-hover-border-l": "hover:border-l-yellow-500/80",
-        "modal-bg": "bg-slate-900",
+        "modal-bg": "bg-[#161616]",
         "button-primary-bg": "bg-gradient-to-r from-gray-600 to-gray-700",
         "button-primary-border": "border border-gray-700",
         "button-primary-hover": "hover:from-gray-700 hover:to-gray-800",
@@ -2391,9 +2391,10 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "header-date-text": "text-gray-400",
           "title-text": "text-yellow-300",
           "subtitle-text": "text-yellow-200",
-          "market-card-bg": "bg-gray-900/70",
+          "market-card-bg": "bg-yellow-950/30",
           "market-card-border": "border-yellow-600/40",
-          "market-card-hover": "hover:border-yellow-500 hover:bg-gray-900/90",
+          "market-card-hover":
+            "hover:border-yellow-500/50 hover:bg-yellow-950/50",
           "market-title": "text-yellow-300",
           "axis-label-text": "text-yellow-400",
           "axis-label-bg": "bg-yellow-900/20",
