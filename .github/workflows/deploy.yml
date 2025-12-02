@@ -176,7 +176,7 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.GCP_SERVER_IP }} >> ~/.ssh/known_hosts
 
@@ -203,15 +203,6 @@ jobs:
           # Copy files to server
           scp -o StrictHostKeyChecking=no .env ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
           scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
-          scp -o StrictHostKeyChecking=no deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
-          
-          # Login to GitHub Container Registry on server and execute deployment
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            chmod +x ~/gcp-retail/deploy.sh
-            bash ~/gcp-retail/deploy.sh
-          'cp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
-
           scp -o StrictHostKeyChecking=no deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
           
           # Login to GitHub Container Registry on server and execute deployment
