@@ -1,0 +1,13 @@
+services:
+  pos-web:
+    build:
+      target: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+    ports:
+      - "3000:3000"
+      - "24678:24678" # Vite HMR port
