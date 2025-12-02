@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/zoroplay/retail-remodel/compare/v1.0.1...v1.0.2) (2025-12-02)
+
+
+### Bug Fixes
+
+* remove base64 decode from SSH key setup ([81d1407](https://github.com/zoroplay/retail-remodel/commit/81d1407ce8130f2a973d3d3e81fea40874cf64e4))
+
 ## [1.0.1](https://github.com/zoroplay/retail-remodel/compare/v1.0.0...v1.0.1) (2025-12-02)
 
 
