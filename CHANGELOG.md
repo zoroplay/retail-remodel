@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/zoroplay/retail-remodel/compare/v1.0.4...v1.0.5) (2025-12-02)
+
+
+### Bug Fixes
+
+* change port from 8042 to 8045 to avoid conflict ([b99a211](https://github.com/zoroplay/retail-remodel/commit/b99a21184d37a0a29be5a9f22618b9adb97d48b2))
+
 ## [1.0.4](https://github.com/zoroplay/retail-remodel/compare/v1.0.3...v1.0.4) (2025-12-02)
 
 
