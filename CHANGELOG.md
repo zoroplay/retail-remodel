@@ -1,3 +1,11 @@
+## [1.0.3](https://github.com/zoroplay/retail-remodel/compare/v1.0.2...v1.0.3) (2025-12-02)
+
+
+### Bug Fixes
+
+* use heredoc for SSH key to preserve exact formatting ([d91647d](https://github.com/zoroplay/retail-remodel/commit/d91647d7ddda40d1b987702c869790aa3cf0bdd4))
+* use printf for SSH key to preserve formatting ([b30d7e4](https://github.com/zoroplay/retail-remodel/commit/b30d7e4044339f528100e60a3eb0bac3af162baa))
+
 ## [1.0.2](https://github.com/zoroplay/retail-remodel/compare/v1.0.1...v1.0.2) (2025-12-02)
 
 
