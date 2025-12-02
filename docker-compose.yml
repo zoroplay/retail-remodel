@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       target: production
     ports:
-      - "8042:8080"
+      - "8045:8080"
     env_file:
       - .env
     restart: unless-stopped
