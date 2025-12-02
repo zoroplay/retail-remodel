@@ -176,26 +176,8 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          cat > ~/.ssh/id_rsa << 'EOF'
-          ${{ secrets.GCP_SSH_PRIVATE_KEY }}
-          EOF
+          echo '${{ secrets.GCP_SSH_PRIVATE_KEY }}' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          
-          # Debug SSH key
-          echo "SSH key file size: $(wc -c < ~/.ssh/id_rsa)"
-          echo "SSH key first line: $(head -n1 ~/.ssh/id_rsa)"
-          echo "SSH key last line: $(tail -n1 ~/.ssh/id_rsa)"
-          
-          # Validate SSH key format
-          if ssh-keygen -l -f ~/.ssh/id_rsa; then
-            echo "SSH key is valid"
-          else
-            echo "SSH key validation failed, trying to fix format..."
-            # Remove any extra whitespace and ensure proper line endings
-            sed -i 's/[[:space:]]*$//' ~/.ssh/id_rsa
-            echo "" >> ~/.ssh/id_rsa  # Ensure file ends with newline
-          fi
-          
           ssh-keyscan -H ${{ secrets.GCP_SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Prepare deployment files
