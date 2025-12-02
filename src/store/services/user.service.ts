@@ -15,6 +15,8 @@ import type {
   CommissionTransactionsResponse,
   UserCommissionResponse,
   UserCommissionProfileResponse,
+  SuperAgentCommissionResponse,
+  TotalSuperAgentCommissionResponse,
 } from "./types/responses";
 
 const UserApiSlice = apiSlice.injectEndpoints({
@@ -172,8 +174,8 @@ const UserApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     superAgentCommission: builder.query<
-      any,
-      { user_id: number; from: string; to: string }
+      SuperAgentCommissionResponse,
+      { user_id: number; from: string; to: string; provider: string }
     >({
       query: ({ user_id }) => ({
         url: AppHelper.buildQueryUrl(USER_ACTIONS.SUPER_AGENT_COMMISSION, {
@@ -183,7 +185,7 @@ const UserApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     totalSuperAgentCommission: builder.query<
-      any,
+      TotalSuperAgentCommissionResponse,
       { user_id: number; from: string; to: string }
     >({
       query: ({ user_id }) => ({

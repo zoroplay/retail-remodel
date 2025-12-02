@@ -37,7 +37,7 @@ const Sales = () => {
     "all" | "sports" | "virtual" | "casino"
   >("all");
   const [period, setPeriod] = useState("today");
-  const [product, setProduct] = useState("all");
+  const [product, setProduct] = useState("");
   //   const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
   //   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [startDate, setStartDate] = useState(
@@ -48,8 +48,22 @@ const Sales = () => {
   );
   const [salesData, setSalesData] = useState<SalesData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  useSuperAgentCommissionQuery({ user_id: user?.id || 0 });
-  useTotalSuperAgentCommissionQuery({ user_id: user?.id || 0 });
+  // Super Agent Commission Query
+  const {
+    data: superAgentCommissionData,
+    isLoading: isCommissionLoading,
+    error: commissionError,
+    refetch: refetchCommission,
+  } = useSuperAgentCommissionQuery(
+    user?.id
+      ? {
+          user_id: user.id,
+          from: startDate,
+          to: endDate,
+          provider: product,
+        }
+      : { user_id: 0, from: startDate, to: endDate, provider: product }
+  );
 
   const formatCurrency = (amount: number) => {
     return `₦${amount.toLocaleString("en-US", {
@@ -81,45 +95,48 @@ const Sales = () => {
     }
   };
 
-  const fetchResult = async () => {
-    setIsLoading(true);
-    try {
-      // TODO: Replace with actual API call
-      // const response = await saleReport({ from: startDate, to: endDate, productType: activeTab, role: user?.role });
-      // setSalesData(response.data);
-      // toast.success("Sales report loaded successfully");
+  const fetchResult = () => {
+    refetchCommission();
+  };
 
+  // Map agent breakdown to salesData
+  React.useEffect(() => {
+    if (superAgentCommissionData && superAgentCommissionData.success) {
+      setSalesData(
+        superAgentCommissionData.data.agentBreakdown.map((agent) => ({
+          channel: `Agent ${agent.agentId}`,
+          totalStake: agent.totalStake,
+          totalWinnings: agent.totalWinnings,
+          totalTickets: 0,
+          totalCancelled: 0,
+          grossProfit: agent.profit,
+          netRevenue: agent.commissionEarned,
+        }))
+      );
+    } else {
       setSalesData([]);
-      setIsLoading(false);
-      toast.info("Sales API not yet implemented");
-    } catch (error) {
-      setIsLoading(false);
-      toast.error("Unable to fetch sales report");
     }
-  };
+  }, [superAgentCommissionData]);
 
-  const calculateTotals = () => {
-    return salesData.reduce(
-      (acc, curr) => ({
-        totalStake: acc.totalStake + curr.totalStake,
-        totalWinnings: acc.totalWinnings + curr.totalWinnings,
-        totalTickets: acc.totalTickets + curr.totalTickets,
-        totalCancelled: acc.totalCancelled + curr.totalCancelled,
-        grossProfit: acc.grossProfit + curr.grossProfit,
-        netRevenue: acc.netRevenue + curr.netRevenue,
-      }),
-      {
-        totalStake: 0,
-        totalWinnings: 0,
-        totalTickets: 0,
-        totalCancelled: 0,
-        grossProfit: 0,
-        netRevenue: 0,
-      }
-    );
-  };
-
-  const totals = calculateTotals();
+  // Totals from API response
+  const totals =
+    superAgentCommissionData && superAgentCommissionData.success
+      ? {
+          totalStake: superAgentCommissionData.data.totalRevenue,
+          totalWinnings: 0,
+          totalTickets: 0,
+          totalCancelled: 0,
+          grossProfit: superAgentCommissionData.data.totalCommissionAmount,
+          netRevenue: superAgentCommissionData.data.superAgentCommissionAmount,
+        }
+      : {
+          totalStake: 0,
+          totalWinnings: 0,
+          totalTickets: 0,
+          totalCancelled: 0,
+          grossProfit: 0,
+          netRevenue: 0,
+        };
 
   return (
     <div
@@ -129,7 +146,7 @@ const Sales = () => {
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
           <div
-            className={`w-10 h-10 rounded-lg flex items-center justify-center ${pageClasses["header-icon-bg"]}`}
+            className={`w-10 h-10 rounded-md flex items-center justify-center ${pageClasses["header-icon-bg"]}`}
           >
             <ShoppingCart
               size={20}
@@ -137,7 +154,7 @@ const Sales = () => {
             />
           </div>
           <div>
-            <h1 className={`text-lg font-bold`}>Sales Report</h1>
+            <h1 className={`text-base font-bold`}>Sales Report</h1>
             <p className={`text-xs ${classes["text-secondary"]}`}>
               View sales analysis by channel and product
             </p>
@@ -147,12 +164,12 @@ const Sales = () => {
         {/* Tabs */}
         {user?.role === "Shop" && (
           <div
-            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-2 mb-4`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-md border ${pageClasses["card-border"]} p-2 mb-4`}
           >
             <div className="flex gap-2 overflow-x-auto">
               <button
                 onClick={() => setActiveTab("all")}
-                className={`px-4 py-2 text-xs font-medium rounded-lg transition-all whitespace-nowrap ${
+                className={`px-4 py-2 text-xs font-medium rounded-md transition-all whitespace-nowrap ${
                   activeTab === "all"
                     ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                     : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
@@ -162,7 +179,7 @@ const Sales = () => {
               </button>
               <button
                 onClick={() => setActiveTab("sports")}
-                className={`px-4 py-2 text-xs font-medium rounded-lg transition-all whitespace-nowrap ${
+                className={`px-4 py-2 text-xs font-medium rounded-md transition-all whitespace-nowrap ${
                   activeTab === "sports"
                     ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                     : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
@@ -172,7 +189,7 @@ const Sales = () => {
               </button>
               <button
                 onClick={() => setActiveTab("virtual")}
-                className={`px-4 py-2 text-xs font-medium rounded-lg transition-all whitespace-nowrap ${
+                className={`px-4 py-2 text-xs font-medium rounded-md transition-all whitespace-nowrap ${
                   activeTab === "virtual"
                     ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                     : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
@@ -186,7 +203,7 @@ const Sales = () => {
 
         {/* Filters */}
         <div
-          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4 mb-4`}
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-md border ${pageClasses["card-border"]} p-4 mb-4`}
         >
           <div className="grid md:grid-cols-2 gap-3 mb-3">
             {/* Period Selection */}
@@ -197,7 +214,7 @@ const Sales = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => handlePeriodChange("today")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
                     period === "today"
                       ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                       : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
@@ -207,7 +224,7 @@ const Sales = () => {
                 </button>
                 <button
                   onClick={() => handlePeriodChange("yesterday")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
                     period === "yesterday"
                       ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                       : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
@@ -217,7 +234,7 @@ const Sales = () => {
                 </button>
                 <button
                   onClick={() => handlePeriodChange("custom")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
                     period === "custom"
                       ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                       : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
@@ -237,8 +254,8 @@ const Sales = () => {
               </label>
               <div className="flex gap-2">
                 <button
-                  onClick={() => setProduct("all")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
+                  onClick={() => setProduct("")}
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
                     product === "all"
                       ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                       : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
@@ -247,18 +264,18 @@ const Sales = () => {
                   All
                 </button>
                 <button
-                  onClick={() => setProduct("retail")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
+                  onClick={() => setProduct("sports")}
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
                     product === "retail"
                       ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                       : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
                   }`}
                 >
-                  Retail
+                  Sports
                 </button>
                 <button
                   onClick={() => setProduct("online")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
                     product === "online"
                       ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
                       : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
@@ -303,23 +320,23 @@ const Sales = () => {
             <button
               onClick={fetchResult}
               disabled={isLoading}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 ${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]} ${pageClasses["button-primary-text"]} text-sm font-medium rounded-lg transition-all shadow-lg disabled:opacity-50`}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 ${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]} ${pageClasses["button-primary-text"]} text-sm font-medium rounded-md transition-all shadow-lg disabled:opacity-50`}
             >
               <Filter size={16} />
               {isLoading ? "Loading..." : "Generate Report"}
             </button>
             <button
-              className={`px-4 py-2 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} ${pageClasses["button-secondary-text"]} text-sm font-medium rounded-lg transition-all`}
+              className={`px-4 py-2 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} ${pageClasses["button-secondary-text"]} text-sm font-medium rounded-md transition-all`}
             >
               Cancel
             </button>
           </div>
         </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
+        {/* Super Agent Commission Summary Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3  gap-3 mb-4">
           <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-lg p-3`}
+            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-md p-2`}
           >
             <div className="flex items-center gap-2 mb-2">
               <DollarSign
@@ -327,7 +344,7 @@ const Sales = () => {
                 className={pageClasses["header-icon-text"]}
               />
               <div className={`text-xs ${pageClasses["info-label-text"]}`}>
-                Total Stake
+                Total Revenue
               </div>
             </div>
             <div
@@ -336,28 +353,8 @@ const Sales = () => {
               {formatCurrency(totals.totalStake)}
             </div>
           </div>
-
           <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-lg p-3`}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <TrendingUp
-                size={16}
-                className={pageClasses["header-icon-text"]}
-              />
-              <div className={`text-xs ${pageClasses["info-label-text"]}`}>
-                Winnings
-              </div>
-            </div>
-            <div
-              className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
-            >
-              {formatCurrency(totals.totalWinnings)}
-            </div>
-          </div>
-
-          <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-lg p-3`}
+            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-md p-2`}
           >
             <div className="flex items-center gap-2 mb-2">
               <BarChart3
@@ -365,7 +362,7 @@ const Sales = () => {
                 className={pageClasses["header-icon-text"]}
               />
               <div className={`text-xs ${pageClasses["info-label-text"]}`}>
-                Gross Profit
+                Total Commission
               </div>
             </div>
             <div
@@ -374,9 +371,8 @@ const Sales = () => {
               {formatCurrency(totals.grossProfit)}
             </div>
           </div>
-
           <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-lg p-3`}
+            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-md p-2`}
           >
             <div className="flex items-center gap-2 mb-2">
               <DollarSign
@@ -384,48 +380,13 @@ const Sales = () => {
                 className={pageClasses["header-icon-text"]}
               />
               <div className={`text-xs ${pageClasses["info-label-text"]}`}>
-                Net Revenue
+                Super Agent Commission
               </div>
             </div>
             <div
               className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
             >
               {formatCurrency(totals.netRevenue)}
-            </div>
-          </div>
-
-          <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-lg p-3`}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <Users size={16} className={pageClasses["header-icon-text"]} />
-              <div className={`text-xs ${pageClasses["info-label-text"]}`}>
-                Total Tickets
-              </div>
-            </div>
-            <div
-              className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
-            >
-              {totals.totalTickets.toLocaleString()}
-            </div>
-          </div>
-
-          <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-lg p-3`}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <ShoppingCart
-                size={16}
-                className={pageClasses["header-icon-text"]}
-              />
-              <div className={`text-xs ${pageClasses["info-label-text"]}`}>
-                Cancelled
-              </div>
-            </div>
-            <div
-              className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
-            >
-              {totals.totalCancelled.toLocaleString()}
             </div>
           </div>
         </div>
@@ -436,24 +397,23 @@ const Sales = () => {
           columns={[
             {
               id: "channel",
-              name: "Channel",
+              name: "Agent",
             },
             {
               id: "stake",
-              name: "Stake",
+              name: "Total Stake",
             },
             {
               id: "winnings",
-              name: "Winnings",
+              name: "Total Winnings",
             },
             {
               id: "gross_profit",
-              name: "Gross Profit",
+              name: "Profit",
             },
-
             {
               id: "net_revenue",
-              name: "Net Revenue",
+              name: "Commission Earned",
             },
             {
               id: "tickets",
@@ -474,7 +434,7 @@ const Sales = () => {
             tickets: sale?.totalTickets,
             cancelled: sale?.totalCancelled,
           }))}
-          isLoading={isLoading}
+          isLoading={isCommissionLoading}
         />
       </div>
     </div>

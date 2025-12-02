@@ -85,20 +85,24 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
       </div>
 
       {/* Table Rows - Scrollable */}
-      <div className="flex-1 h-full overflow-y-auto">
+      <div className="flex-1 gap-2 h-full overflow-y-auto">
         {isLoading ? (
           Array.from({ length: 6 }).map((_, rowIndex) => (
             <div
               key={`skeleton-row-${rowIndex}`}
               className={`border-b border-l-4 border-l-transparent ${pageClasses["card-border"]}`}
             >
-              <div className={`flex flex-row p-2 animate-pulse gap-2`}>
+              <div
+                className={`${base_styles} grid p-1 px-2  animate-pulse gap-1`}
+              >
                 {columns.map((col, colIndex) => (
                   <span
                     key={`skeleton-cell-${col.id}-${colIndex}`}
-                    className={`h-4 rounded bg-gray-700/40 flex-1 ${
-                      col.className || pageClasses["row-text"]
-                    } ${colIndex !== 0 ? "border-l border-gray-700 pl-1" : ""}`}
+                    className={`h-6 rounded ${
+                      classes["skeleton-bg"]
+                    } flex-1 p-2 ${col.className || pageClasses["row-text"]} ${
+                      colIndex !== 0 ? "border-gray-700 pl-1" : ""
+                    }`}
                   ></span>
                 ))}
               </div>
