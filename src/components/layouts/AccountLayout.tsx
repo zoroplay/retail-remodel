@@ -12,7 +12,7 @@ interface AccountLayoutProps {
  */
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   return (
-    <div className="h-[calc(100vh-100px)] top-0 relative flex gap-4 justify-center items-start text-white">
+    <div className="min-h-[calc(100vh-100px)] top-0 relative flex gap-4 justify-center items-start text-white">
       {/* Conditionally render AccountMenu sidebar */}
       {/* <div className="flex-shrink-0"> */}
       <AccountMenu />

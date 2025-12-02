@@ -358,7 +358,7 @@ const NewUser = () => {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className={`flex items-center text-xs gap-2 px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow`}
+                className={`flex items-center text-[11px] gap-1 px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow`}
               >
                 <X size={14} />
                 Cancel
@@ -366,7 +366,7 @@ const NewUser = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`flex items-center text-xs gap-2 px-4 py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} font-medium rounded-md transition-all shadow-md border disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`flex items-center text-[11px] gap-1 px-4 py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} font-medium rounded-md transition-all shadow-md border disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isSubmitting ? (
                   <Loader size={14} className="animate-spin" />

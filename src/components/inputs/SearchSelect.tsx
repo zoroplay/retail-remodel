@@ -58,7 +58,7 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
   onChange,
   placeholder = "Select an option",
   className = "",
-  height = "h-[46px]",
+  height = "h-[38px]",
   label,
   error,
   disabled = false,

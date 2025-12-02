@@ -59,7 +59,7 @@ const SingleSearchInput = React.forwardRef<
       tabIndex,
       type = "text",
       name = "default",
-      height = "h-[40px]",
+      height = "h-[38px]",
       border_color = `${classes["input-border"]}`,
       bg_color = classes["input-bg"],
       text_color = classes["input-text"],

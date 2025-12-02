@@ -501,7 +501,7 @@ const BankWithdrawal = () => {
                 <button
                   type="button"
                   onClick={handleGoBack}
-                  className={`px-4 py-2.5 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} border ${pageClasses["quick-button-border"]} ${pageClasses["button-secondary-text"]} text-xs rounded-lg transition-colors duration-200`}
+                  className={`px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-border"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]}  text-[11px] rounded-lg transition-colors duration-200`}
                 >
                   Cancel
                 </button>

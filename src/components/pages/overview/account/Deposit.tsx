@@ -332,7 +332,7 @@ const Deposit = () => {
               render: (_: any, row: any) => (
                 <button
                   onClick={() => handleDepositClick(row?.provider)}
-                  className={`${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} px-3 py-1.5 rounded-md transition-all shadow-md border font-semibold text-[10px] flex items-center justify-center gap-2`}
+                  className={`${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} px-3 py-2 rounded-md transition-all shadow-md border font-semibold text-[10px] flex items-center justify-center gap-2`}
                 >
                   Deposit
                   <Plus

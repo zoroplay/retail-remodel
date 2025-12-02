@@ -434,7 +434,7 @@ const DepositForm = () => {
                 <button
                   type="submit"
                   disabled={isLoading || !amount || Number(amount) < minDeposit}
-                  className={`flex-1  disabled:opacity-50 disabled:cursor-not-allowed py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} font-medium rounded-md transition-all shadow-md border py-2 px-4  duration-200 flex items-center justify-center gap-2 text-xs `}
+                  className={`flex-1  disabled:opacity-50 disabled:cursor-not-allowed py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} font-medium rounded-md transition-all shadow-md border py-2 px-4  duration-200 flex items-center justify-center gap-2 text-[11px] `}
                 >
                   {isLoading ? (
                     <>
@@ -451,7 +451,7 @@ const DepositForm = () => {
                 <button
                   type="button"
                   onClick={handleGoBack}
-                  className={`px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow text-xs rounded-lg transition-colors duration-200`}
+                  className={`px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow text-[11px] rounded-lg transition-colors duration-200`}
                 >
                   Cancel
                 </button>

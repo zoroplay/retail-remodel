@@ -51,7 +51,7 @@ const Select: React.FC<SelectProps> = ({
   onChange,
   placeholder = "Select an option",
   className = "",
-  height = "h-[40px]",
+  height = "h-[38px]",
   label,
   error,
   disabled = false,

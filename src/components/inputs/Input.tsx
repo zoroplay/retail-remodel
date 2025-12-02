@@ -224,7 +224,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
       bg_color = classes["input-bg"],
       text_color = classes["input-text"],
       accent_color = "text-gray-500",
-      height = "h-[42px]",
+      height = "h-[38px]",
       isLoading = false,
       rounded = "rounded-md",
     },
