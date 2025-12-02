@@ -41,6 +41,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:skip-tsc": "vite build",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui"

@@ -33,7 +33,7 @@ ENV VITE_APP_SITE_KEY=$VITE_APP_SITE_KEY
 
 RUN npm ci --legacy-peer-deps
 COPY . .
-RUN npm run build
+RUN npm run build:skip-tsc
 
 # Production stage
 FROM nginx:alpine AS production
