@@ -114,7 +114,7 @@ const Combined: React.FC<CombinedProps> = ({
   }, 0);
 
   return (
-    <div className={`border ${classes["border"]} rounded-lg mb-4`}>
+    <div className={` ${classes["border"]} rounded-lg mb-4`}>
       {/* Header */}
       <div className={`flex flex-col gap-2 max-h-[24vh] overflow-y-auto`}>
         {selected_bets.length === 0 ? (

@@ -20,6 +20,8 @@ import { getClientTheme } from "@/config/theme.config";
 import { useTransferFundsMutation } from "@/store/services/wallet.service";
 import { showToast } from "@/components/tools/toast";
 import { setUserRerender } from "@/store/features/slice/user.slice";
+import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import PaginatedTable from "@/components/common/PaginatedTable";
 
 interface TransferFormData {
   fromUserId: number;
@@ -55,7 +57,6 @@ const TransferFunds = () => {
   const { data, isLoading } = useGetAgentUsersQuery(
     {
       agentId: user?.id || 0,
-      clientId: Number(environmentConfig.CLIENT_ID),
     },
     {
       skip: !user?.id,
@@ -153,7 +154,7 @@ const TransferFunds = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["page-text"]}`}
+      className={`h-[calc(100vh-110px)] overflow-y-auto ${classes["text-primary"]}`}
     >
       <div className="max-w-7xl mx-auto p-4">
         {/* Header */}
@@ -167,23 +168,23 @@ const TransferFunds = () => {
             />
           </div>
           <div>
-            <h1 className={`text-base font-bold ${pageClasses["header-text"]}`}>
+            <h1 className={`text-base font-bold `}>
               Transfer Funds to{" "}
               {type === "internal" ? "Cashier/Player" : "External Account"}
             </h1>
-            <p className={`${pageClasses["subtitle-text"]} text-xs`}>
+            <p className={`${classes["text-secondary"]} text-xs`}>
               Send or receive funds from users
             </p>
           </div>
         </div>
 
         {/* Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-4">
+        <div className="grid lg:grid-cols-2 gap-4 justify-start items-start">
           {/* User List */}
           <div
-            className={`backdrop-blur-sm rounded-lg border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  p-4`}
+            className={`backdrop-blur-sm rounded-lg border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}`}
           >
-            <div className="mb-4">
+            <div className="p-2 px-3">
               <Input
                 label="Search Users"
                 name="search"
@@ -191,124 +192,62 @@ const TransferFunds = () => {
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search by username..."
-                height="h-[36px]"
                 bg_color={classes["input-bg"]}
                 text_color={classes["input-text"]}
                 border_color={`border ${classes["input-border"]}`}
                 className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
               />
             </div>
+            <PaginatedTable
+              columns={[
+                {
+                  id: "name",
+                  name: "Name",
+                  className: "col-span-2",
+                },
 
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead
-                  className={`${pageClasses["column-header-bg"]} border-b ${pageClasses["card-border"]}`}
-                >
-                  <tr>
-                    <th
-                      className={`px-3 py-2 text-left text-xs font-semibold ${pageClasses["column-header-text"]} uppercase`}
-                    >
-                      Name
-                    </th>
-                    <th
-                      className={`px-3 py-2 text-left text-xs font-semibold ${pageClasses["column-header-text"]} uppercase`}
-                    >
-                      Balance
-                    </th>
-                    <th
-                      className={`px-3 py-2 text-center text-xs font-semibold ${pageClasses["column-header-text"]} uppercase`}
-                    >
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {isLoading && (
-                    <tr>
-                      <td colSpan={3} className="px-3 py-12 text-center">
-                        <div className="flex flex-col items-center gap-3">
-                          <Loader
-                            size={32}
-                            className={`animate-spin ${pageClasses["header-icon-text"]}`}
-                          />
-                          <span
-                            className={`text-sm ${pageClasses["subtitle-text"]}`}
-                          >
-                            Loading users...
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-
-                  {!isLoading && filteredUsers.length === 0 && (
-                    <tr>
-                      <td colSpan={3} className="px-3 py-12 text-center">
-                        <div className="flex flex-col items-center gap-3">
-                          <div
-                            className={`w-16 h-16 ${pageClasses["header-icon-bg"]} rounded-full flex items-center justify-center`}
-                          >
-                            <User
-                              size={24}
-                              className={pageClasses["subtitle-text"]}
-                            />
-                          </div>
-                          <span
-                            className={`text-sm ${pageClasses["subtitle-text"]}`}
-                          >
-                            No users found
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-
-                  {!isLoading &&
-                    filteredUsers.map(
-                      (targetUser) =>
-                        targetUser.username !== user?.username && (
-                          <tr
-                            key={targetUser.id}
-                            className={`border-b ${pageClasses["row-border"]} ${pageClasses["row-hover"]} transition-colors`}
-                          >
-                            <td
-                              className={`px-3 py-2.5 text-sm ${pageClasses["row-text"]}`}
-                            >
-                              {targetUser.username}
-                            </td>
-                            <td
-                              className={`px-3 py-2.5 text-sm font-semibold ${pageClasses["balance-text"]}`}
-                            >
-                              ₦{(targetUser.balance ?? 0).toFixed(2)}
-                            </td>
-                            <td className="px-3 py-2.5">
-                              <div className="flex items-center justify-center gap-2">
-                                <button
-                                  onClick={() =>
-                                    handleTransfer(targetUser, true)
-                                  }
-                                  className={`p-1.5 ${pageClasses["button-action-withdraw-bg"]} ${pageClasses["button-action-withdraw-hover"]} ${pageClasses["button-action-withdraw-text"]} rounded transition-colors`}
-                                  title="Withdraw from user"
-                                >
-                                  <ArrowDownLeft size={16} />
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    handleTransfer(targetUser, false)
-                                  }
-                                  className={`p-1.5 ${pageClasses["button-action-deposit-bg"]} ${pageClasses["button-action-deposit-hover"]} ${pageClasses["button-action-deposit-text"]} rounded transition-colors`}
-                                  title="Deposit to user"
-                                >
-                                  <ArrowUpRight size={16} />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        )
-                    )}
-                </tbody>
-              </table>
-            </div>
+                {
+                  id: "balance",
+                  name: "Balance",
+                },
+                {
+                  id: "actions",
+                  name: "Actions",
+                  render: (_: any, row: any) => (
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        onClick={() => handleTransfer(row.user, true)}
+                        className={`p-1.5 ${pageClasses["button-action-withdraw-bg"]} ${pageClasses["button-action-withdraw-hover"]} ${pageClasses["button-action-withdraw-text"]} rounded transition-colors`}
+                        title="Withdraw from user"
+                      >
+                        <ArrowDownLeft size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleTransfer(row.user, false)}
+                        className={`p-1.5 ${pageClasses["button-action-deposit-bg"]} ${pageClasses["button-action-deposit-hover"]} ${pageClasses["button-action-deposit-text"]} rounded transition-colors`}
+                        title="Deposit to user"
+                      >
+                        <ArrowUpRight size={16} />
+                      </button>
+                    </div>
+                  ),
+                },
+              ]}
+              className="grid-cols-4"
+              data={filteredUsers.map((user) => ({
+                id: user.id,
+                name: user.username,
+                user: user,
+                balance: (
+                  <CurrencyFormatter
+                    amount={user.balance || 0}
+                    className={""}
+                    spanClassName={""}
+                  />
+                ),
+              }))}
+              isLoading={isLoading}
+            />
           </div>
 
           {/* Transfer Form */}
@@ -316,7 +255,7 @@ const TransferFunds = () => {
             className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border p-4`}
           >
             <h3
-              className={`text-sm font-semibold ${pageClasses["section-header-text"]} border-b ${pageClasses["section-header-border"]} pb-2 mb-4`}
+              className={`text-sm font-semibold border-b ${classes["border"]} pb-2 mb-4`}
             >
               Transfer Details
             </h3>
@@ -330,9 +269,6 @@ const TransferFunds = () => {
                 onChange={handleChange}
                 placeholder="From username"
                 disabled
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
               />
 
               <Input
@@ -343,9 +279,6 @@ const TransferFunds = () => {
                 onChange={handleChange}
                 placeholder="To username"
                 disabled
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
               />
 
               <Input
@@ -355,9 +288,6 @@ const TransferFunds = () => {
                 onChange={handleChange}
                 placeholder="Enter amount"
                 required
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
                 type="num_select"
                 num_select_placeholder={user?.currency}
               />
@@ -369,17 +299,14 @@ const TransferFunds = () => {
                 value={formData.description}
                 onChange={handleChange}
                 placeholder="Enter description (optional)"
-                bg_color={pageClasses["input-bg"]}
-                text_color={pageClasses["input-text"]}
-                border_color={`border ${pageClasses["input-border"]}`}
               />
 
               <div className="pt-2">
                 <div
-                  className={`${pageClasses["info-card-bg"]} rounded-lg p-3 mb-3 border ${pageClasses["info-card-border"]}`}
+                  className={`${classes.deposit_page["info-bg"]} rounded-lg p-2 mb-3 border ${classes.deposit_page["info-border"]}`}
                 >
-                  <div className="flex items-center justify-between text-sm">
-                    <span className={pageClasses["info-label-text"]}>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className={classes["text-secondary"]}>
                       Transfer Type:
                     </span>
                     <span
@@ -393,13 +320,11 @@ const TransferFunds = () => {
                     </span>
                   </div>
                   {formData.toUsername && (
-                    <div className="flex items-center justify-between text-sm mt-2">
-                      <span className={pageClasses["info-label-text"]}>
+                    <div className="flex items-center justify-between text-xs mt-2">
+                      <span className={classes["text-secondary"]}>
                         Selected User:
                       </span>
-                      <span
-                        className={`${pageClasses["info-value-text"]} font-medium`}
-                      >
+                      <span className={`font-medium`}>
                         {formData.toUsername}
                       </span>
                     </div>

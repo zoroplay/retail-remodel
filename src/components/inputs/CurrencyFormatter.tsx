@@ -16,7 +16,7 @@ const CurrencyFormatter = ({
 }: Props) => {
   const [isAbbreviated, setIsAbbreviated] = useState(false);
   const { global_variables } = useAppSelector((state) => state.app);
-  const locale = global_variables?.currency === "NGN" ? "en-NG" : "en-US";
+  const locale = global_variables?.currency_code === "NGN" ? "en-NG" : "en-US";
   const currency = global_variables?.currency_code || "USD";
 
   let numeric_amount = typeof amount === "string" ? parseFloat(amount) : amount;
@@ -37,13 +37,19 @@ const CurrencyFormatter = ({
 
     // Handle larger numbers
     if (absValue >= 1e9) {
-      return `$${(value / 1e9).toFixed(precision)}B`;
+      return `${global_variables?.currency}${(value / 1e9).toFixed(
+        precision
+      )}B`;
     }
     if (absValue >= 1e6) {
-      return `$${(value / 1e6).toFixed(precision)}M`;
+      return `${global_variables?.currency}${(value / 1e6).toFixed(
+        precision
+      )}M`;
     }
     if (absValue >= 1e3) {
-      return `$${(value / 1e3).toFixed(precision)}K`;
+      return `${global_variables?.currency}${(value / 1e3).toFixed(
+        precision
+      )}K`;
     }
     return new Intl.NumberFormat(locale, {
       style: "currency",

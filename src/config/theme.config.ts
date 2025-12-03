@@ -442,9 +442,15 @@ export interface ThemeClasses {
   card: string;
   "card-hover": string;
   "input-bg": string;
+  "card-bg": string;
   "input-border": string;
+  "input-focus-within": string;
+  "input-ring": string;
+  "select-option-bg": string;
   "input-text": string;
+
   // Base utility classes
+  "item-hover-border-l": string;
   "light-divider": string;
   "dark-divider": string;
   "skeleton-bg": string;
@@ -711,6 +717,14 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
   switch (String(clientId)) {
     case "1": // Red & White theme
       return {
+        "card-bg": "bg-[#161616]",
+        "input-focus-within":
+          "focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 focus-within:bg-smalltext/10 focus:ring-red-500/80 focus:ring-2 focus:border-red-500/80 focus:ring-red-500/80 focus-within:border-red-500/80 ",
+        "input-ring":
+          "outline-none ring-2 ring-red-500/80 outline-none ring-ring ring-offset-0 bg-smalltext/10 border-red-500/80",
+        "select-option-bg":
+          "bg-gradient-to-br from-red-800 to-red-900 text-white",
+        "item-hover-border-l": "hover:border-l-red-500/80",
         app_header: {
           "highlight-indicator":
             "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)",
@@ -1150,7 +1164,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "main-bg": "bg-[#161616] ",
           "card-border": "border-yellow-700/30",
           "sport-item-border-l": "border-l-yellow-600/70",
-          "category-item-active": "bg-yellow-700 text-black",
+          "category-item-active": "bg-yellow-600 text-black",
           "account-icon-active": "text-yellow-500",
           "search-bg": "bg-gradient-to-r from-gray-950 to-black",
           "search-border": "border-yellow-700/40",
@@ -1165,11 +1179,11 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "category-item-bg": "bg-[#161616]",
           "category-item-hover": "hover:bg-[#450A0A]/30",
           "category-item-text": "text-gray-300",
-          "category-item-border": "border-yellow-700/40",
+          "category-item-border": "border-yellow-600/60 border-l-yellow-600/80",
           "category-item-count-bg": "bg-gray-600/50",
           "category-item-count-text": "text-gray-400",
           "tournament-item-bg": "bg-[#161616]",
-          "tournament-item-hover": "hover:bg-[#450A0A]/30",
+          "tournament-item-hover": "hover:bg-red-800/20",
           "tournament-item-text": "text-gray-300",
           "tournament-item-count-bg": "bg-gray-600/30",
           "tournament-item-count-text": "text-gray-500",
@@ -1302,7 +1316,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         coupon_details: {
           "section-bg": "bg-black/40",
           "section-border": "border-yellow-700/30",
-          "section-title": "text-yellow-400",
+          "section-title": "text-yellow-200",
           "label-text": "text-gray-400",
           "value-text": "text-gray-300",
           "item-bg": "bg-gray-900/30",
@@ -1321,12 +1335,12 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         transactions_page: {
           "container-bg": "bg-transparent",
           "card-bg": "bg-black/60",
-          "card-border": "border-yellow-700/30",
-          "card-text": "text-slate-200",
+          "card-border": "border-yellow-700/30 ",
+          "card-text": "text-yellow-200",
           "column-header-bg": "bg-gray-900/40",
-          "column-header-text": "text-slate-300",
+          "column-header-text": "text-yellow-200",
           "row-hover": "hover:bg-black/80",
-          "row-text": "text-gray-200",
+          "row-text": "text-yellow-50",
           "input-bg": "bg-gradient-to-r from-gray-950 to-slate-950",
           "input-border": "border-slate-800",
           "input-text": "text-white",
@@ -1371,18 +1385,18 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "form-bg": "bg-gray-800/50",
           "form-border": "border-gray-700/30",
           "form-text": "text-white",
-          "info-bg": "bg-gray-700/50",
-          "info-border": "border-gray-600/30",
+          "info-bg": "bg-red-900/30",
+          "info-border": "border-yellow-800/30",
           "info-text": "text-gray-300",
           "input-bg": "bg-gradient-to-r from-gray-950 to-slate-950",
           "input-border": "border-slate-800",
           "input-text": "text-white",
           "balance-text": "text-gray-400",
           "balance-value": "text-green-400",
-          "quick-button-bg": "bg-slate-700",
-          "quick-button-hover": "hover:bg-slate-600",
-          "quick-button-text": "text-slate-300",
-          "quick-button-border": "border-slate-600",
+          "quick-button-bg": "bg-red-900/30",
+          "quick-button-hover": "hover:bg-red-800/40",
+          "quick-button-text": "text-yellow-200/60",
+          "quick-button-border": "border-yellow-800/40",
           "security-bg": "bg-blue-500/10",
           "security-border": "border-blue-500/20",
           "security-text": "text-blue-400",
@@ -1485,7 +1499,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           change_password: {
             "modal-bg": "bg-slate-900",
             "modal-border": "border-yellow-700",
-            "modal-shadow": "shadow-yellow-900/50",
+            "modal-shadow": "shadow-yellow-900/20",
             "header-border": "border-yellow-700/50",
             "header-title": "text-yellow-400",
             "header-icon": "text-yellow-500",
@@ -1507,7 +1521,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "content-bg": "bg-gray-900",
           "content-border": "border-yellow-700/30",
           "header-bg": "bg-gradient-to-r from-black to-gray-900",
-          "header-text": "text-yellow-400",
+          "header-text": "text-yellow-100",
           "header-border": "border-yellow-700/30",
           "body-bg": "bg-transparent",
           "body-text": "text-slate-200",
@@ -1521,28 +1535,34 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "bg-tertiary": "bg-gray-800",
         "bg-gradient": "bg-gradient-to-br from-gray-900 to-black",
         "bg-gradient-hover": "hover:from-gray-800 hover:to-gray-900",
-        "text-primary": "text-yellow-100",
-        "text-secondary": "text-gray-400",
+        "text-primary": "text-yellow-50",
+        "text-secondary": "text-yellow-100/60",
         "text-muted": "text-yellow-600",
         border: "border-yellow-800/50",
         "border-light": "border-yellow-300/20",
         primary: "text-yellow-500",
         "primary-bg": "bg-yellow-600",
+        "card-bg": "bg-[#161616]",
         "primary-hover": "hover:bg-yellow-500",
         accent: "text-yellow-400",
-        "light-divider": "bg-gray-300",
+        "light-divider": "bg-yellow-300/40",
         "dark-divider": "bg-gray-700",
         "accent-bg": "bg-yellow-500",
         "button-primary":
           "bg-yellow-600 hover:bg-yellow-500 text-black font-bold",
         "button-secondary":
           "bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-700",
-        card: "bg-gray-900/50 border-yellow-700/30",
+        card: "bg-[#161616] border-yellow-700/30",
         "card-hover": "hover:border-yellow-500/60 hover:bg-gray-900/70",
         "input-bg":
           "bg-gradient-to-r from-slate-50 to-slate-50 placeholder-slate-400 ",
-        "input-border":
-          "border-slate-400 focus:border-blue-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary",
+        "input-border": "border-slate-400 ",
+        "input-focus-within":
+          "focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 focus-within:bg-smalltext/10 focus:ring-yellow-500/80  focus:ring-2 focus:border-yellow-500/80 focus:ring-yellow-500/80 focus-within:border-yellow-500/80 ",
+        "input-ring":
+          "outline-none ring-2 ring-yellow-500/80 outline-none ring-ring ring-offset-0 bg-smalltext/10 border-yellow-500/80",
+        "select-option-bg":
+          "bg-gradient-to-br from-yellow-800 to-yellow-900  text-white",
         "input-text": "text-gray-700",
         "skeleton-bg": "bg-gray-700/50",
         "modal-bg": "bg-[#161616]",
@@ -1550,9 +1570,11 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "button-primary-border": "border border-yellow-700",
         "button-primary-hover": "hover:from-yellow-700 hover:to-yellow-600",
         "button-primary-text": "text-black",
-        "button-secondary-bg": "bg-gradient-to-r from-slate-700 to-slate-800",
-        "button-secondary-border": "border border-slate-700",
-        "button-secondary-hover": "hover:from-slate-800 hover:to-slate-900",
+        "button-secondary-bg":
+          "bg-gradient-to-r transition-all from-rose-800/40 to-rose-900/40",
+        "button-secondary-border": "border border-yellow-800/50",
+        "item-hover-border-l": "hover:border-l-yellow-500/80",
+        "button-secondary-hover": "hover:from-rose-800/80 hover:to-rose-900/80",
         "button-secondary-text": "text-white",
         "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
         "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
@@ -1566,6 +1588,14 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
 
     case "5": // Blue & White with touch of Red theme
       return {
+        "card-bg": "bg-[#161616]",
+        "input-focus-within":
+          "focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 focus-within:bg-smalltext/10 focus:ring-blue-500/80 focus:ring-2 focus:border-blue-500/80 focus:ring-blue-500/80 focus-within:border-blue-500/80 ",
+        "input-ring":
+          "outline-none ring-2 ring-blue-500/80 outline-none ring-ring ring-offset-0 bg-smalltext/10 border-blue-500/80",
+        "select-option-bg":
+          "bg-gradient-to-br from-blue-800 to-blue-900 text-white",
+        "item-hover-border-l": "hover:border-l-blue-500/80",
         "modal-bg": "bg-slate-900",
         "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
         "button-primary-border": "border border-blue-700",
@@ -1989,7 +2019,15 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
       };
     case "9": // Black & Gold theme
       return {
-        "modal-bg": "bg-slate-900",
+        "card-bg": "bg-[#161616]",
+        "input-focus-within":
+          "focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 focus-within:bg-smalltext/10 focus:ring-yellow-500/80 focus:ring-2 focus:border-yellow-500/80 focus:ring-yellow-500/80 focus-within:border-yellow-500/80 ",
+        "input-ring":
+          "outline-none ring-2 ring-yellow-500/80 outline-none ring-ring ring-offset-0 bg-smalltext/10 border-yellow-500/80",
+        "select-option-bg":
+          "bg-gradient-to-br from-yellow-800 to-yellow-900 text-white",
+        "item-hover-border-l": "hover:border-l-yellow-500/80",
+        "modal-bg": "bg-[#161616]",
         "button-primary-bg": "bg-gradient-to-r from-gray-600 to-gray-700",
         "button-primary-border": "border border-gray-700",
         "button-primary-hover": "hover:from-gray-700 hover:to-gray-800",
@@ -2118,12 +2156,14 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "input-bg": "bg-gradient-to-r from-slate-800 to-slate-700",
           "input-border": "border-slate-600",
           "input-text": "text-white",
-          "summary-section-bg": "bg-gradient-to-r from-black/50 to-gray-950/30",
+
+          "summary-section-bg": "bg-[#161616]",
           "summary-section-border": "border-yellow-700/30",
-          "summary-item-bg": "bg-gradient-to-r from-gray-50 to-white",
+          "summary-item-bg":
+            "bg-gradient-to-r from-gray-600/20 to-slate-500/30",
           "summary-item-border": "border-gray-700/50",
           "summary-label-text": "text-gray-300",
-          "summary-value-text": "text-yellow-300",
+          "summary-value-text": "text-gray-400",
           // ...existing code...
           "add-button-bg": "bg-white/20",
           "add-button-hover": "hover:bg-white/30",
@@ -2351,18 +2391,20 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "header-date-text": "text-gray-400",
           "title-text": "text-yellow-300",
           "subtitle-text": "text-yellow-200",
-          "market-card-bg": "bg-gray-900/70",
+          "market-card-bg": "bg-yellow-950/30",
           "market-card-border": "border-yellow-600/40",
-          "market-card-hover": "hover:border-yellow-500 hover:bg-gray-900/90",
+          "market-card-hover":
+            "hover:border-yellow-500/50 hover:bg-yellow-950/50",
           "market-title": "text-yellow-300",
           "axis-label-text": "text-yellow-400",
           "axis-label-bg": "bg-yellow-900/20",
-          "odds-button-bg": "bg-yellow-600",
+          "odds-button-bg": "bg-yellow-50",
           "odds-button-hover": "hover:bg-yellow-500",
           "odds-button-text": "text-black",
-          "odds-button-border": "border-yellow-500",
-          "odds-button-selected-bg": "bg-yellow-400",
-          "odds-button-selected-border": "border-yellow-200",
+          "odds-button-border": "border-yellow-500/30",
+          "odds-button-selected-bg":
+            "bg-gradient-to-r from-[#F59E0B] via-yellow-500 to-[#F59E0B]",
+          "odds-button-selected-border": "border-yellow-400",
           "odds-button-selected-text": "text-black",
           "odds-button-selected-hover": "hover:bg-yellow-300",
           "odds-button-disabled-bg": "bg-gray-400/50",
@@ -2489,8 +2531,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "card-bg": "bg-white",
           "card-border": "border-gray-300",
           "card-hover": "hover:bg-slate-200/80 hover:border-blue-600/80",
-          "header-bg":
-            "bg-gradient-to-r from-blue-950 via-blue-900 to-blue-950",
+          "header-bg": "bg-gradient-to-r from-blue-950 to-blue-900",
           "header-border": "border-slate-700/50",
           "header-text": "text-gray-100",
           "date-separator-bg": "bg-blue-800",
@@ -2564,7 +2605,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "close-button": "bg-gray-200",
           "close-button-hover": "hover:bg-gray-300",
           "section-bg": "bg-gray-50",
-          "section-title": "text-blue-700",
+          "section-title": "text-blue-900",
           "label-text": "text-gray-600",
           "value-text": "text-gray-900",
           "item-bg": "bg-white",
@@ -2579,7 +2620,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         coupon_details: {
           "section-bg": "bg-gray-50",
           "section-border": "border-gray-200",
-          "section-title": "text-blue-700",
+          "section-title": "text-blue-900",
           "label-text": "text-gray-600",
           "value-text": "text-gray-900",
           "item-bg": "bg-white",
@@ -2599,6 +2640,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "container-bg": "bg-transparent",
           "card-bg": "bg-white",
           "card-border": "border-slate-300",
+
           "card-text": "text-slate-700",
           "column-header-bg": "bg-blue-800",
           "column-header-text": "text-slate-300",
@@ -2796,13 +2838,13 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "bg-tertiary": "bg-blue-800",
         "bg-gradient": "bg-gradient-to-br from-blue-800 to-blue-950",
         "bg-gradient-hover": "hover:from-blue-700 hover:to-blue-900",
-        "text-primary": "text-white",
+        "text-primary": "text-gray-700",
         "text-secondary": "text-gray-600",
         "text-muted": "text-gray-400",
         "light-divider": "bg-gray-300",
         "dark-divider": "bg-gray-700",
-        border: "border-gray-700",
-        "border-light": "border-gray-300",
+        border: "border-gray-300",
+        "border-light": "border-gray-500",
         primary: "text-blue-400",
         "primary-bg": "bg-blue-600",
         "primary-hover": "hover:bg-blue-500",
@@ -2812,10 +2854,17 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "button-secondary": "bg-gray-700 hover:bg-gray-600 text-white",
         card: "bg-gray-800/30 border-gray-700/30",
         "card-hover": "hover:border-blue-600/60",
+        "item-hover-border-l": "hover:border-l-blue-500/80",
+        "card-bg": "bg-[#161616]",
         "input-bg":
           "bg-gradient-to-r from-slate-50 to-slate-50 placeholder-slate-400 ",
-        "input-border":
-          "border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/80 ",
+        "input-border": "border-slate-300  ",
+        "input-focus-within":
+          "focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 focus-within:bg-smalltext/10 focus:ring-blue-500/80  focus:ring-2 focus:border-blue-500/80 focus:ring-blue-500/80 focus-within:border-blue-500/80 ",
+        "input-ring":
+          "outline-none ring-2 ring-blue-500/80 outline-none ring-ring ring-offset-0 bg-smalltext/10 border-blue-500/80",
+        "select-option-bg":
+          "bg-gradient-to-br from-blue-800 to-blue-900  text-white",
         "input-text": "text-gray-600",
         "skeleton-bg": "bg-gray-200",
         "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",

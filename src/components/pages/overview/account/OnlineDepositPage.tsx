@@ -219,21 +219,13 @@ const OnlineDepositPage = () => {
   const quickAmounts = [100, 500, 1000, 5000];
 
   return (
-    <div className={`${pageClasses["page-bg"]} ${pageClasses["page-text"]}`}>
+    <div className={`${pageClasses["page-bg"]} ${classes["text-primary"]}`}>
       <div className="p-2 flex flex-col gap-2">
         {/* Header */}
         <div className="flex items-center gap-3 p-2">
-          <button
-            onClick={handleGoBack}
-            className={`p-2 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} rounded-lg transition-colors backdrop-blur-sm border ${pageClasses["form-border"]}`}
-          >
-            <ArrowLeft size={18} />
-          </button>
           <div>
-            <h1 className={`text-base font-bold ${pageClasses["form-text"]}`}>
-              Online Deposit
-            </h1>
-            <p className={`text-xs ${pageClasses["label-text"]}`}>
+            <h1 className={`text-base font-bold `}>Online Deposit</h1>
+            <p className={`text-xs ${classes["text-secondary"]}`}>
               Deposit funds to customer accounts
             </p>
           </div>
@@ -242,28 +234,23 @@ const OnlineDepositPage = () => {
         <div className="grid lg:grid-cols-2 gap-2">
           {/* Left Side - Instructions */}
           <div
-            className={`${pageClasses["form-bg"]} backdrop-blur-sm rounded-lg p-2 border ${pageClasses["form-border"]}`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg p-2 border`}
           >
             <h2
-              className={`text-sm font-semibold mb-3 flex items-center gap-2 ${pageClasses["form-text"]}`}
+              className={`text-sm font-semibold mb-3 flex items-center gap-2`}
             >
-              <Shield
-                className={pageClasses["button-primary-text"]}
-                size={18}
-              />
+              <Shield className={classes["text-secondary"]} size={18} />
               Important Information
             </h2>
 
-            <div className="space-y-2.5">
+            <div className={`space-y-2.5 ${classes["text-secondary"]}`}>
               <div className="flex gap-2.5">
                 <div
                   className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   1
                 </div>
-                <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
-                >
+                <p className={`text-xs leading-relaxed`}>
                   Start typing customer ID or username. After 4 characters,
                   matching users will appear automatically.
                 </p>
@@ -274,9 +261,7 @@ const OnlineDepositPage = () => {
                 >
                   2
                 </div>
-                <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
-                >
+                <p className={`text-xs leading-relaxed`}>
                   Select the customer from the dropdown to proceed with the
                   deposit.
                 </p>
@@ -287,9 +272,7 @@ const OnlineDepositPage = () => {
                 >
                   3
                 </div>
-                <p
-                  className={`${pageClasses["label-text"]} text-xs leading-relaxed`}
-                >
+                <p className={`text-xs leading-relaxed`}>
                   Enter the deposit amount and confirm to complete the
                   transaction.
                 </p>
@@ -316,14 +299,14 @@ const OnlineDepositPage = () => {
 
           {/* Right Side - Deposit Form */}
           <div
-            className={`${pageClasses["form-bg"]} backdrop-blur-sm rounded-lg p-2 border flex flex-col gap-2 ${pageClasses["form-border"]}`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg p-2 border flex flex-col gap-2 `}
           >
             {/* Agent Info */}
             <div
               className={`${pageClasses["info-bg"]} rounded-lg p-2 border ${pageClasses["info-border"]} flex flex-col gap-1`}
             >
               <div className="flex justify-between items-center">
-                <span className={`text-xs ${pageClasses["balance-text"]}`}>
+                <span className={`text-xs ${classes["text-primary"]}`}>
                   Agent Balance:
                 </span>
                 <span
@@ -334,10 +317,10 @@ const OnlineDepositPage = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className={`text-xs ${pageClasses["balance-text"]}`}>
+                <span className={`text-xs ${classes["text-primary"]}`}>
                   Agent:
                 </span>
-                <span className={`text-xs ${pageClasses["form-text"]}`}>
+                <span className={`text-xs ${classes["text-secondary"]}`}>
                   {user?.username}
                 </span>
               </div>
@@ -372,7 +355,6 @@ const OnlineDepositPage = () => {
                   bg_color={classes["input-bg"]}
                   text_color={classes["input-text"]}
                   border_color={`border ${classes["input-border"]}`}
-                  height={"h-[36px]"}
                   className={`w-full text-xs rounded-lg ${classes["input-text"]} transition-all duration-200`}
                 />
 
@@ -501,7 +483,6 @@ const OnlineDepositPage = () => {
                       bg_color={classes["input-bg"]}
                       text_color={classes["input-text"]}
                       border_color={`border ${classes["input-border"]}`}
-                      height="h-[36px]"
                       className={`w-full rounded-lg ${classes["input-text"]} transition-all duration-200`}
                       type="num_select"
                       num_select_placeholder={currency}

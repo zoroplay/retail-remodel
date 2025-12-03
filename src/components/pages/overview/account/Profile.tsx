@@ -110,22 +110,20 @@ const Profile = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["container-bg"]}`}
+      className={`h-[calc(100vh-110px)] overflow-y-auto ${classes["text-primary"]}`}
     >
       <div className="max-w-7xl mx-auto p-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-1">
-            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-              <User size={20} className="text-primary" />
+            <div
+              className={`w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center ${classes.user_management_page["header-icon-bg"]}`}
+            >
+              <User size={20} className={`${classes["text-secondary"]}`} />
             </div>
             <div>
-              <h1
-                className={`text-base font-bold ${pageClasses["header-text"]}`}
-              >
-                Profile & Settings
-              </h1>
-              <p className={`${pageClasses["subtitle-text"]} text-xs`}>
+              <h1 className={`text-base font-bold`}>Profile & Settings</h1>
+              <p className={`${classes["text-secondary"]} text-xs`}>
                 Manage your account information and security
               </p>
             </div>
@@ -134,12 +132,12 @@ const Profile = () => {
 
         {/* Personal Information Section */}
         <div
-          className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4 flex flex-col gap-2`}
+          className={`${classes.sports_page["card-bg"]} backdrop-blur-sm rounded-lg border ${classes["border"]} p-4 flex flex-col gap-2`}
         >
           <div className="flex items-center justify-between pb-2">
             {/* <div className="space-y-3"> */}
             <h3
-              className={`text-xs font-semibold ${pageClasses["section-header-text"]} border-b ${pageClasses["section-header-border"]} pb-2`}
+              className={`text-xs font-semibold border-b ${classes["border"]} pb-2`}
             >
               Personal Information
             </h3>
@@ -159,9 +157,7 @@ const Profile = () => {
             </div>
           </div>
 
-          <div
-            className={`grid md:grid-cols-2 gap-4 ${pageClasses["input-text"]}`}
-          >
+          <div className={`grid md:grid-cols-2 gap-4 `}>
             {/* Left Column */}
             <div className="space-y-3">
               <Input
@@ -170,11 +166,7 @@ const Profile = () => {
                 type="text"
                 value={personalData.username}
                 onChange={handleInputChange}
-                height="h-[40px]"
-                bg_color={classes["input-bg"]}
-                text_color={classes["input-text"]}
-                border_color={`border ${classes["input-border"]}`}
-                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                 placeholder={""}
               />
 
@@ -184,11 +176,7 @@ const Profile = () => {
                 type="text"
                 value={personalData.firstName}
                 onChange={handleInputChange}
-                height="h-[40px]"
-                bg_color={classes["input-bg"]}
-                text_color={classes["input-text"]}
-                border_color={`border ${classes["input-border"]}`}
-                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                 placeholder={""}
               />
               <Input
@@ -197,11 +185,7 @@ const Profile = () => {
                 type="text"
                 value={personalData.phoneNumber}
                 onChange={handleInputChange}
-                height="h-[40px]"
-                bg_color={classes["input-bg"]}
-                text_color={classes["input-text"]}
-                border_color={`border ${classes["input-border"]}`}
-                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                 placeholder={""}
               />
               <DateInput
@@ -214,10 +198,6 @@ const Profile = () => {
                     dateOfBirth: e.target.value,
                   })
                 }
-                height="h-[44px]"
-                bg_color={classes["input-bg"]}
-                text_color={classes["input-text"]}
-                border_color={`border ${classes["input-border"]}`}
                 placeholder={""}
               />
             </div>
@@ -230,11 +210,7 @@ const Profile = () => {
                 type="email"
                 value={personalData.email}
                 onChange={handleInputChange}
-                height="h-[40px]"
-                bg_color={classes["input-bg"]}
-                text_color={classes["input-text"]}
-                border_color={`border ${classes["input-border"]}`}
-                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                 placeholder={""}
               />
 
@@ -244,11 +220,7 @@ const Profile = () => {
                 type="text"
                 value={personalData.lastName}
                 onChange={handleInputChange}
-                height="h-[40px]"
-                bg_color={classes["input-bg"]}
-                text_color={classes["input-text"]}
-                border_color={`border ${classes["input-border"]}`}
-                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                 placeholder={""}
               />
               <Select
@@ -265,11 +237,7 @@ const Profile = () => {
                   })
                 }
                 placeholder={""} // className="w-full"
-                height="h-[40px]"
-                bg_color={classes["input-bg"]}
-                text_color={classes["input-text"]}
-                border_color={`border ${classes["input-border"]}`}
-                className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
               />
             </div>
           </div>
@@ -281,11 +249,7 @@ const Profile = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div>
-                  <div
-                    className={`text-xs ${pageClasses["balance-label-text"]}`}
-                  >
-                    Account Balance
-                  </div>
+                  <div className={`text-xs `}>Account Balance</div>
                   <div
                     className={`text-xl font-bold ${pageClasses["balance-value-text"]}`}
                   >

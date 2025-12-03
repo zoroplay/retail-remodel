@@ -75,27 +75,27 @@ const ChangePasswordModal = ({ onClose }: Props) => {
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      className={`max-w-md !w-full backdrop-blur-xl border ${modalClasses["modal-border"]} shadow-2xl ${modalClasses["modal-shadow"]}`}
+      className={`max-w-md !w-full backdrop-blur-xl  shadow-md ${modalClasses["modal-shadow"]}`}
       footer={
         <div className="flex gap-2">
           <button
             type="button"
             onClick={onClose}
-            className={`flex-1 px-4 py-2 ${modalClasses["cancel-button-bg"]} ${modalClasses["cancel-button-hover"]} ${modalClasses["cancel-button-text"]} text-sm font-medium rounded-lg transition-all`}
+            className={`flex-1 px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-border"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} shadow text-[11px] font-medium rounded-md transition-all`}
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className={`flex-1 px-4 py-2 ${modalClasses["confirm-button-bg"]} ${modalClasses["confirm-button-hover"]} ${modalClasses["confirm-button-text"]} text-sm font-medium rounded-lg transition-all shadow-lg ${modalClasses["confirm-button-shadow"]} disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={`flex-1 px-4 py-2 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} shadow-md text-[11px] font-medium rounded-md transition-all  disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {isLoading ? "Processing..." : "Confirm"}
           </button>
         </div>
       }
     >
-      <div className={`flex flex-col`}>
+      <div className={`flex flex-col ${classes["text-primary"]}`}>
         {/* Modal Header */}
         <div
           className={`flex items-center justify-between p-2 border-b ${modalClasses["header-border"]}`}

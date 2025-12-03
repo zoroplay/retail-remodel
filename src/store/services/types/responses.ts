@@ -190,6 +190,22 @@ export interface Fixture {
   sportName: string;
   outcomes: Outcome[];
 }
+export interface PoolFixtures {
+  id: number;
+  matchID: number;
+  gameID: number;
+  homeTeam: string;
+  awayTeam: string;
+  score: string;
+  result: string;
+  eventDate: string;
+  eventTime: string;
+  schedule: string;
+  odds: number;
+  status: string;
+  week: number;
+  weekNo: string;
+}
 
 export interface FixturesResponse {
   fixtures: Fixture[];
@@ -312,5 +328,64 @@ export interface TransferFundsResponse {
   message: string;
   data: {
     balance: number;
+  };
+}
+
+export interface TotalSuperAgentCommissionResponse {
+  success: boolean;
+  message: string;
+  data: {
+    grandTotals: {
+      stake: number;
+      winnings: number;
+      grossProfit: number;
+      netRevenue: number;
+      pendingCommission: number;
+      paidCommission: number;
+      bonus: number;
+      commissionRate: number;
+    };
+    providerTotals: {
+      sports: {
+        stake: number;
+        winnings: number;
+        grossProfit: number;
+        netRevenue: number;
+        pendingCommission: number;
+        paidCommission: number;
+        bonus: number;
+        commissionRate: number;
+      };
+      virtual: {
+        stake: number;
+        winnings: number;
+        grossProfit: number;
+        netRevenue: number;
+        pendingCommission: number;
+        paidCommission: number;
+        bonus: number;
+        commissionRate: number;
+      };
+    };
+  };
+}
+
+export interface SuperAgentCommissionResponse {
+  success: boolean;
+  message: string;
+  data: {
+    clientId: number;
+    totalRevenue: number;
+    totalCommissionAmount: number;
+    superAgentCommissionAmount: number;
+    commissionProfileId: number;
+    agentBreakdown: {
+      agentId: number;
+      totalStake: number;
+      totalWinnings: number;
+      profit: number;
+      commissionEarned: number;
+      superAgentCommissionEarned: number;
+    }[];
   };
 }

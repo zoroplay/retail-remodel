@@ -55,13 +55,7 @@ const ModalProvider = () => {
   const renderModal = () => {
     switch (modal_name) {
       case MODAL_COMPONENTS.SUCCESS:
-        return (
-          <SuccessModal
-            onClose={handleClose}
-            title={title || ""}
-            message={description || ""}
-          />
-        );
+        return <SuccessModal onClose={handleClose} />;
       case MODAL_COMPONENTS.NetworkConnection:
         return (
           <NetworkConnectionModal

@@ -16,6 +16,7 @@ export enum OVERVIEW {
   CASHDESK = "/cashdesk",
   LIVE = "/live",
   SPORTS = "/sports", // Base sports page (all sports)
+  SPORTS_POOL = "/sports/pool", // Dynamic sport-specific pages
   SPORTS_BY_ID = "/sports/:sport_id", // Dynamic sport-specific pages
   BET_LIST = "/bet-list",
 }

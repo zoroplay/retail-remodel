@@ -21,6 +21,7 @@ import {
   UpdateComboStakePayload,
 } from "../store/features/types/betting.types";
 import { useAppDispatch, useAppSelector } from "./useAppDispatch";
+import { clearCashDeskItems } from "@/store/features/slice/cashdesk.slice";
 // import {
 //   addBet,
 //   removeBet,
@@ -64,7 +65,7 @@ export const useBetting = () => {
   };
 
   const handleClearBets = () => {
-    dispatch(clearBets());
+    Promise.allSettled([dispatch(clearBets()), dispatch(clearCashDeskItems())]);
   };
 
   const handleSetLoading = (loading: boolean) => {

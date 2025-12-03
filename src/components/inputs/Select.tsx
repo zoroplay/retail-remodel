@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 
 import { IconType } from "react-icons/lib";
 import { AppHelper } from "../../lib/helper";
+import { getClientTheme } from "@/config/theme.config";
 
 interface Option {
   id: string | number;
@@ -42,6 +43,7 @@ interface SelectProps {
   isLoading?: boolean;
   scrollToOnError?: boolean;
 }
+const { classes } = getClientTheme();
 
 const Select: React.FC<SelectProps> = ({
   options,
@@ -49,13 +51,13 @@ const Select: React.FC<SelectProps> = ({
   onChange,
   placeholder = "Select an option",
   className = "",
-  height = "h-[42px]",
+  height = "h-[38px]",
   label,
   error,
   disabled = false,
-  border_color = "border",
-  bg_color = "bg-white",
-  text_color = "text-black",
+  border_color = `${classes["input-border"]}`,
+  bg_color = classes["input-bg"],
+  text_color = classes["input-text"],
   accent_color = "text-gray-500",
   isMulti = false,
   rounded = "rounded-md",
@@ -186,6 +188,7 @@ const Select: React.FC<SelectProps> = ({
         setValidationError(isValid ? "" : "This field is required");
         onValidationChange?.(isValid);
       }
+      setIsFocused(false); // Remove focus after selection
     } else {
       // For single select, toggle the selection
       const isSelected = selectedOptions.some((opt) => opt.id === option.id);
@@ -209,6 +212,7 @@ const Select: React.FC<SelectProps> = ({
         }
       }
       setIsOpen(false);
+      setIsFocused(false); // Remove focus after selection
     }
   };
 
@@ -239,14 +243,16 @@ const Select: React.FC<SelectProps> = ({
     }
   };
 
-  const inputStyle = `flex w-full ${rounded} border text-inherit ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 transition-all focus-within:bg-smalltext/10 hover:bg-btnblue/10 ${
+  const inputStyle = `flex w-full ${rounded} border text-inherit ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground ${
+    classes["input-focus-within"]
+  }  disabled:cursor-not-allowed disabled:opacity-50 transition-all  hover:bg-btnblue/10 ${
     AppHelper.isDarkColor(bg_color)
       ? "hover:bg-smalltext/70"
       : "hover:bg-smalltext/10"
   }`;
   const getBorderColor = () => {
     if (showError) return "ring-2 !ring-[#ff6347] !border-[#ff6347] border"; // tomato
-    if (isFocused) return `ring-2 !focus:ring-btnblue`; // use the same color as border
+    if (isFocused) return classes["input-ring"]; // use the same color as border
     return `${border_color} border`; // gray-200
   };
 
@@ -436,20 +442,20 @@ const Select: React.FC<SelectProps> = ({
                     data-selected={selectedOptions.some(
                       (opt) => opt.id === option.id
                     )}
-                    className={`p-2 flex justify-between gap-2 items-center cursor-pointer rounded-lg font-semibold text-black ${
+                    className={`p-2 flex justify-between gap-2 items-center cursor-pointer rounded-md font-semibold text-black ${
                       AppHelper.isDarkColor(bg_color)
                         ? "hover:bg-white/20"
                         : "hover:bg-black/20"
                     } ${
                       selectedOptions.some((opt) => opt.id === option.id)
-                        ? "bg-gradient-to-br from-blue-900 to-slate-900  text-white"
+                        ? `${classes["select-option-bg"]} font-bold`
                         : "!text-blueprimary"
                     }`}
                     onClick={() => handleSelect(option)}
                   >
                     <div className="flex gap-2 items-center">
                       {/* {option.icon && <option.icon fontSize={20} />} */}
-                      <p className={`truncate ${text_color}`}>{option.name}</p>
+                      <p className={`truncate`}>{option.name}</p>
                     </div>
                     <div className="flex gap-2 items-center h-full">
                       {/* {selectedOptions.some((opt) => opt.id === option.id) && (

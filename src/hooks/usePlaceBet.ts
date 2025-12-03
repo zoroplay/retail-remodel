@@ -341,11 +341,11 @@ export const usePlaceBet = (options?: UsePlaceBetOptions) => {
         openModal({
           modal_name: MODAL_COMPONENTS.SUCCESS,
           title: "Bet Placed Successfully",
-          description: `Your bet has been placed successfully! Stake: ${
-            user?.currency || "GMD"
-          } ${stake.toFixed(2)}, Potential Winnings: ${
-            user?.currency || "GMD"
-          } ${potential_winnings.toFixed(2)}`,
+          props: {
+            potential_winnings,
+            stake,
+          },
+          description: `Your bet has been placed successfully!`,
         });
 
         clearBets();

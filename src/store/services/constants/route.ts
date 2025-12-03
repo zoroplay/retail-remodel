@@ -42,6 +42,8 @@ export const BETTING_ACTIONS = {
   GET_LIVE_MARKETS: "/live/events/:event_id/markets?market_ids=:market_ids",
   SUBSCRIBE_LIVE_EVENT: "/live/events/:event_id/subscribe",
   UNSUBSCRIBE_LIVE_EVENT: "/live/events/:event_id/unsubscribe",
+  POOL_GAMES:
+    "https://sports.api.sportsbookengine.com/api/v2/sports/pool/fixtures?week=:week&year=:year&clientID=:client_id",
 };
 
 export const CHATS_ACTIONS = {
@@ -77,6 +79,8 @@ export const USER_ACTIONS = {
   GET_AGENT_USERS: "/retail/:client_id/agent-users?agentId=:agent_id",
   SUPER_AGENT_COMMISSION:
     "/commission/:client_id/preview-super-agent-commission",
+  TOTAL_SUPER_AGENT_COMMISSION:
+    "/commission/:client_id/super-agent-total-commissions",
 };
 export const WALLET_ACTIONS = {
   GET_PAYMENT_METHODS: "/user/wallet/:client_id/payment-methods",

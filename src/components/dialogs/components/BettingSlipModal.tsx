@@ -31,12 +31,7 @@ const BettingSlipModal: React.FC<Props> = ({ onClose }) => {
     confirmBet,
     cancelBet,
     canPlaceBet,
-    showInsufficientBalanceModal,
-    showSuccessModal,
-    modalData,
-    closeInsufficientBalanceModal,
-    closeSuccessModal,
-    handleDeposit,
+
     // InsufficientBalanceModalComponent,
     // SuccessModalComponent,
   } = usePlaceBet();

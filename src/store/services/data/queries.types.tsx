@@ -7,15 +7,16 @@ export interface GetTransactionsDto {
   startDate: string;
   type: string;
   page: number;
+  userId: number | null;
 }
 export interface GetBetListDto {
   betslipId: string;
-  clientId: string;
   from: string;
   p: number;
   status: string;
   to: string;
   userId: number;
+  perPage: number;
 }
 
 export interface GetTransactionsResponse {

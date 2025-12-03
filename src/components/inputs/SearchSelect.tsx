@@ -14,6 +14,7 @@ import { FaCheck } from "react-icons/fa6";
 import { IoChevronDown, IoClose } from "react-icons/io5";
 import { IconType } from "react-icons/lib";
 import { AppHelper } from "@/lib/helper";
+import { getClientTheme } from "@/config/theme.config";
 
 interface Option {
   id: string;
@@ -49,6 +50,7 @@ interface SearchSelectProps {
   form?: string;
   validate?: (isValid: boolean) => void;
 }
+const { classes } = getClientTheme();
 
 const SearchSelect: React.FC<SearchSelectProps> = ({
   options,
@@ -56,14 +58,14 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
   onChange,
   placeholder = "Select an option",
   className = "",
-  height = "h-[46px]",
+  height = "h-[38px]",
   label,
   error,
   disabled = false,
   searchPlaceholder = "Search...",
-  border_color = "border-gray-300",
-  bg_color = "bg-white",
-  text_color = "text-gray-700",
+  border_color = `${classes["input-border"]}`,
+  bg_color = classes["input-bg"],
+  text_color = classes["input-text"],
   accent_color = "text-gray-500",
   isMulti = false,
   rounded = "rounded-md",
@@ -143,14 +145,13 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
 
-            if (
-              dropdownRef.current &&
-              !dropdownRef.current.contains(target) &&
-              (!dropdownMenuRef.current ||
-                !dropdownMenuRef.current.contains(target))
-            ) {
-              setIsOpen(false);
-            }
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target) &&
+        (!dropdownMenuRef.current || !dropdownMenuRef.current.contains(target))
+      ) {
+        setIsOpen(false);
+      }
     };
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
@@ -333,16 +334,17 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
     }
   };
 
-  const inputStyle = `flex w-full ${rounded} border border-input text-inherit ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 transition-all  ${
+  const inputStyle = `flex w-full ${rounded} border border-input text-inherit ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground ${
+    classes["input-focus-within"]
+  } disabled:cursor-not-allowed disabled:opacity-50 transition-all  ${
     AppHelper.isDarkColor(bg_color)
-      ? "focus-within:bg-blue-500/30 hover:bg-blue-500/30"
-      : "focus-within:bg-blue-50 hover:bg-blue-50"
+      ? "hover:bg-blue-500/30"
+      : "hover:bg-blue-50"
   } `;
   const getBorderColor = () => {
     if (error || validationError)
       return "ring-2 ring-[tomato] border-[tomato] border"; // tomato
-    if (isFocused)
-      return `ring-2 ring-[${border_color.replace("border-", "")}]`; // use the same color as border
+    if (isFocused) return `${classes["input-ring"]}`; // use the same color as border
     return `${border_color} border`; // gray-200
   };
 
@@ -467,7 +469,7 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
     >
       {/* Only show search if more than 6 options */}
       {/* {options.length > 6 && ( */}
-      <div className="p-2 border-b border-gray-200 z-50 sticky top-0 bg-inherit">
+      <div className="p-1 border-b border-gray-200 z-50 sticky top-0 bg-inherit">
         <SingleSearchInput
           placeholder={searchPlaceholder}
           value={searchTerm}
@@ -504,7 +506,7 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
         )}
         <div
           ref={optionsListRef}
-          className="max-h-60 p-2 scrollbar-hide flex flex-col gap-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+          className="max-h-60 p-1 scrollbar-hide flex flex-col gap-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
           onScroll={handleScroll}
         >
           {filteredOptions.length > 0 ? (
@@ -520,9 +522,7 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
                     : "hover:bg-blue-200"
                 } ${
                   selectedOptions.some((opt) => opt.id === option.id)
-                    ? AppHelper.isDarkColor(bg_color)
-                      ? "bg-gradient-to-br from-blue-500/40 to-blue-700/40 text-white"
-                      : "bg-gradient-to-br from-blue-500 to-blue-700 text-white"
+                    ? `${classes["select-option-bg"]} font-bold`
                     : ""
                 }`}
                 onMouseDown={() => handleSelect(option)}
@@ -595,7 +595,7 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
       {label && (
         <label
           className={`text-[11px] font-semibold tracking-wide ${
-            showError ? "text-[tomato]" : text_color
+            showError ? "text-[tomato]" : ""
           }`}
           htmlFor={name}
         >

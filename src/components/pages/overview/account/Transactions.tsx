@@ -13,6 +13,10 @@ import LoadBetsLayout from "../../../layouts/LoadBetLayout";
 import NavigationBar from "../../../layouts/NavigationBar";
 import { CheckCheck, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import { getClientTheme } from "@/config/theme.config";
+import PaginatedTable from "@/components/common/PaginatedTable";
+import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import { useAppSelector } from "@/hooks/useAppDispatch";
+import { useGetAgentUsersQuery } from "@/store/services/user.service";
 
 interface Transaction {
   id: string;
@@ -32,9 +36,25 @@ const TransactionsPage = () => {
   const [amountType, setAmountType] = useState<"all" | "credits" | "debits">(
     "all"
   );
+  const [cashier, setCashier] = useState<number | null>(null);
+  const { user } = useAppSelector((state) => state.user);
+
   const [transactionType, setTransactionType] = useState("");
   const [normalChecked, setNormalChecked] = useState(true);
   const [virtualBetsChecked, setVirtualBetsChecked] = useState(true);
+  const {
+    data: agent_users,
+    isLoading: isLoadingAgentUsers,
+    error,
+  } = useGetAgentUsersQuery(
+    {
+      agentId: user?.id || 0,
+    },
+    {
+      skip: !user?.id,
+    }
+  );
+  const users = Array.isArray(agent_users?.data) ? agent_users?.data : [];
 
   // Set default date range: 2 days ago to today
   const getDefaultDateRange = () => {
@@ -67,36 +87,6 @@ const TransactionsPage = () => {
   const nextPage = data?.meta?.nextPage;
   const prevPage = data?.meta?.prevPage;
 
-  const handleNextPage = () => {
-    if (hasNextPage && nextPage) {
-      setCurrentPage(nextPage);
-      // Auto-fetch when page changes
-      fetchTransactions({
-        clientId: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID)!,
-        endDate: dateRange.endDate,
-        page_size: parseInt(pageSize),
-        startDate: dateRange.startDate,
-        type: amountType,
-        page: nextPage,
-      });
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (hasPrevPage && prevPage) {
-      setCurrentPage(prevPage);
-      // Auto-fetch when page changes
-      fetchTransactions({
-        clientId: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID)!,
-        endDate: dateRange.endDate,
-        page_size: parseInt(pageSize),
-        startDate: dateRange.startDate,
-        type: amountType,
-        page: prevPage,
-      });
-    }
-  };
-
   // Auto-fetch when filters change
   useEffect(() => {
     fetchTransactions({
@@ -106,8 +96,9 @@ const TransactionsPage = () => {
       startDate: dateRange.startDate,
       type: amountType,
       page: currentPage,
+      userId: cashier !== null ? Number(cashier) : null,
     });
-  }, [dateRange, pageSize, amountType, currentPage]); // Re-fetch when any filter changes
+  }, [dateRange, pageSize, amountType, currentPage, cashier]); // Re-fetch when any filter changes
 
   const handleCancel = () => {
     // Reset all filters to defaults
@@ -139,7 +130,9 @@ const TransactionsPage = () => {
 
   return (
     // <LoadBetsLayout title="Transaction List" navigationBar={<NavigationBar />}>
-    <div className="flex flex-col justify-between h-full p-2 gap-2">
+    <div
+      className={`flex flex-col justify-between h-full p-2 gap-2 ${classes["text-primary"]}`}
+    >
       {/* Filters and Actions Section - Static */}
       <div
         className={`p-2 ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  border border-gray-300 rounded-lg ${pageClasses["card-border"]}`}
@@ -147,8 +140,8 @@ const TransactionsPage = () => {
         {/* Transaction Filters */}
         <div className="flex gap-2">
           {/* First Row - Amounts and Transaction Type */}
-          <div className="flex flex-col lg:flex-row justify-start flex-wrap items-start gap-2">
-            <div className="flex justify-start items-center gap-2">
+          <div className="flex flex-col lg:flex-row justify-start flex-wrap items-start gap-4">
+            <div className="flex justify-start items-center gap-4">
               {/* <div className="flex flex-row items-center gap-4">
                 <Input
                   label="Amounts"
@@ -168,25 +161,22 @@ const TransactionsPage = () => {
                 />
               </div> */}
               <div
-                className={`flex flex-row items-center gap-4 ${pageClasses["card-text"]}`}
+                className={`grid 2xl:grid-cols-6 xl:grid-cols-5  lg:grid-cols-4 items-center gap-2 w-full`}
               >
-                <Input
-                  label="Transaction"
-                  value={transactionType}
-                  onChange={(e) => setTransactionType(e.target.value)}
-                  placeholder="Select type"
-                  bg_color={classes["input-bg"]}
-                  text_color={classes["input-text"]}
-                  border_color={`border ${classes["input-border"]}`}
-                  className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  height="h-[36px]"
-                  name={""}
-                />
-              </div>
-              <div
-                className={`flex flex-row items-center gap-2 w-full ${pageClasses["card-text"]}`}
-              >
-                <div className="w-44">
+                <div className={`flex flex-row items-center gap-4`}>
+                  <Input
+                    label="Transaction"
+                    value={transactionType}
+                    onChange={(e) => setTransactionType(e.target.value)}
+                    placeholder="Select type"
+                    bg_color={classes["input-bg"]}
+                    text_color={classes["input-text"]}
+                    border_color={`border ${classes["input-border"]}`}
+                    className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                    name={""}
+                  />
+                </div>
+                <div className="">
                   <Select
                     label="Page Size"
                     value={[pageSize]}
@@ -199,26 +189,29 @@ const TransactionsPage = () => {
                     ]}
                     onChange={(e) => setPageSize(e[0] as string)}
                     placeholder={""} // className="w-full"
-                    height="h-[36px]"
-                    bg_color={classes["input-bg"]}
-                    text_color={classes["input-text"]}
-                    border_color={`border ${classes["input-border"]}`}
-                    className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
+                    className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                   />
                 </div>
 
-                <div className={`w-[400px] ${pageClasses["card-text"]}`}>
+                <div className={`min-w-[400px] col-span-2`}>
                   <DateRangeInput
                     label="Transaction Date"
                     value={dateRange}
                     onChange={setDateRange}
                     placeholder="DD/MM/YYYY"
-                    bg_color={classes["input-bg"]}
-                    text_color={classes["input-text"]}
-                    border_color={`border ${classes["input-border"]}`}
-                    height="h-[36px]"
-
-                    // height="h-[42px]"
+                  />
+                </div>
+                <div className="">
+                  <Select
+                    label="Cashier"
+                    value={cashier !== null ? [cashier.toString()] : []}
+                    options={users.map((user) => ({
+                      id: user.id.toString(),
+                      name: user.username,
+                    }))}
+                    onChange={(e) => setCashier(Number(e[0]))}
+                    placeholder={""} // className="w-full"
+                    className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
                   />
                 </div>
                 <div className="flex flex-row items-center justify-center gap-4 h-full">
@@ -236,7 +229,7 @@ const TransactionsPage = () => {
                     >
                       {normalChecked && <CheckCheck size={16} color="white" />}
                     </span>
-                    <span className={pageClasses["card-text"]}>Normal</span>
+                    <span className={``}>Normal</span>
                   </button>
 
                   <button
@@ -255,9 +248,7 @@ const TransactionsPage = () => {
                         <CheckCheck size={16} color="white" />
                       )}
                     </span>
-                    <span className={pageClasses["card-text"]}>
-                      Virtual Bets
-                    </span>
+                    <span className={``}>Virtual Bets</span>
                   </button>
                 </div>
               </div>
@@ -266,38 +257,20 @@ const TransactionsPage = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-row justify-between items-end">
+        <div className="flex flex-row justify-between items-end pt-2">
           <div className="flex flex-row justify-between">
             <div className="flex flex-row items-center gap-8">
               <div>
-                <span className={`${pageClasses["label-text"]} text-[11px]`}>
-                  Credit
-                </span>
-                <span
-                  className={`block ${pageClasses["value-text"]} font-semibold text-sm`}
-                >
-                  0
-                </span>
+                <span className={`text-[11px]`}>Credit</span>
+                <span className={`block font-semibold text-sm`}>0</span>
               </div>
               <div>
-                <span className={`${pageClasses["label-text"]} text-[11px]`}>
-                  Debit
-                </span>
-                <span
-                  className={`block ${pageClasses["value-text"]} font-semibold text-sm`}
-                >
-                  0
-                </span>
+                <span className={`text-[11px]`}>Debit</span>
+                <span className={`block font-semibold text-sm`}>0</span>
               </div>
               <div>
-                <span className={`${pageClasses["label-text"]} text-[11px]`}>
-                  Total Balance
-                </span>
-                <span
-                  className={`block ${pageClasses["value-text"]} font-semibold text-sm`}
-                >
-                  0
-                </span>
+                <span className={`text-[11px]`}>Total Balance</span>
+                <span className={`block font-semibold text-sm`}>0</span>
               </div>
             </div>
           </div>
@@ -329,191 +302,90 @@ const TransactionsPage = () => {
           </div> */}
         </div>
       </div>
-
-      {/* Transaction Table - Scrollable Section */}
-      <div
-        className={`rounded-md ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  flex flex-col h-full border ${pageClasses["card-border"]}`}
-      >
-        {/* Table Header - Static */}
-        <div
-          className={` ${classes.sports_page["header-text"]} ${classes.sports_page["header-bg"]} w-full text-xs ${pageClasses["column-header-text"]} text-xs px-4 py-2`}
-        >
-          <div className="flex flex-row">
-            <span
-              className={`${pageClasses["column-header-text"]} font-semibold w-24`}
-            >
-              ID
-            </span>
-            <span
-              className={`${pageClasses["column-header-text"]} font-semibold w-52`}
-            >
-              Date
-            </span>
-            <span
-              className={`${pageClasses["column-header-text"]} font-semibold w-44`}
-            >
-              Transaction
-            </span>
-            <span
-              className={`${pageClasses["column-header-text"]} font-semibold w-24`}
-            >
-              Betslip
-            </span>
-            <span
-              className={`${pageClasses["column-header-text"]} font-semibold w-20`}
-            >
-              Credit
-            </span>
-            <span
-              className={`${pageClasses["column-header-text"]} font-semibold w-20`}
-            >
-              Debit
-            </span>
-            <span
-              className={`${pageClasses["column-header-text"]} font-semibold w-44`}
-            >
-              Subject
-            </span>
-            <span
-              className={`${pageClasses["column-header-text"]} font-semibold w-28`}
-            >
-              Balance
-            </span>
-          </div>
-        </div>
-
-        {/* Table Rows - Scrollable */}
-        <div className="flex-1 h-full overflow-y-auto">
-          {transactions?.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-4 p-10">
-              <div
-                className={`w-14 h-14 ${pageClasses["input-bg"]} rounded-full flex items-center justify-center`}
-              >
-                <FileText size={26} className={pageClasses["row-text"]} />
-              </div>
-              <div className="text-center">
-                <p
-                  className={`text-base font-semibold ${pageClasses["row-text"]} mb-1`}
-                >
-                  No transactions found
-                </p>
-                <p className={`text-xs ${pageClasses["row-text"]} opacity-60`}>
-                  {isLoading
-                    ? "Loading..."
-                    : "Try adjusting your filters or date range"}
-                </p>
-              </div>
-            </div>
-          ) : (
-            transactions?.map((transaction: any, index: number) => (
-              <div
-                key={transaction.id}
-                className={`border-b border-l-4 border-l-transparent hover:border-l-blue-500/80 ${pageClasses["card-border"]}`}
-              >
-                <div
-                  className={`flex flex-row p-2 ${pageClasses["row-hover"]}`}
-                >
-                  <div className="w-24 flex flex-row items-center">
-                    <span className="w-2 h-2 bg-green-500 rounded-full mr-2 inline-block" />
-                    <span
-                      className={`${pageClasses["row-text"]} text-xs font-medium`}
-                    >
-                      {transaction.id}
-                    </span>
-                  </div>
-                  <span className={`${pageClasses["row-text"]} text-xs w-52`}>
-                    {AppHelper.formatDate(transaction.transactionDate)}
-                  </span>
-                  <span className={`${pageClasses["row-text"]} text-xs w-44`}>
-                    {transaction.description}
-                  </span>
-                  <span className={`${pageClasses["row-text"]} text-xs w-24`}>
-                    {transaction.referenceNo}
-                  </span>
-                  <span
-                    className={`${pageClasses["credit-text"]} text-xs w-20 font-medium`}
-                  >
-                    {transaction.type === "credit"
-                      ? transaction?.amount.toFixed(2)
-                      : ""}
-                  </span>
-                  <span
-                    className={`${pageClasses["debit-text"]} text-xs w-20 font-medium`}
-                  >
-                    {transaction.type === "debit"
-                      ? transaction?.amount.toFixed(2)
-                      : ""}
-                  </span>
-                  <span className={`${pageClasses["row-text"]} text-xs w-44`}>
-                    {transaction.subject}
-                  </span>
-                  <span
-                    className={`${pageClasses["row-text"]} text-xs w-28 font-medium`}
-                  >
-                    {transaction.balance?.toFixed(2)}
-                  </span>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        {/* Table Footer - Static */}
-        <div
-          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  px-4 py-2`}
-        >
-          <div className="flex flex-row justify-between items-center">
-            <span
-              className={`${pageClasses["card-text"]} font-semibold text-[11px]`}
-            >
-              Number of rows: {transactions?.length}
-            </span>
-
-            {/* Pagination Controls */}
-            <div className="flex flex-row items-center gap-4">
-              <span className={`${pageClasses["card-text"]} text-xs`}>
-                Page {currentPage} of {totalPages}
-              </span>
-
-              <div className="flex flex-row items-center gap-2">
-                {/* Previous Page Button */}
-                <button
-                  type="button"
-                  onClick={handlePrevPage}
-                  disabled={!hasPrevPage}
-                  className={`p-1 rounded ${
-                    hasPrevPage
-                      ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]}`
-                      : `${pageClasses["input-bg"]} opacity-50`
-                  }`}
-                >
-                  <ChevronLeft
-                    size={20}
-                    color={hasPrevPage ? "white" : "gray"}
-                  />
-                </button>
-
-                {/* Next Page Button */}
-                <button
-                  type="button"
-                  onClick={handleNextPage}
-                  disabled={!hasNextPage}
-                  className={`p-1 rounded ${
-                    hasNextPage
-                      ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]}`
-                      : `${pageClasses["input-bg"]} opacity-50`
-                  }`}
-                >
-                  <ChevronRight
-                    size={20}
-                    color={hasNextPage ? "white" : "gray"}
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PaginatedTable
+        columns={[
+          {
+            id: "id",
+            name: "ID",
+          },
+          {
+            id: "date",
+            name: "Date",
+            className: "col-span-3",
+          },
+          {
+            id: "transaction",
+            name: "Transaction",
+            className: "col-span-2",
+          },
+          {
+            id: "betslip",
+            name: "Betslip",
+            className: "col-span-2",
+          },
+          {
+            id: "credit",
+            name: "Credit",
+            className: "text-green-500 col-span-2",
+          },
+          {
+            id: "debit",
+            name: "Debit",
+            className: "text-red-500 col-span-2",
+          },
+          {
+            id: "subject",
+            name: "Subject",
+            className: "col-span-3",
+          },
+          {
+            id: "balance",
+            name: "Balance",
+            className: "col-span-2",
+          },
+        ]}
+        className="grid-cols-[repeat(17,minmax(0,1fr))]"
+        pagination={{
+          total: data?.meta?.total || 0,
+          perPage: parseInt(pageSize),
+          currentPage: currentPage,
+          lastPage: totalPages,
+          nextPage: nextPage || 0,
+          prevPage: prevPage || 0,
+          onPageChange: (page: number) => {
+            setCurrentPage(page);
+          },
+        }}
+        data={transactions.map((transaction) => ({
+          id: transaction.id,
+          date: AppHelper.formatDate(transaction.transactionDate),
+          transaction: transaction.description,
+          betslip: transaction.referenceNo,
+          credit:
+            transaction.type === "credit" ? (
+              <CurrencyFormatter
+                amount={transaction.amount?.toFixed(2)}
+                className={""}
+                spanClassName={""}
+              />
+            ) : (
+              ""
+            ),
+          debit:
+            transaction.type === "debit" ? (
+              <CurrencyFormatter
+                amount={transaction.amount?.toFixed(2)}
+                className={""}
+                spanClassName={""}
+              />
+            ) : (
+              ""
+            ),
+          subject: transaction.subject,
+          balance: transaction.balance?.toFixed(2),
+        }))}
+        isLoading={isLoading}
+      />
     </div>
 
     // </LoadBetsLayout>

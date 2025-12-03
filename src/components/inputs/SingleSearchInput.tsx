@@ -6,6 +6,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 // import { IoCheckmarkDone } from "react-icons/io5";
 // import { MdOutlineErrorOutline } from "react-icons/md";
 import { AppHelper } from "../../lib/helper";
+import { getClientTheme } from "@/config/theme.config";
 
 export type SearchState = {
   isValid: boolean;
@@ -36,7 +37,7 @@ export type SingleSearchInputProps = {
   text_color?: string;
   accent_color?: string;
 };
-
+const { classes } = getClientTheme();
 const SingleSearchInput = React.forwardRef<
   HTMLInputElement,
   SingleSearchInputProps
@@ -58,10 +59,10 @@ const SingleSearchInput = React.forwardRef<
       tabIndex,
       type = "text",
       name = "default",
-      height = "h-[42px]",
-      bg_color = "bg-white",
-      border_color = "border-gray-300",
-      text_color = "text-gray-700",
+      height = "h-[38px]",
+      border_color = `${classes["input-border"]}`,
+      bg_color = classes["input-bg"],
+      text_color = classes["input-text"],
       accent_color = "text-gray-500",
     }: SingleSearchInputProps,
     ref: React.ForwardedRef<HTMLInputElement>
@@ -124,10 +125,12 @@ const SingleSearchInput = React.forwardRef<
       }
     };
 
-    const inputStyle = `flex ${bg_color} ${text_color} w-full rounded-md border border-input text-sm ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 transition-all  ${
+    const inputStyle = `flex ${bg_color} ${text_color} w-full rounded-md border border-input text-sm ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground text-xs ${
+      classes["input-focus-within"]
+    } disabled:cursor-not-allowed disabled:opacity-50 transition-all  ${
       AppHelper.isDarkColor(bg_color)
-        ? "focus-within:bg-blue-500/30 hover:bg-blue-500"
-        : "focus-within:bg-blue-50 hover:bg-blue-50"
+        ? " hover:bg-blue-500"
+        : " hover:bg-blue-50"
     } `;
 
     useEffect(() => {
@@ -207,10 +210,7 @@ const SingleSearchInput = React.forwardRef<
         } else if (showError || searchState.isNotFound || !isValidFormat) {
           baseStyle += " ring-2 ring-[tomato]";
         } else {
-          baseStyle += `ring-blue-500/80 ring-2 ring-[${border_color.replace(
-            "border-",
-            ""
-          )}]`;
+          baseStyle += `${classes["input-ring"]}`;
         }
       }
 
@@ -225,7 +225,7 @@ const SingleSearchInput = React.forwardRef<
               className={`text-[11px] font-semibold ${
                 showError || searchState.isNotFound || !isValidFormat
                   ? "text-[tomato]"
-                  : text_color
+                  : ""
               }`}
               htmlFor=""
             >

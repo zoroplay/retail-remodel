@@ -331,14 +331,6 @@ export const AppHeader: React.FC = ({}) => {
               </div>
             </form>
           )}
-          {/* Hamburger for mobile */}
-          <button
-            className="md:hidden ml-2 p-2 rounded-full bg-blue-800 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onClick={openMenuModal}
-            aria-label="Open menu"
-          >
-            <Menu size={24} color="white" />
-          </button>
         </div>
       </div>
       <div

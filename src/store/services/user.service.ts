@@ -15,6 +15,8 @@ import type {
   CommissionTransactionsResponse,
   UserCommissionResponse,
   UserCommissionProfileResponse,
+  SuperAgentCommissionResponse,
+  TotalSuperAgentCommissionResponse,
 } from "./types/responses";
 
 const UserApiSlice = apiSlice.injectEndpoints({
@@ -145,15 +147,55 @@ const UserApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getAgentUsers: builder.query<
-      { success: boolean; data: User[] },
-      { agentId: number; clientId: number }
+      {
+        success: boolean;
+        data: {
+          balance: number;
+          clientId: number;
+          code: string;
+          commission_balance: number;
+          email: string;
+          firstName: string;
+          id: number;
+          lastName: string;
+          phone_number: string;
+          role_id: number;
+          rolename: string;
+          username: string;
+        }[];
+      },
+      { agentId: number }
     >({
-      query: ({ agentId, clientId }) => ({
+      query: ({ agentId }) => ({
         url: AppHelper.buildQueryUrl(USER_ACTIONS.GET_AGENT_USERS, {
-          client_id: clientId,
           agent_id: agentId,
         }),
         method: REQUEST_ACTIONS.GET,
+      }),
+    }),
+    superAgentCommission: builder.query<
+      SuperAgentCommissionResponse,
+      { user_id: number; from: string; to: string; provider: string }
+    >({
+      query: ({ user_id }) => ({
+        url: AppHelper.buildQueryUrl(USER_ACTIONS.SUPER_AGENT_COMMISSION, {
+          user_id,
+        }),
+        method: REQUEST_ACTIONS.POST,
+      }),
+    }),
+    totalSuperAgentCommission: builder.query<
+      TotalSuperAgentCommissionResponse,
+      { user_id: number; from: string; to: string }
+    >({
+      query: ({ user_id }) => ({
+        url: AppHelper.buildQueryUrl(
+          USER_ACTIONS.TOTAL_SUPER_AGENT_COMMISSION,
+          {
+            user_id,
+          }
+        ),
+        method: REQUEST_ACTIONS.POST,
       }),
     }),
   }),
@@ -173,4 +215,6 @@ export const {
   usePayoutCommissionMutation,
   useDepositCommissionMutation,
   useGetAgentUsersQuery,
+  useSuperAgentCommissionQuery,
+  useTotalSuperAgentCommissionQuery,
 } = UserApiSlice;

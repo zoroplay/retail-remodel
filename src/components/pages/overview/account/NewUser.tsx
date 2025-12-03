@@ -126,7 +126,7 @@ const NewUser = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto  ${pageClasses["page-text"]}`}
+      className={`h-[calc(100vh-110px)] overflow-y-auto  ${classes["text-primary"]}`}
     >
       <div className="p-4">
         {/* Header */}
@@ -134,13 +134,13 @@ const NewUser = () => {
           <div
             className={`w-10 h-10 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
           >
-            <UserPlus size={20} className={pageClasses["header-icon-text"]} />
+            <UserPlus size={20} className={classes["text-secondary"]} />
           </div>
           <div>
-            <h1 className={`text-base font-bold ${pageClasses["header-text"]}`}>
+            <h1 className={`text-base font-bold`}>
               New {usertype === "cashier" ? "Cashier" : "Player"}
             </h1>
-            <p className={`${pageClasses["subtitle-text"]} text-xs`}>
+            <p className={`${classes["text-secondary"]} text-xs`}>
               Create a new {usertype} account
             </p>
           </div>
@@ -154,7 +154,7 @@ const NewUser = () => {
             {/* Personal Information */}
             <div className="space-y-3">
               <h3
-                className={`text-sm font-semibold ${pageClasses["section-header-text"]} border-b ${pageClasses["section-header-border"]} pb-2`}
+                className={`text-sm font-semibold  border-b ${classes["border"]} pb-2`}
               >
                 Personal Information
               </h3>
@@ -172,7 +172,6 @@ const NewUser = () => {
                   text_color={classes["input-text"]}
                   border_color={`border ${classes["input-border"]}`}
                   className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  height="h-[36px]"
                 />
 
                 <Input
@@ -187,7 +186,6 @@ const NewUser = () => {
                   text_color={classes["input-text"]}
                   border_color={`border ${classes["input-border"]}`}
                   className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  height="h-[36px]"
                 />
 
                 <div>
@@ -209,7 +207,6 @@ const NewUser = () => {
                     text_color={classes["input-text"]}
                     border_color={`border ${classes["input-border"]}`}
                     className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                    height="h-[36px]"
                   />
                 </div>
 
@@ -231,7 +228,7 @@ const NewUser = () => {
             {/* Contact Information */}
             <div className="space-y-3">
               <h3
-                className={`text-sm font-semibold ${pageClasses["section-header-text"]} border-b ${pageClasses["section-header-border"]} pb-2`}
+                className={`text-sm font-semibold  border-b ${classes["border"]} pb-2`}
               >
                 Contact Information
               </h3>
@@ -249,7 +246,6 @@ const NewUser = () => {
                   text_color={classes["input-text"]}
                   border_color={`border ${classes["input-border"]}`}
                   className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  height="h-[36px]"
                 />
 
                 <Input
@@ -265,7 +261,6 @@ const NewUser = () => {
                   text_color={classes["input-text"]}
                   border_color={`border ${classes["input-border"]}`}
                   className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  height="h-[36px]"
                 />
 
                 {/* <div className="md:col-span-2">
@@ -288,7 +283,7 @@ const NewUser = () => {
             {/* Account Information */}
             <div className="space-y-3">
               <h3
-                className={`text-sm font-semibold ${pageClasses["section-header-text"]} border-b ${pageClasses["section-header-border"]} pb-2`}
+                className={`text-sm font-semibold  border-b ${classes["border"]} pb-2`}
               >
                 Account Information
               </h3>
@@ -306,7 +301,6 @@ const NewUser = () => {
                   text_color={classes["input-text"]}
                   border_color={`border ${classes["input-border"]}`}
                   className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  height="h-[36px]"
                 />
 
                 <Input
@@ -322,7 +316,6 @@ const NewUser = () => {
                   text_color={classes["input-text"]}
                   border_color={`border ${classes["input-border"]}`}
                   className={`w-full border ${classes["input-border"]} ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  height="h-[36px]"
                 />
 
                 <Input
@@ -337,7 +330,6 @@ const NewUser = () => {
                   text_color={classes["input-text"]}
                   border_color={`border ${classes["input-border"]}`}
                   className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                  height="h-[36px]"
                 />
 
                 <div>
@@ -356,7 +348,6 @@ const NewUser = () => {
                     text_color={classes["input-text"]}
                     border_color={`border ${classes["input-border"]}`}
                     className={`w-full border ${classes["input-border"]} rounded-lg px-3 py-2 ${classes["input-text"]} placeholder-slate-400 transition-all disabled:opacity-50`}
-                    height="h-[36px]"
                   />
                 </div>
               </div>
@@ -367,7 +358,7 @@ const NewUser = () => {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className={`flex items-center text-xs gap-2 px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow`}
+                className={`flex items-center text-[11px] gap-1 px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow`}
               >
                 <X size={14} />
                 Cancel
@@ -375,7 +366,7 @@ const NewUser = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`flex items-center text-xs gap-2 px-4 py-2 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} font-medium rounded-md transition-all shadow-md border disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`flex items-center text-[11px] gap-1 px-4 py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} font-medium rounded-md transition-all shadow-md border disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isSubmitting ? (
                   <Loader size={14} className="animate-spin" />

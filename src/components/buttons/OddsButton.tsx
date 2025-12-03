@@ -37,7 +37,6 @@ const OddsButton = ({
     setIsDisabled(!!disabled || !outcome);
   }, [disabled, outcome]);
   const handleOddsPress = (outcome: Outcome) => {
-    console.log("handleOddsPress called with outcome:", outcome);
     toggleBet({
       fixture_data: fixture_data as PreMatchFixture,
       outcome_data: outcome,

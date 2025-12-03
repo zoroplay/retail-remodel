@@ -21,7 +21,7 @@ import environmentConfig, {
   ENVIRONMENT_VARIABLES,
   getEnvironmentVariable,
 } from "../../../store/services/configs/environment.config";
-import { ChevronRight, Grid, X } from "lucide-react";
+import { Check, ChevronRight, Grid, X } from "lucide-react";
 import Spinner from "../../layouts/Spinner";
 import NavigationBar from "../../layouts/CDNavigationBar";
 import SingleSearchInput from "@/components/inputs/SingleSearchInput";
@@ -34,6 +34,7 @@ import { getClientTheme } from "@/config/theme.config";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import {
   addCashDeskItem,
+  clearCashDeskItems,
   setFormData,
 } from "@/store/features/slice/cashdesk.slice";
 import { CashDeskFormData } from "@/store/features/types/cashdesk.types";
@@ -645,7 +646,7 @@ const LoadBetsPage = () => {
           <section className="flex-1">
             {/* Event Details Form - Modern Betting Platform Design */}
             <div
-              className={`${classes.sports_page["card-bg"]} border ${cashdeskClasses["card-border"]} rounded-md shadow-2xl overflow-hidden mb-1`}
+              className={`${classes.sports_page["card-bg"]} border ${classes.sports_page["card-border"]} rounded-md shadow-2xl overflow-hidden mb-1`}
             >
               {/* Header */}
               <div
@@ -801,18 +802,48 @@ const LoadBetsPage = () => {
                         type="num_select"
                         num_select_placeholder={"NGN"}
                       />
-                      <div className="grid grid-cols-2 gap-1">
-                        <button
-                          className={`p-2 ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-text"]} border  shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center ${classes["button-cancel-border"]}`}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          className={`p-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-border"]} ${classes["button-proceed-text"]} border   shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center`}
-                        >
-                          Proceed
-                        </button>
-                      </div>
+                      {isConfirming ? (
+                        <div className="grid grid-cols-2 gap-1">
+                          <button
+                            onClick={cancelBet}
+                            disabled={isPlacingBet}
+                            className={`${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} border border-red-500 text-white font-semibold p2-2 rounded-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-xs h-9`}
+                          >
+                            Cancel
+                          </button>
+
+                          <button
+                            onClick={placeBet}
+                            disabled={isPlacingBet}
+                            className={`${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} border border-emerald-500 ${classes["button-proceed-text"]} font-semibold p-2 rounded-md transition-all duration-200 text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 h-9`}
+                          >
+                            {isPlacingBet ? (
+                              <>
+                                <Spinner />
+                                PLACING...
+                              </>
+                            ) : (
+                              <>Place Bet</>
+                            )}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 gap-1">
+                          <button
+                            onClick={clearBets}
+                            className={`p-2 ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-text"]} border  shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center ${classes["button-cancel-border"]}`}
+                          >
+                            Clear
+                          </button>
+                          <button
+                            onClick={confirmBet}
+                            disabled={!canPlaceBet}
+                            className={`p-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-border"]} ${classes["button-proceed-text"]} border   shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center`}
+                          >
+                            Proceed
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

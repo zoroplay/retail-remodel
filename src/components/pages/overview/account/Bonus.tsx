@@ -95,7 +95,7 @@ const Bonus = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["page-bg"]} ${pageClasses["page-text"]}`}
+      className={`h-[calc(100vh-110px)] overflow-y-auto ${classes["text-primary"]}`}
     >
       <div className="flex flex-col gap-2 p-4">
         {/* Header */}
@@ -107,12 +107,8 @@ const Bonus = () => {
               <Gift size={20} className={pageClasses["header-icon-text"]} />
             </div>
             <div>
-              <h1
-                className={`text-base font-bold ${pageClasses["header-text"]}`}
-              >
-                Bonus Management
-              </h1>
-              <p className={`${pageClasses["subtitle-text"]} text-xs`}>
+              <h1 className={`text-base font-bold `}>Bonus Management</h1>
+              <p className={`${classes["text-secondary"]} text-xs`}>
                 View and manage bonus programs
               </p>
             </div>
@@ -160,9 +156,9 @@ const Bonus = () => {
           </div>
         ) : (
           <div
-            className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-8 text-center`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border ${classes.sports_page["card-border"]} p-8 text-center`}
           >
-            <div className={`text-sm ${pageClasses["subtitle-text"]}`}>
+            <div className={`text-sm ${classes["text-secondary"]}`}>
               No bonus data available
             </div>
           </div>
@@ -171,7 +167,7 @@ const Bonus = () => {
         {/* Selected Bonus Details */}
         {selectedBonus && (
           <div
-            className={`${pageClasses["card-bg"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border p-4`}
           >
             <div className="flex items-center justify-between mb-4">
               <h3

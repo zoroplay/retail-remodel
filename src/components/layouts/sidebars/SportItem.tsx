@@ -5,6 +5,8 @@ import CategoryItem from "./CategoryItem";
 import CategorySkeleton from "./CategorySkeleton";
 import { getClientTheme } from "@/config/theme.config";
 import { IoChevronDown } from "react-icons/io5";
+import { OVERVIEW } from "@/data/routes/routes";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   sport: Sport;
@@ -15,8 +17,14 @@ const SportItem = ({ sport, onSportClick }: Props) => {
   const { classes } = getClientTheme();
   const sidebarClasses = classes.sports_sidebar;
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
 
   const toggleExpansion = () => {
+    if (sport.sportID === "pool") {
+      navigate(OVERVIEW.SPORTS_POOL);
+
+      return;
+    }
     setIsExpanded(!isExpanded);
     // For now, just call the click handler
     if (onSportClick) {
@@ -54,13 +62,13 @@ const SportItem = ({ sport, onSportClick }: Props) => {
           <span className={`text-xs font-bold tracking-wider`}>
             {sport.sportName}
           </span>
-          {sport.total > 0 && (
-            <span
-              className={`text-[10px] font-semibold ${sidebarClasses["sport-item-count-text"]} ${sidebarClasses["sport-item-count-bg"]} px-1.5 py-0.5 rounded-full`}
-            >
-              {sport.total}
-            </span>
-          )}
+          {/* {sport.total > 0 && ( */}
+          <span
+            className={`text-[10px] font-semibold ${sidebarClasses["sport-item-count-text"]} ${sidebarClasses["sport-item-count-bg"]} px-1.5 py-0.5 rounded-full`}
+          >
+            {sport.total}
+          </span>
+          {/* )} */}
         </div>
 
         {hasEvents && (

@@ -25,6 +25,8 @@ import {
 import { motion } from "framer-motion";
 import { AppHelper } from "../../lib/helper";
 import { cn } from "../../lib/utils";
+import { getClientTheme } from "@/config/theme.config";
+const { classes } = getClientTheme();
 
 interface DateRangeInputProps {
   value?: { startDate: string; endDate: string };
@@ -47,14 +49,16 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
   label,
   error,
   required = false,
-  bg_color = "bg-white",
-  border_color = "border-gray-300",
-  text_color = "text-gray-700",
+  border_color = `${classes["input-border"]}`,
+  bg_color = classes["input-bg"],
+  text_color = classes["input-text"],
   accent_color = "text-gray-500",
-  height = "h-[42px]",
+  height = "h-[40px]",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  // Track how many inputs are focused to handle blur/focus correctly
+  const focusCount = useRef(0);
   const [startDate, setStartDate] = useState<Date | null>(
     value?.startDate ? new Date(value.startDate) : null
   );
@@ -70,6 +74,7 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
   const [endMonthInput, setEndMonthInput] = useState("");
   const [endYearInput, setEndYearInput] = useState("");
   const calendarRef = useRef<HTMLDivElement>(null);
+  const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [showYearDropdown, setShowYearDropdown] = useState(false);
   const [activeCalendar, setActiveCalendar] = useState<"left" | "right" | null>(
@@ -88,11 +93,16 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const calendarNode = calendarRef.current;
+      const inputNode = inputWrapperRef.current;
       if (
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target as Node)
+        calendarNode &&
+        !calendarNode.contains(event.target as Node) &&
+        inputNode &&
+        !inputNode.contains(event.target as Node)
       ) {
         setIsOpen(false);
+        setIsFocused(false);
       }
     };
 
@@ -794,11 +804,19 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
       )}
 
       <div
-        className={`w-full ${bg_color} ${text_color} text-[13px] ${height} border rounded-md focus-within:ring-2 ${getBorderColor()} flex items-center justify-between pl-1 transition-all duration-200 ${
-          isFocused
-            ? `ring-2 ring-[${border_color.replace("border-", "")}]`
-            : ""
+        ref={inputWrapperRef}
+        className={`w-full ${bg_color} ${text_color} text-[13px] ${height} border rounded-md ${
+          classes["input-focus-within"]
+        } ${getBorderColor()} flex items-center justify-between pl-1 transition-all duration-200 ${
+          isFocused ? classes["input-ring"] : ""
         }`}
+        tabIndex={-1}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => {
+          setTimeout(() => {
+            if (focusCount.current === 0) setIsFocused(false);
+          }, 0);
+        }}
       >
         <div className="flex items-center justify-between w-[16rem]">
           <div className="flex items-center gap-1">
@@ -811,7 +829,16 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
               placeholder="DD"
               className="w-8 h-8 py-2 text-center outline-none bg-transparent"
               maxLength={2}
-              onFocus={() => setIsFocused(true)}
+              onFocus={() => {
+                setIsFocused(true);
+                focusCount.current++;
+              }}
+              onBlur={() => {
+                focusCount.current = Math.max(0, focusCount.current - 1);
+                setTimeout(() => {
+                  if (focusCount.current === 0) setIsFocused(false);
+                }, 0);
+              }}
             />
             <span className={`${accent_color}`}>/</span>
             <input
@@ -823,7 +850,16 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
               placeholder="MM"
               className="w-8 h-8 py-2 text-center outline-none bg-transparent"
               maxLength={2}
-              onFocus={() => setIsFocused(true)}
+              onFocus={() => {
+                setIsFocused(true);
+                focusCount.current++;
+              }}
+              onBlur={() => {
+                focusCount.current = Math.max(0, focusCount.current - 1);
+                setTimeout(() => {
+                  if (focusCount.current === 0) setIsFocused(false);
+                }, 0);
+              }}
             />
             <span className={`${accent_color}`}>/</span>
             <input
@@ -835,7 +871,16 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
               placeholder="YYYY"
               className="w-12 h-8 py-2 text-center outline-none bg-transparent"
               maxLength={4}
-              onFocus={() => setIsFocused(true)}
+              onFocus={() => {
+                setIsFocused(true);
+                focusCount.current++;
+              }}
+              onBlur={() => {
+                focusCount.current = Math.max(0, focusCount.current - 1);
+                setTimeout(() => {
+                  if (focusCount.current === 0) setIsFocused(false);
+                }, 0);
+              }}
             />
           </div>
           <span className={`${accent_color}`}>
@@ -851,7 +896,16 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
               placeholder="DD"
               className="w-8 h-8 py-2 text-center outline-none bg-transparent"
               maxLength={2}
-              onFocus={() => setIsFocused(true)}
+              onFocus={() => {
+                setIsFocused(true);
+                focusCount.current++;
+              }}
+              onBlur={() => {
+                focusCount.current = Math.max(0, focusCount.current - 1);
+                setTimeout(() => {
+                  if (focusCount.current === 0) setIsFocused(false);
+                }, 0);
+              }}
             />
             <span className={`${accent_color}`}>/</span>
             <input
@@ -863,7 +917,16 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
               placeholder="MM"
               className="w-8 h-8 py-2 text-center outline-none bg-transparent"
               maxLength={2}
-              onFocus={() => setIsFocused(true)}
+              onFocus={() => {
+                setIsFocused(true);
+                focusCount.current++;
+              }}
+              onBlur={() => {
+                focusCount.current = Math.max(0, focusCount.current - 1);
+                setTimeout(() => {
+                  if (focusCount.current === 0) setIsFocused(false);
+                }, 0);
+              }}
             />
             <span className={`${accent_color}`}>/</span>
             <input
@@ -875,12 +938,24 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
               placeholder="YYYY"
               className="w-12 h-8 py-2 text-center outline-none bg-transparent"
               maxLength={4}
-              onFocus={() => setIsFocused(true)}
+              onFocus={() => {
+                setIsFocused(true);
+                focusCount.current++;
+              }}
+              onBlur={() => {
+                focusCount.current = Math.max(0, focusCount.current - 1);
+                setTimeout(() => {
+                  if (focusCount.current === 0) setIsFocused(false);
+                }, 0);
+              }}
             />
           </div>
         </div>
         <div
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            setIsFocused(true);
+          }}
           className={`w-12 min-w-[2rem] cursor-pointer ${
             AppHelper.isDarkColor(bg_color)
               ? isOpen

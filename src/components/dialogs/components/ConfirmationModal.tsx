@@ -48,7 +48,7 @@ const ConfirmationModal = ({ onClose }: Props) => {
       <button
         type="button"
         onClick={onClose}
-        className={`cursor-pointer rounded-lg h-9 border p-2 px-4 flex items-center justify-center gap-2 text-xs ${modalClasses.change_password["cancel-button-bg"]} ${modalClasses.change_password["cancel-button-hover"]} ${modalClasses.change_password["cancel-button-text"]}`}
+        className={`cursor-pointer rounded-lg h-9 border p-2 px-4 flex items-center justify-center gap-2 text-xs ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-border"]} ${classes["button-cancel-text"]} `}
       >
         Cancel
       </button>
@@ -58,7 +58,7 @@ const ConfirmationModal = ({ onClose }: Props) => {
         }}
         disabled={isLoading}
         type="button"
-        className={`cursor-pointer rounded-lg h-9 border p-2 px-4 flex items-center justify-center gap-2 text-xs ${modalClasses.change_password["confirm-button-bg"]} ${modalClasses.change_password["confirm-button-hover"]} ${modalClasses.change_password["confirm-button-text"]} disabled:opacity-50`}
+        className={`cursor-pointer rounded-lg h-9 border p-2 px-4 flex items-center justify-center gap-2 text-xs ${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-border"]} ${classes["button-proceed-text"]} disabled:opacity-50`}
       >
         {isLoading ? <Loader className="animate-spin" /> : "Proceed"}
       </button>
