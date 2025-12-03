@@ -99,7 +99,7 @@ jobs:
             BUILD_DATE=${{ github.event.head_commit.timestamp }}
             GIT_COMMIT=${{ github.sha }}
             VERSION=${{ needs.version.outputs.version }}
-            VITE_APP_API_BASE_URL=https://api.staging.sportsbookengine.com/api/v2
+            VITE_APP_API_BASE_URL=https://dev.staging.sportsbookengine.com/api/v2
             VITE_APP_CLIENT_ID=4
             VITE_APP_MQTT_URI="wss://emqx.sportsbookengine.com/mqtt"
             VITE_APP_MQTT_USERNAME="ui"
