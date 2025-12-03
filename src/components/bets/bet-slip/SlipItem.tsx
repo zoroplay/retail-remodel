@@ -52,7 +52,7 @@ const SlipItem = ({ selection, bg_color, border_color, text_color }: Props) => {
         }}
       >
         <div className={`flex items-center gap-2 mb-1`}>
-          <input
+          {/* <input
             type="checkbox"
             className="w-4 h-4 cursor-pointer accent-yellow-500"
             checked={selection.is_active}
@@ -63,7 +63,7 @@ const SlipItem = ({ selection, bg_color, border_color, text_color }: Props) => {
                 display_name: selection.game.display_name,
               });
             }}
-          />
+          /> */}
           <span
             className={`${betslipClasses["slip-item-header"]} font-semibold text-xs`}
           >

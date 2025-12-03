@@ -1539,4 +1539,19 @@ export class AppHelper {
       throw error; // Re-throw so caller can handle it properly
     }
   };
+
+  static getLast12Months() {
+    const months = [];
+    const now = new Date();
+    for (let i = 0; i < 12; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const year = d.getFullYear();
+      const month = d.getMonth() + 1;
+      months.push({
+        id: `${year}-${String(month).padStart(2, "0")}`,
+        name: d.toLocaleString("default", { month: "long", year: "numeric" }),
+      });
+    }
+    return months;
+  }
 }

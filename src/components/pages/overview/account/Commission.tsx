@@ -10,11 +10,12 @@ import {
   Calendar,
 } from "lucide-react";
 import Input from "../../../inputs/Input";
-import DateRangeInput from "@/components/inputs/DateRangeInput";
+// import DateRangeInput from "@/components/inputs/DateRangeInput";
 import Select from "@/components/inputs/Select";
 import { getClientTheme } from "@/config/theme.config";
 import { useTotalSuperAgentCommissionQuery } from "@/store/services/user.service";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import { AppHelper } from "../../../../lib/helper";
 
 interface CommissionData {
   type: string;
@@ -35,7 +36,14 @@ const Commission = () => {
   const pageClasses = classes.user_management_page;
   const { user } = useAppSelector((state) => state.user);
   const [reportType, setReportType] = useState("Agent Paid Commission");
-  const [period, setPeriod] = useState("Last Week");
+  // Period is now a string in format 'YYYY-MM'
+  const [period, setPeriod] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}`;
+  });
   //   const [startDate, setStartDate] = useState(
   //     moment().subtract(1, "week").startOf("week").format("YYYY-MM-DD")
   //   );
@@ -43,12 +51,22 @@ const Commission = () => {
   //     moment().subtract(1, "week").endOf("week").format("YYYY-MM-DD")
   //   );
 
-  const [startDate, setStartDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
-  const [endDate, setEndDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [startDate, setStartDate] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-01`;
+  });
+  const [endDate, setEndDate] = useState(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const lastDay = new Date(year, month, 0).getDate();
+    return `${year}-${String(month).padStart(2, "0")}-${String(
+      lastDay
+    ).padStart(2, "0")}`;
+  });
   const [grandTotals, setGrandTotals] = useState<CommissionData | null>(null);
   const [sportsTotals, setSportsTotals] = useState<CommissionData | null>(null);
   const [virtualTotals, setVirtualTotals] = useState<CommissionData | null>(
@@ -59,6 +77,7 @@ const Commission = () => {
   const {
     data: commissionData,
     isLoading,
+    isFetching,
     error,
     refetch,
   } = useTotalSuperAgentCommissionQuery(
@@ -115,52 +134,33 @@ const Commission = () => {
     }
   }, [commissionData, error]);
 
-  const formatCurrency = (amount: number) => {
-    return `₦${amount.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
-  };
+  // Refetch commission data whenever startDate or endDate changes (i.e., period changes)
+  React.useEffect(() => {
+    if (user?.id && startDate && endDate) {
+      refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDate, endDate]);
 
   // Remove auto-fetch on mount - user must click "Apply Filter" button
   // useEffect(() => {
   //   fetchResult();
   // }, []);
 
-  const handlePeriodChange = (value: string) => {
-    setPeriod(value);
+  // getLast12Months is now imported from AppHelper
 
-    if (value === "Last Week") {
-      //   setStartDate(
-      //     moment().subtract(1, "week").startOf("week").format("YYYY-MM-DD")
-      //   );
-      //   setEndDate(
-      //     moment().subtract(1, "week").endOf("week").format("YYYY-MM-DD")
-      //   );
-      const now = new Date();
-      const firstDayOfWeek = new Date(
-        now.setDate(now.getDate() - now.getDay() - 6)
-      );
-      const lastDayOfWeek = new Date(now.setDate(firstDayOfWeek.getDate() + 6));
-      setStartDate(firstDayOfWeek.toISOString().split("T")[0]);
-      setEndDate(lastDayOfWeek.toISOString().split("T")[0]);
-    } else if (value === "Last Month") {
-      //   setStartDate(
-      //     moment().subtract(1, "month").startOf("month").format("YYYY-MM-DD")
-      //   );
-      //   setEndDate(
-      //     moment().subtract(1, "month").endOf("month").format("YYYY-MM-DD")
-      //   );
-      const now = new Date();
-      const firstDayOfMonth = new Date(
-        now.getFullYear(),
-        now.getMonth() - 1,
-        1
-      );
-      const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-      setStartDate(firstDayOfMonth.toISOString().split("T")[0]);
-      setEndDate(lastDayOfMonth.toISOString().split("T")[0]);
-    }
+  const handlePeriodChange = (e: (string | number)[]) => {
+    const value = e[0] as string;
+    setPeriod(value);
+    // Set startDate to first day, endDate to last day of selected month
+    const [year, month] = value.split("-").map(Number);
+    const firstDay = `${year}-${String(month).padStart(2, "0")}-01`;
+    const lastDayNum = new Date(year, month, 0).getDate();
+    const lastDay = `${year}-${String(month).padStart(2, "0")}-${String(
+      lastDayNum
+    ).padStart(2, "0")}`;
+    setStartDate(firstDay);
+    setEndDate(lastDay);
   };
 
   const TotalsSection = ({
@@ -192,7 +192,7 @@ const Commission = () => {
         >
           <h3 className={`text-sm font-bold`}>{title}</h3>
         </div>
-        {isLoading ? (
+        {isFetching ? (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {Array.from({ length: 8 }).map((_, i) => (
               <SkeletonCard key={i} />
@@ -361,16 +361,13 @@ const Commission = () => {
           className={`${classes.sports_page["card-bg"]} backdrop-blur-sm  rounded-lg border ${classes.sports_page["card-border"]} p-2`}
         >
           <div className="grid gap-2 ">
-            <DateRangeInput
-              value={{
-                startDate: startDate,
-                endDate: endDate,
-              }}
-              label="Date Range"
-              onChange={(e) => {
-                setStartDate((prev) => e.startDate ?? prev);
-                setEndDate((prev) => e.endDate ?? prev);
-              }}
+            <Select
+              label="Period"
+              value={[period]}
+              options={AppHelper.getLast12Months()}
+              onChange={handlePeriodChange}
+              placeholder={"Select month"}
+              className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
             />
           </div>
         </div>

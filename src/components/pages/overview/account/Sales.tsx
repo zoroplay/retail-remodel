@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../../../hooks/useAppDispatch";
 import { toast } from "sonner";
 import {
@@ -10,14 +10,12 @@ import {
   Users,
   BarChart3,
 } from "lucide-react";
-// import moment from "moment";
-import DateRangeInput from "@/components/inputs/DateRangeInput";
+import Select from "@/components/inputs/Select";
 import { getClientTheme } from "@/config/theme.config";
-import {
-  useSuperAgentCommissionQuery,
-  useTotalSuperAgentCommissionQuery,
-} from "@/store/services/user.service";
+import { AppHelper } from "@/lib/helper";
+import { useSuperAgentCommissionQuery } from "@/store/services/user.service";
 import PaginatedTable from "@/components/common/PaginatedTable";
+import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
 
 interface SalesData {
   channel: string;
@@ -36,22 +34,36 @@ const Sales = () => {
   const [activeTab, setActiveTab] = useState<
     "all" | "sports" | "virtual" | "casino"
   >("all");
-  const [period, setPeriod] = useState("today");
+  // Period is now a string in format 'YYYY-MM'
+  const [period, setPeriod] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}`;
+  });
   const [product, setProduct] = useState("");
-  //   const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
-  //   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
-  const [startDate, setStartDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
-  const [endDate, setEndDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [startDate, setStartDate] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-01`;
+  });
+  const [endDate, setEndDate] = useState(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const lastDay = new Date(year, month, 0).getDate();
+    return `${year}-${String(month).padStart(2, "0")}-${String(
+      lastDay
+    ).padStart(2, "0")}`;
+  });
   const [salesData, setSalesData] = useState<SalesData[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   // Super Agent Commission Query
   const {
     data: superAgentCommissionData,
-    isLoading: isCommissionLoading,
+    isFetching: isCommissionLoading,
     error: commissionError,
     refetch: refetchCommission,
   } = useSuperAgentCommissionQuery(
@@ -65,42 +77,26 @@ const Sales = () => {
       : { user_id: 0, from: startDate, to: endDate, provider: product }
   );
 
-  const formatCurrency = (amount: number) => {
-    return `₦${amount.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
-  };
-
-  const handlePeriodChange = (value: string) => {
+  const handlePeriodChange = (e: (string | number)[]) => {
+    const value = e[0] as string;
     setPeriod(value);
-
-    switch (value) {
-      case "today":
-        // setStartDate(moment().format("YYYY-MM-DD"));
-        // setEndDate(moment().format("YYYY-MM-DD"));
-        setStartDate(new Date().toISOString().split("T")[0]);
-        setEndDate(new Date().toISOString().split("T")[0]);
-        break;
-      case "yesterday":
-        // setStartDate(moment().subtract(1, "day").format("YYYY-MM-DD"));
-        // setEndDate(moment().subtract(1, "day").format("YYYY-MM-DD"));
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        setStartDate(yesterday.toISOString().split("T")[0]);
-        setEndDate(yesterday.toISOString().split("T")[0]);
-        break;
-      case "custom":
-        break;
-    }
+    // Set startDate to first day, endDate to last day of selected month
+    const [year, month] = value.split("-").map(Number);
+    const firstDay = `${year}-${String(month).padStart(2, "0")}-01`;
+    const lastDayNum = new Date(year, month, 0).getDate();
+    const lastDay = `${year}-${String(month).padStart(2, "0")}-${String(
+      lastDayNum
+    ).padStart(2, "0")}`;
+    setStartDate(firstDay);
+    setEndDate(lastDay);
   };
 
-  const fetchResult = () => {
+  useEffect(() => {
     refetchCommission();
-  };
+  }, [period]);
 
   // Map agent breakdown to salesData
-  React.useEffect(() => {
+  useEffect(() => {
     if (superAgentCommissionData && superAgentCommissionData.success) {
       setSalesData(
         superAgentCommissionData.data.agentBreakdown.map((agent) => ({
@@ -287,32 +283,15 @@ const Sales = () => {
             </div> */}
           </div>
 
-          {/* Date Range */}
+          {/* Period Select */}
           <div className={`grid gap-2 ${pageClasses["input-text"]}`}>
-            <DateRangeInput
-              // type="date"
-              value={{
-                startDate: startDate,
-                endDate: endDate,
-              }}
-              label="Date Range"
-              onChange={(e) => {
-                setStartDate((prev) => e.startDate ?? prev);
-                setEndDate((prev) => e.endDate ?? prev);
-                //   setDateRange({
-                //       ...dateRange,
-                //       startDate: e.startDate,
-                //       endDate: e.endDate,
-                //     })
-              }}
-              // bg_color="bg-gradient-to-r from-slate-800 to-slate-700"
-              // text_color="text-gray-200"
-              // border_color="border border-slate-600"
-              // text_color={pageClasses["input-text"]}
-
-              // height="h-[42px]"
-
-              // className="bg-gray-700 text-white px-3 py-2 rounded-md"
+            <Select
+              label="Period"
+              value={[period]}
+              options={AppHelper.getLast12Months()}
+              onChange={handlePeriodChange}
+              placeholder={"Select month"}
+              className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
             />
           </div>
           {/* 
@@ -350,7 +329,11 @@ const Sales = () => {
             <div
               className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
             >
-              {formatCurrency(totals.totalStake)}
+              <CurrencyFormatter
+                amount={totals.totalStake}
+                className={""}
+                spanClassName={""}
+              />
             </div>
           </div>
           <div
@@ -368,7 +351,11 @@ const Sales = () => {
             <div
               className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
             >
-              {formatCurrency(totals.grossProfit)}
+              <CurrencyFormatter
+                amount={totals.grossProfit}
+                className={""}
+                spanClassName={""}
+              />
             </div>
           </div>
           <div
@@ -386,7 +373,11 @@ const Sales = () => {
             <div
               className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
             >
-              {formatCurrency(totals.netRevenue)}
+              <CurrencyFormatter
+                amount={totals.netRevenue}
+                className={""}
+                spanClassName={""}
+              />
             </div>
           </div>
         </div>

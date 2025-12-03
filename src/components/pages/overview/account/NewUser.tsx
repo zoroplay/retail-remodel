@@ -6,7 +6,6 @@ import { UserPlus, Loader, Save, X } from "lucide-react";
 import { environmentConfig } from "../../../../store/services/configs/environment.config";
 import Input from "../../../inputs/Input";
 import Select from "@/components/inputs/Select";
-import DateInput from "@/components/inputs/DateInput";
 import { getClientTheme } from "@/config/theme.config";
 
 interface FormValues {

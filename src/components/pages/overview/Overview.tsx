@@ -102,7 +102,7 @@ export default function OverviewScreen({
 
   const {
     data: fixturesData,
-    isLoading: fixturesLoading,
+    isFetching: fixturesLoading,
     refetch,
     status: fixturesStatus,
   } = useFixturesQuery(
