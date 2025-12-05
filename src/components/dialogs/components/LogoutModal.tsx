@@ -28,7 +28,7 @@ const LogoutModal = ({ onClose }: Props) => {
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      className="max-w-[425px] !w-[425px] py-2 rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 backdrop-blur-xl border border-slate-700/50 text-gray-100 shadow-2xl shadow-black/50"
+      className="max-w-[425px] !w-[425px] py-2 rounded-xl backdrop-blur-xl border shadow-black/50"
     >
       <div className="flex flex-col gap-6">
         {/* Header */}

@@ -221,10 +221,10 @@ const Sales = () => {
                       i === 0 ? "today" : i === 1 ? "yesterday" : "manual"
                     )
                   }
-                  rounded="rounded-d"
+                  rounded="rounded-md"
                   background={`${classes.betslip["tab-bg"]} ${classes.betslip["tab-border"]} !p-[2px] border shadow-sm`}
                   thumb_background={`${classes.betslip["tab-bg"]}`}
-                  thumb_color={`${classes.betslip["tab-active-bg"]} ${classes.betslip["tab-active-text"]} transition-all duration-300`}
+                  thumb_color={`${classes.betslip["tab-active-bg"]} ${classes.betslip["tab-active-text"]} transition-all duration-300 !rounded-[4px]`}
                   text_color={`${classes.betslip["tab-inactive-text"]} !text-[11px] font-medium`}
                   selected_text_color={`${classes.betslip["tab-active-text"]} !text-[11px] font-medium`}
                 />

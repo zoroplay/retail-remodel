@@ -37,7 +37,7 @@ const WalletApiSlice = apiSlice.injectEndpoints({
       InitializeTransactionResponse,
       InitializeTransactionDto
     >({
-      query: ({ clientId, ...data }) => ({
+      query: (data) => ({
         url: AppHelper.buildQueryUrl(WALLET_ACTIONS.INITIALIZE_TRANSACTION, {}),
         method: REQUEST_ACTIONS.POST,
         body: data,
