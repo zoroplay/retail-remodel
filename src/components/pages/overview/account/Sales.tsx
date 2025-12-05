@@ -10,12 +10,13 @@ import {
   Users,
   BarChart3,
 } from "lucide-react";
-import Select from "@/components/inputs/Select";
+import DateRangeInput from "@/components/inputs/DateRangeInput";
 import { getClientTheme } from "@/config/theme.config";
 import { AppHelper } from "@/lib/helper";
 import { useSuperAgentCommissionQuery } from "@/store/services/user.service";
 import PaginatedTable from "@/components/common/PaginatedTable";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import SwitchInput from "@/components/inputs/SwitchInput";
 
 interface SalesData {
   channel: string;
@@ -34,31 +35,39 @@ const Sales = () => {
   const [activeTab, setActiveTab] = useState<
     "all" | "sports" | "virtual" | "casino"
   >("all");
-  // Period is now a string in format 'YYYY-MM'
-  const [period, setPeriod] = useState(() => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}`;
-  });
   const [product, setProduct] = useState("");
-  const [startDate, setStartDate] = useState(() => {
+  const [period, setPeriod] = useState<"today" | "yesterday" | "manual">(
+    "today"
+  );
+  const [dateRange, setDateRange] = useState(() => {
     const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-01`;
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const end = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const format = (d: Date) => d.toISOString().slice(0, 10);
+    return {
+      startDate: format(start),
+      endDate: format(end),
+    };
   });
-  const [endDate, setEndDate] = useState(() => {
+  // Update dateRange when period changes
+  useEffect(() => {
     const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth() + 1;
-    const lastDay = new Date(year, month, 0).getDate();
-    return `${year}-${String(month).padStart(2, "0")}-${String(
-      lastDay
-    ).padStart(2, "0")}`;
-  });
+    const format = (d: Date) => d.toISOString().slice(0, 10);
+    if (period === "today") {
+      setDateRange({
+        startDate: format(now),
+        endDate: format(now),
+      });
+    } else if (period === "yesterday") {
+      const yest = new Date(now);
+      yest.setDate(now.getDate() - 1);
+      setDateRange({
+        startDate: format(yest),
+        endDate: format(yest),
+      });
+    }
+    // If manual, do not change dateRange
+  }, [period]);
   const [salesData, setSalesData] = useState<SalesData[]>([]);
   // Super Agent Commission Query
   const {
@@ -70,30 +79,23 @@ const Sales = () => {
     user?.id
       ? {
           user_id: user.id,
-          from: startDate,
-          to: endDate,
+          from: dateRange.startDate,
+          to: dateRange.endDate,
           provider: product,
         }
-      : { user_id: 0, from: startDate, to: endDate, provider: product }
+      : {
+          user_id: 0,
+          from: dateRange.startDate,
+          to: dateRange.endDate,
+          provider: product,
+        }
   );
 
-  const handlePeriodChange = (e: (string | number)[]) => {
-    const value = e[0] as string;
-    setPeriod(value);
-    // Set startDate to first day, endDate to last day of selected month
-    const [year, month] = value.split("-").map(Number);
-    const firstDay = `${year}-${String(month).padStart(2, "0")}-01`;
-    const lastDayNum = new Date(year, month, 0).getDate();
-    const lastDay = `${year}-${String(month).padStart(2, "0")}-${String(
-      lastDayNum
-    ).padStart(2, "0")}`;
-    setStartDate(firstDay);
-    setEndDate(lastDay);
-  };
+  // Remove handlePeriodChange, not needed with date range
 
   useEffect(() => {
     refetchCommission();
-  }, [period]);
+  }, [dateRange.startDate, dateRange.endDate, product, activeTab]);
 
   // Map agent breakdown to salesData
   useEffect(() => {
@@ -201,115 +203,53 @@ const Sales = () => {
         <div
           className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-md border ${pageClasses["card-border"]} p-2`}
         >
-          <div className="grid md:grid-cols-2 gap-2">
-            {/* Period Selection */}
-            {/* <div>
-              <label className={`text-xs font-semibold mb-2 block`}>
-                Select Period
-              </label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handlePeriodChange("today")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                    period === "today"
-                      ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
-                      : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
-                  }`}
-                >
-                  Today
-                </button>
-                <button
-                  onClick={() => handlePeriodChange("yesterday")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                    period === "yesterday"
-                      ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
-                      : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
-                  }`}
-                >
-                  Yesterday
-                </button>
-                <button
-                  onClick={() => handlePeriodChange("custom")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                    period === "custom"
-                      ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
-                      : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
-                  }`}
-                >
-                  Custom
-                </button>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-4 items-center">
+              <label className="text-xs font-semibold">Period:</label>
+              <div className="min-w-[220px]">
+                <SwitchInput
+                  options={[
+                    { title: "Today" },
+                    { title: "Yesterday" },
+                    { title: "Manual" },
+                  ]}
+                  selected={
+                    period === "today" ? 0 : period === "yesterday" ? 1 : 2
+                  }
+                  onChange={(i) =>
+                    setPeriod(
+                      i === 0 ? "today" : i === 1 ? "yesterday" : "manual"
+                    )
+                  }
+                  rounded="rounded-d"
+                  background={`${classes.betslip["tab-bg"]} ${classes.betslip["tab-border"]} !p-[2px] border shadow-sm`}
+                  thumb_background={`${classes.betslip["tab-bg"]}`}
+                  thumb_color={`${classes.betslip["tab-active-bg"]} ${classes.betslip["tab-active-text"]} transition-all duration-300`}
+                  text_color={`${classes.betslip["tab-inactive-text"]} !text-[11px] font-medium`}
+                  selected_text_color={`${classes.betslip["tab-active-text"]} !text-[11px] font-medium`}
+                />
               </div>
-            </div> */}
-
-            {/* Product Selection */}
-            {/* <div>
-              <label
-                className={`text-xs font-semibold mb-2 block ${pageClasses["info-label-text"]}`}
-              >
-                Select Product
-              </label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setProduct("")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                    product === "all"
-                      ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
-                      : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
-                  }`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setProduct("sports")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                    product === "retail"
-                      ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
-                      : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
-                  }`}
-                >
-                  Sports
-                </button>
-                <button
-                  onClick={() => setProduct("online")}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                    product === "online"
-                      ? `${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-text"]} ${pageClasses["button-primary-hover"]}`
-                      : `${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-text"]} ${pageClasses["button-secondary-hover"]}`
-                  }`}
-                >
-                  Online
-                </button>
+            </div>
+            {period === "manual" && (
+              <div className="min-w-[250px]">
+                <DateRangeInput
+                  value={{
+                    startDate: dateRange.startDate,
+                    endDate: dateRange.endDate,
+                  }}
+                  // label="Date Range"
+                  onChange={(e) =>
+                    setDateRange({
+                      ...dateRange,
+                      startDate: e.startDate,
+                      endDate: e.endDate,
+                    })
+                  }
+                />
               </div>
-            </div> */}
+            )}
+            {/* Product filter UI can be added here if needed */}
           </div>
-
-          {/* Period Select */}
-          <div className={`grid gap-2 ${pageClasses["input-text"]}`}>
-            <Select
-              label="Period"
-              value={[period]}
-              options={AppHelper.getLast12Months()}
-              onChange={handlePeriodChange}
-              placeholder={"Select month"}
-              className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
-            />
-          </div>
-          {/* 
-          <div className="flex gap-3">
-            <button
-              onClick={fetchResult}
-              disabled={isLoading}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 ${pageClasses["button-primary-bg"]} ${pageClasses["button-primary-hover"]} ${pageClasses["button-primary-text"]} text-sm font-medium rounded-md transition-all shadow-lg disabled:opacity-50`}
-            >
-              <Filter size={16} />
-              {isLoading ? "Loading..." : "Generate Report"}
-            </button>
-            <button
-              className={`px-4 py-2 ${pageClasses["button-secondary-bg"]} ${pageClasses["button-secondary-hover"]} ${pageClasses["button-secondary-text"]} text-sm font-medium rounded-md transition-all`}
-            >
-              Cancel
-            </button>
-          </div> */}
         </div>
 
         {/* Super Agent Commission Summary Cards */}
