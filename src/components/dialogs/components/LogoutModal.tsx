@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/useAppDispatch";
 import Modal from "../Modal";
 import { logoutUser } from "@/store/features/slice/user.slice";
+import { getClientTheme } from "@/config/theme.config";
+const { classes } = getClientTheme();
 
 type Props = {
   onClose: () => void;
@@ -28,27 +30,14 @@ const LogoutModal = ({ onClose }: Props) => {
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      className="max-w-[425px] !w-[425px] py-2 rounded-xl backdrop-blur-xl border shadow-black/50"
-    >
-      <div className="flex flex-col gap-6">
-        {/* Header */}
-        <div className="flex flex-col gap-3 items-center">
-          <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center">
-            <LogOut size={32} className="text-red-400" />
-          </div>
-          <h2 className="text-xl font-bold text-center">Confirm Logout</h2>
-          <p className="text-sm text-gray-400 text-center">
-            Are you sure you want to logout from your account?
-          </p>
-        </div>
-
-        {/* Actions */}
+      className="max-w-[425px] !w-[425px] py-2 backdrop-blur-xl border"
+      footer={
         <div className="flex items-center justify-center gap-3 w-full">
           <button
             type="button"
             onClick={onClose}
             // disabled={isLoading}
-            className="flex-1 bg-slate-700 hover:bg-slate-600 border border-slate-600 text-white rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`flex-1  ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-border"]} ${classes["button-secondary-text"]} rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             <X size={16} />
             Cancel
@@ -57,7 +46,7 @@ const LogoutModal = ({ onClose }: Props) => {
             onClick={handleLogout}
             // disabled={isLoading}
             type="button"
-            className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 text-sm font-semibold transition-all shadow-lg shadow-red-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`flex-1 ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-border"]} ${classes["button-cancel-text"]} rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 text-sm font-semibold transition-all  disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {/* {isLoading ? (
               <>
@@ -71,6 +60,19 @@ const LogoutModal = ({ onClose }: Props) => {
             </>
             {/* )} */}
           </button>
+        </div>
+      }
+    >
+      <div className="flex flex-col gap-6">
+        {/* Header */}
+        <div className="flex flex-col gap-3 items-center">
+          <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center">
+            <LogOut size={32} className="text-red-400" />
+          </div>
+          <h2 className="text-xl font-bold text-center">Confirm Logout</h2>
+          <p className="text-sm text-gray-400 text-center">
+            Are you sure you want to logout from your account?
+          </p>
         </div>
       </div>
     </Modal>
