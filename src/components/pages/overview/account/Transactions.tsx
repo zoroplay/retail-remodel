@@ -364,7 +364,7 @@ const TransactionsPage = () => {
           credit:
             transaction.type === "credit" ? (
               <CurrencyFormatter
-                amount={transaction.amount?.toFixed(2)}
+                amount={transaction.amount}
                 className={""}
                 spanClassName={""}
               />
@@ -374,7 +374,7 @@ const TransactionsPage = () => {
           debit:
             transaction.type === "debit" ? (
               <CurrencyFormatter
-                amount={transaction.amount?.toFixed(2)}
+                amount={transaction.amount}
                 className={""}
                 spanClassName={""}
               />
@@ -382,7 +382,13 @@ const TransactionsPage = () => {
               ""
             ),
           subject: transaction.subject,
-          balance: transaction.balance?.toFixed(2),
+          balance: (
+            <CurrencyFormatter
+              amount={transaction.balance}
+              className={""}
+              spanClassName={""}
+            />
+          ),
         }))}
         isLoading={isLoading}
       />
