@@ -1,3 +1,23 @@
+// BetCruz palette colors for client 10 (from brand manual)
+export const CLIENT_10_PALETTE = {
+  E43402: "#E43402", // Red Orange
+  E26F12: "#E26F12", // Orange
+  "884816": "#884816", // Brown
+  FCE4BF: "#FCE4BF", // Cream
+  E9B593: "#E9B593", // Light Brown
+  EF6006: "#EF6006", // Orange
+  FCEDCB: "#FCEDCB", // Light Cream
+  EB8093: "#EB8093", // Sand
+  "894824": "#894824", // Brown
+  E43302: "#E43302", // Red Orange
+  FA9602: "#FA9602", // Carrot Orange
+  EC4500: "#EC4500", // Molten Orange
+  E6B394: "#E6B394", // Desert Sand
+  FBE4CF: "#FBE4CF", // Almond Cream
+  F99C02: "#F99C02", // Amber Glow
+  FG8400: "#FG8400", // Tiger Orange (possible typo, should be FG -> F68400)
+  F68400: "#F68400", // Tiger Orange (corrected)
+};
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import environmentConfig, {
   getEnvironmentVariable,
@@ -491,6 +511,7 @@ const CLIENTNAMES = {
   "1": "Red & White Sports",
   "5": "Blue & White Premium",
   "9": "Black & Gold Luxury",
+  "10": "Purple & Violet Premium",
   default: "Default Dark Gray Theme",
 };
 
@@ -501,6 +522,7 @@ const PRIMARYCOLORS = {
   "1": "#dc2626", // Client 1: Red (main brand color)
   "5": "#1e40af", // Client 5: Deep Blue with touch of red
   "9": "#d4af37", // Client 9: Gold (main brand color)
+  "10": "#EA3C00", // Client 10: BetCruz Orange (main brand color)
   default: "#6b7280", // Default: Gray-500
 };
 
@@ -508,6 +530,7 @@ const PRIMARYLIGHTCOLORS = {
   "1": "#ef4444", // Client 1: Lighter Red
   "5": "#3b82f6", // Client 5: Medium Blue
   "9": "#ffd700", // Client 9: Bright Gold
+  "10": "#FEA352", // Client 10: Light Orange
   default: "#9ca3af", // Default: Gray-400
 };
 
@@ -515,6 +538,7 @@ const PRIMARYDARKCOLORS = {
   "1": "#991b1b", // Client 1: Dark Red
   "5": "#1e3a8a", // Client 5: Very Dark Blue
   "9": "#b8860b", // Client 9: Dark Gold
+  "10": "#ea4201", // Client 10: Dark Orange
   default: "#374151", // Default: Gray-700
 };
 
@@ -525,6 +549,7 @@ const BGMAIN = {
   "1": "rgb(127, 29, 29)", // Client 1: Red dark (red-900)
   "5": "rgb(23, 37, 84)", // Client 5: Deep Navy Blue
   "9": "rgb(17, 17, 17)", // Client 9: Almost Black
+  "10": "#DBD8D4", // Client 10: Light Neutral
   default: "rgb(17, 24, 39)", // Default: Gray-900
 };
 
@@ -532,6 +557,7 @@ const BGSECONDARY = {
   "1": "rgb(153, 27, 27)", // Client 1: Red medium (red-800)
   "5": "rgb(30, 58, 138)", // Client 5: Navy Blue (blue-900)
   "9": "rgb(28, 28, 28)", // Client 9: Dark Gray
+  "10": "#ea4201", // Client 10: Secondary Orange
   default: "rgb(31, 41, 55)", // Default: Gray-800
 };
 
@@ -539,6 +565,7 @@ const BGTERTIARY = {
   "1": "rgb(185, 28, 28)", // Client 1: Red light (red-700)
   "5": "rgb(30, 64, 175)", // Client 5: Blue (blue-800)
   "9": "rgb(40, 40, 40)", // Client 9: Medium Gray
+  "10": "#f99300", // Client 10: Tertiary Orange
   default: "rgb(55, 65, 81)", // Default: Gray-700
 };
 
@@ -546,6 +573,7 @@ const BGGRADIENT = {
   "1": "linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%)",
   "5": "linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%)",
   "9": "linear-gradient(135deg, #d4af37 0%, #1c1c1c 100%)",
+  "10": "linear-gradient(135deg, #EA3C00 0%, #FEA352 100%)",
   default: "linear-gradient(135deg, #6b7280 0%, #374151 100%)",
 };
 
@@ -553,6 +581,7 @@ const BGGRADIENTHOVER = {
   "1": "linear-gradient(135deg, #ef4444 0%, #991b1b 100%)",
   "5": "linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)",
   "9": "linear-gradient(135deg, #ffd700 0%, #2c2c2c 100%)",
+  "10": "linear-gradient(135deg, #ea4201 0%, #f99300 100%)",
   default: "linear-gradient(135deg, #9ca3af 0%, #4b5563 100%)",
 };
 
@@ -563,6 +592,7 @@ const ACCENTCOLORS = {
   "1": "#ffffff", // Client 1: Pure White accent
   "5": "#ef4444", // Client 5: Red accent (touch of red in blue theme)
   "9": "#ffd700", // Client 9: Bright Gold accent
+  "10": "#ea4201", // Client 10: Accent Orange
   default: "#6b7280", // Default: Gray-500 accent
 };
 
@@ -570,6 +600,7 @@ const ACCENTLIGHT = {
   "1": "#fecaca", // Client 1: Light Pink-Red
   "5": "#fca5a5", // Client 5: Light Red
   "9": "#ffe55c", // Client 9: Light Gold
+  "10": "#FEA352", // Client 10: Light Accent
   default: "#d1d5db", // Default: Gray-300
 };
 
@@ -577,6 +608,7 @@ const ACCENTDARK = {
   "1": "#f87171", // Client 1: Medium Red
   "5": "#dc2626", // Client 5: Dark Red
   "9": "#d4af37", // Client 9: Medium Gold
+  "10": "#EA3C00", // Client 10: Dark Accent
   default: "#4b5563", // Default: Gray-600
 };
 
@@ -587,6 +619,7 @@ const TEXTPRIMARY = {
   "1": "#ffffff",
   "5": "#ffffff",
   "9": "#ffffff",
+  "10": "#EA3C00",
   default: "#ffffff",
 };
 
@@ -594,6 +627,7 @@ const TEXTSECONDARY = {
   "1": "#fecaca", // Client 1: Light Red tint
   "5": "#bfdbfe", // Client 5: Light Blue tint
   "9": "#ffd700", // Client 9: Gold tint
+  "10": "#DBD8D4", // Client 10: Light Neutral tint
   default: "#e5e7eb", // Default: Light Gray
 };
 
@@ -601,6 +635,7 @@ const TEXTMUTED = {
   "1": "#fca5a5", // Client 1: Muted Red
   "5": "#93c5fd", // Client 5: Muted Blue
   "9": "#d4af37", // Client 9: Muted Gold
+  "10": "#f99300", // Client 10: Muted Orange
   default: "#9ca3af", // Default: Gray
 };
 
@@ -611,6 +646,7 @@ const BORDERCOLORS = {
   "1": "#991b1b", // Client 1: Dark Red
   "5": "#1e3a8a", // Client 5: Dark Blue
   "9": "#d4af37", // Client 9: Gold
+  "10": "#EA3C00", // Client 10: Orange border
   default: "#374151", // Default: Dark Gray
 };
 
@@ -618,6 +654,7 @@ const BORDERLIGHT = {
   "1": "#dc2626", // Client 1: Medium Red
   "5": "#2563eb", // Client 5: Medium Blue
   "9": "#ffd700", // Client 9: Bright Gold
+  "10": "#FEA352", // Client 10: Light Orange border
   default: "#4b5563", // Default: Medium Gray
 };
 
@@ -625,6 +662,7 @@ const BORDERDARK = {
   "1": "#7f1d1d", // Client 1: Very Dark Red
   "5": "#172554", // Client 5: Very Dark Blue
   "9": "#1c1c1c", // Client 9: Almost Black
+  "10": "#ea4201", // Client 10: Dark Orange border
   default: "#1f2937", // Default: Very Dark Gray
 };
 
@@ -635,6 +673,7 @@ const BUTTONPRIMARY = {
   "1": "#dc2626",
   "5": "#1e40af",
   "9": "#d4af37",
+  "10": "#EA3C00",
   default: "#6b7280",
 };
 
@@ -642,6 +681,7 @@ const BUTTONPRIMARYHOVER = {
   "1": "#ef4444",
   "5": "#2563eb",
   "9": "#ffd700",
+  "10": "#ea4201",
   default: "#9ca3af",
 };
 
@@ -649,6 +689,7 @@ const BUTTONSECONDARY = {
   "1": "#991b1b",
   "5": "#1e3a8a",
   "9": "#1c1c1c",
+  "10": "#f99300",
   default: "#374151",
 };
 
@@ -656,6 +697,7 @@ const BUTTONSECONDARYHOVER = {
   "1": "#dc2626",
   "5": "#1e40af",
   "9": "#2c2c2c",
+  "10": "#FEA352",
   default: "#4b5563",
 };
 
@@ -666,6 +708,7 @@ const CARDBG = {
   "1": "rgba(153, 27, 27, 0.3)",
   "5": "rgba(30, 58, 138, 0.3)",
   "9": "rgba(28, 28, 28, 0.5)",
+  "10": "rgba(234, 60, 0, 0.3)",
   default: "rgba(31, 41, 55, 0.3)",
 };
 
@@ -673,6 +716,7 @@ const CARDBORDER = {
   "1": "rgba(220, 38, 38, 0.3)",
   "5": "rgba(37, 99, 235, 0.3)",
   "9": "rgba(212, 175, 55, 0.4)",
+  "10": "rgba(219, 216, 212, 0.3)",
   default: "rgba(107, 114, 128, 0.3)",
 };
 
@@ -680,6 +724,7 @@ const CARDSHADOW = {
   "1": "0 10px 30px rgba(220, 38, 38, 0.2)",
   "5": "0 10px 30px rgba(30, 58, 138, 0.3)",
   "9": "0 10px 30px rgba(212, 175, 55, 0.3)",
+  "10": "0 10px 30px rgba(234, 60, 0, 0.2)",
   default: "0 10px 30px rgba(0, 0, 0, 0.5)",
 };
 
@@ -700,6 +745,7 @@ const CSSVARBGMAIN = {
   "1": "127 29 29",
   "5": "23 37 84",
   "9": "17 17 17",
+  "10": "76 29 149",
   default: "17 24 39",
 };
 
@@ -707,6 +753,7 @@ const CSSVARBGSECONDARY = {
   "1": "153 27 27",
   "5": "30 58 138",
   "9": "28 28 28",
+  "10": "109 40 217",
   default: "31 41 55",
 };
 
@@ -2450,6 +2497,444 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "button-proceed-text": "text-white",
         "button-proceed-border": "border-emerald-500",
       };
+    case "10": // Purple & Violet theme
+      return {
+        app_header: {
+          "highlight-indicator":
+            "linear-gradient(135deg, #EA3C00 0%, #FEA352 100%)",
+          "header-gradient":
+            "bg-gradient-to-r from-[#894824] via-[#884816] to-[#894824]",
+          "active-route-indicator": "text-white",
+          "inactive-route-indicator": "text-white",
+          divider: "bg-[#FEA352]",
+          "login-button-bg": "bg-[#EA3C00]",
+          "login-button-hover": "hover:bg-[#ea4201]",
+          "login-button-text": "text-white",
+        },
+        sports_sidebar: {
+          "card-border": "border-[#EA3C00]/30",
+          "sport-item-border-l": "border-l-2 border-[#EA3C00]/30",
+          "category-item-active": "bg-[#EA3C00] text-white",
+          "account-icon-active": "text-[#884816]",
+          "main-bg": "bg-[#ffffff]/60",
+          "search-bg": "bg-gradient-to-r from-[#EA3C00] to-[#FEA352]",
+          "search-border": "border-[#EA3C00]",
+          divider: "bg-[#FEA352]/30",
+          "item-bg": "bg-[#FEA352]/30",
+          "sport-item-border": "border-[#EA3C00]/30 shadow-lg",
+          "sport-item-bg": "bg-[#FCE4BF]/30",
+          "sport-item-hover": "hover:bg-[#f99300]/20",
+          "sport-item-text": "text-[#884816]",
+          "sport-item-count-bg": "bg-[#ea4201]/80",
+          "sport-item-count-text": "text-white",
+          "category-item-bg": "",
+          "category-item-hover": "hover:bg-[#f99300]/30",
+          "category-item-text": "text-[#884816]",
+          "category-item-border": "border-[#EA3C00]/70 border-l-[#EA3C00]",
+          "category-item-count-bg": "bg-[#DBD8D4]/40",
+          "category-item-count-text": "text-[#ea4201]",
+          "tournament-item-bg": "bg-[#FEA352]/20",
+          "tournament-item-hover": "hover:bg-[#f99300]/20",
+          "tournament-item-text": "text-[#884816]",
+          "tournament-item-count-bg": "bg-[#DBD8D4]/30",
+          "tournament-item-count-text": "text-[#ea4201]",
+          "tournament-item-border": "border-[#FEA352]/10",
+        },
+        betslip: {
+          "main-bg": "bg-[#ffffff]/60",
+          "main-border": "border-[#EA3C00]/30",
+          "header-bg": "bg-[#FEA352]/50",
+          divider: "bg-[#EA3C00]/30",
+          "tab-bg": "bg-[#FEA352]/30",
+          "tab-border": "border-[#EA3C00]",
+          "tab-active-bg": "bg-gradient-to-br from-[#EA3C00] to-[#ea4201]",
+          "tab-active-text": "text-white",
+          "tab-inactive-text": "text-[#ea4201]",
+          "outcome-name-text": "text-[#EA3C00] font-bold",
+          "slip-item-bg": "bg-[#ffffff]/80 border-[#EA3C00]/30",
+          "slip-item-selected-bg": "bg-[#ea4201]/30 border-[#EA3C00]/40",
+          "slip-item-divider": "border-[#EA3C00]/20",
+          "slip-item-header": "text-[#884816] font-semibold",
+          "slip-item-main": "text-[#EA3C00] font-bold",
+          "slip-item-odds": "text-green-600 font-bold",
+          "slip-item-remove": "text-[#ea4201] hover:text-[#EA3C00]",
+          "slip-item-market": "text-[#EA3C00]",
+          "slip-item-footer": "text-[#ea4201]",
+          "multiple-section-bg": "bg-[#FEA352] border-[#EA3C00]/30",
+          "combined-section-bg": "bg-[#FEA352] border-[#EA3C00]/30",
+          "button-place-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
+          "button-place-hover": "hover:from-emerald-700 hover:to-green-700",
+          "button-place-text": "text-white",
+          "button-confirm-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
+          "button-confirm-hover": "hover:from-emerald-700 hover:to-green-700",
+          "button-cancel-bg": "bg-gradient-to-r from-[#EA3C00] to-[#ea4201]",
+          "button-cancel-hover": "hover:from-[#ea4201] hover:to-[#EA3C00]",
+        },
+        sports_page: {
+          "live-game-indicator": "bg-green-500",
+          "container-bg": "bg-transparent",
+          "card-bg": "bg-[#ffffff]/60",
+          "card-border": "border-[#EA3C00]/30",
+          "card-hover": "hover:bg-[#FEA352]/60",
+          "header-bg":
+            "bg-gradient-to-r from-[#894824] via-[#884816] to-[#894824]",
+          "header-border": "border-[#EA3C00]/50",
+          "header-text": "text-[#FCE4BF]",
+          "sport-separator-bg": "bg-[#FEA352]/50",
+          "sport-separator-text": "text-[#EA3C00]",
+          "sport-separator-border": "border-[#EA3C00]/60",
+          "date-separator-bg": "bg-[#FEA352]/30",
+          "date-separator-text": "text-[#ea4201]",
+          "date-separator-border": "border-[#EA3C00]/40",
+          "time-text": "text-[#ea4201]",
+          "time-text-live": "text-green-400",
+          "time-border": "border-gray-500",
+          "match-tournament-text": "text-[#EA3C00]",
+          "match-team-text": "text-[#894824]",
+          "score-text": "text-green-400",
+          "more-button-bg": "bg-transparent",
+          "more-button-hover": "hover:text-blue-400 hover:border-blue-500",
+          "more-button-text": "text-[#ea4201]",
+          "more-button-border": "border-gray-600",
+          "primary-button-bg": "bg-[#EA3C00]",
+          "primary-button-text": "text-white",
+          "secondary-button-bg": "bg-[#FEA352]/40",
+          "secondary-button-text": "text-[#EA3C00]",
+          "skeleton-bg": "bg-gray-600",
+          "skeleton-secondary": "bg-[#FEA352]/30",
+          "error-text": "text-[#ea4201]",
+          "error-secondary": "text-[#FEA352]",
+          "empty-text": "text-[#EA3C00]",
+          "empty-secondary": "text-[#ea4201]",
+        },
+        cashdesk_page: {
+          "container-bg": "bg-transparent",
+          "card-bg": "bg-[#FEA352]/20",
+          "card-border": "border-[#EA3C00]/30",
+          "header-bg": "bg-[#894824]",
+          "header-text": "text-[#FCEDCB]",
+          "column-header-bg": "bg-[#FEA352]/40",
+          "column-header-text": "text-[#ea4201]",
+          "column-header-border": "border-[#EA3C00]/30",
+          "row-hover": "hover:bg-[#FEA352]/80",
+          "input-bg": "bg-white",
+          "input-border": "border-[#EA3C00]/30",
+          "input-text": "text-[#884816]",
+          "summary-section-bg":
+            "bg-gradient-to-r from-[#DBD8D4]/10 to-[#FEA352]/20",
+          "summary-section-border": "border-[#EA3C00]/50",
+          "summary-item-bg": "bg-[#FCEDCB]",
+          "summary-item-border": "border-[#EA3C00]/30",
+          "summary-label-text": "text-[#ea4201]",
+          "summary-value-text": "text-[#884816]",
+          // ...existing code...
+          "add-button-bg": "bg-[#FEA352]/20",
+          "add-button-hover": "hover:bg-[#FEA352]/30",
+          "add-button-border": "border-[#EA3C00]/50",
+        },
+        bet_list_page: {
+          "container-bg": "bg-transparent",
+          "card-bg": "bg-[#FEA352]/60",
+          "card-border": "border-[#EA3C00]/50",
+          "card-text": "text-[#ea4201]",
+          "column-header-bg": "bg-[#FEA352]/40",
+          "column-header-text": "text-[#ea4201]",
+          "row-hover": "hover:bg-[#FEA352]/80",
+          "input-bg": "bg-gradient-to-r from-[#DBD8D4] to-[#FEA352]",
+          "input-border": "border-[#EA3C00]",
+          "input-text": "text-[#EA3C00]",
+          "header-text": "text-[#ea4201]",
+          "close-button": "bg-[#FEA352]/40",
+          "close-button-hover": "hover:bg-[#FEA352]/60",
+          "section-bg": "bg-[#FEA352]/40",
+          "section-title": "text-[#EA3C00]",
+          "label-text": "text-[#ea4201]",
+          "value-text": "text-[#EA3C00]",
+          "item-bg": "bg-[#FEA352]/30",
+          "event-name": "text-[#ea4201]",
+          "subtitle-text": "text-[#ea4201]",
+          "action-button": "bg-gradient-to-r from-[#EA3C00] to-[#ea4201]",
+          "action-button-hover": "hover:from-[#ea4201] hover:to-[#EA3C00]",
+          "secondary-button": "bg-gradient-to-r from-[#FEA352] to-[#DBD8D4]",
+          "secondary-button-hover": "hover:from-[#f99300] hover:to-[#EA3C00]",
+        },
+        modal: {
+          change_password: {
+            "modal-bg": "bg-[#DBD8D4]",
+            "modal-border": "border-[#EA3C00]",
+            "modal-shadow": "shadow-[#EA3C00]/50",
+            "header-border": "border-[#EA3C00]/50",
+            "header-title": "text-[#EA3C00]",
+            "header-icon": "text-[#ea4201]",
+            "close-button": "text-[#ea4201]",
+            "close-button-hover": "hover:text-[#EA3C00]",
+            "info-box-bg": "bg-[#FEA352]/10",
+            "info-box-border": "border-[#FEA352]/20",
+            "info-box-text": "text-[#ea4201]",
+            "cancel-button-bg": "bg-[#FEA352]",
+            "cancel-button-hover": "hover:bg-[#f99300]",
+            "cancel-button-text": "text-[#EA3C00]",
+            "confirm-button-bg": "bg-gradient-to-r from-[#EA3C00] to-[#ea4201]",
+            "confirm-button-hover": "hover:from-[#ea4201] hover:to-[#EA3C00]",
+            "confirm-button-text": "text-white",
+            "confirm-button-shadow": "shadow-[#EA3C00]/25",
+          },
+          "overlay-bg": "bg-black/50",
+          "content-bg": "bg-[#DBD8D4]",
+          "content-border": "border-[#EA3C00]/30",
+          "header-bg": "bg-gradient-to-r from-[#EA3C00] to-[#FEA352]",
+          "header-text": "text-[#EA3C00]",
+          "header-border": "border-[#EA3C00]/30",
+          "body-bg": "bg-transparent",
+          "body-text": "text-[#ea4201]",
+          "footer-bg": "bg-[#FEA352]/30",
+          "footer-border": "border-[#EA3C00]/30",
+          "close-button": "text-[#ea4201] hover:text-[#EA3C00]",
+          "close-button-hover": "hover:bg-[#FEA352]/40",
+        },
+        coupon_details: {
+          "section-bg": "bg-[#FEA352]/40",
+          "section-border": "border-[#EA3C00]/30",
+          "section-title": "text-[#EA3C00]",
+          "label-text": "text-[#ea4201]",
+          "value-text": "text-[#EA3C00]",
+          "item-bg": "bg-[#FEA352]/30",
+          "item-border": "border-[#EA3C00]/20",
+          "event-name": "text-[#ea4201]",
+          "subtitle-text": "text-[#ea4201]",
+          divider: "border-[#EA3C00]/30",
+          "win-text": "text-green-500",
+          "skeleton-bg": "bg-[#FEA352]/20",
+          "skeleton-pulse": "bg-[#FEA352]/30",
+          "action-button": "bg-gradient-to-r from-[#EA3C00] to-[#ea4201]",
+          "action-button-hover": "hover:from-[#ea4201] hover:to-[#EA3C00]",
+          "secondary-button": "bg-gradient-to-r from-[#FEA352] to-[#DBD8D4]",
+          "secondary-button-hover": "hover:from-[#f99300] hover:to-[#EA3C00]",
+        },
+        transactions_page: {
+          "container-bg": "bg-transparent",
+          "card-bg": "bg-[#FEA352]/60",
+          "card-border": "border-[#EA3C00]/30",
+
+          "card-text": "text-[#ea4201]",
+          "column-header-bg": "bg-[#FEA352]/40",
+          "column-header-text": "text-[#FCE4BF]",
+          "row-hover": "hover:bg-[#FEA352]/20",
+          "row-text": "text-[#EA3C00]",
+          "input-bg": "bg-gradient-to-r from-[#DBD8D4] to-[#FEA352]",
+          "input-border": "border-[#EA3C00]",
+          "input-text": "text-[#EA3C00]",
+          "label-text": "text-[#ea4201]",
+          "value-text": "text-[#EA3C00]",
+          "credit-text": "text-green-500",
+          "debit-text": "text-red-500",
+          "button-primary-bg": "bg-gradient-to-r from-[#EA3C00] to-[#ea4201]",
+          "button-primary-hover": "hover:from-[#ea4201] hover:to-[#EA3C00]",
+          "button-primary-text": "text-white",
+          "button-secondary-bg": "bg-gradient-to-r from-[#FEA352] to-[#DBD8D4]",
+          "button-secondary-hover": "hover:from-[#f99300] hover:to-[#EA3C00]",
+          "button-secondary-text": "text-[#EA3C00]",
+          "checkbox-active-bg": "bg-[#EA3C00]",
+          "checkbox-active-border": "border-[#EA3C00]",
+          "checkbox-inactive-border": "border-[#FEA352]",
+          "footer-bg": "bg-[#FEA352]/30",
+        },
+        deposit_page: {
+          "container-bg": "bg-transparent",
+
+          "page-bg": "bg-transparent",
+          "page-text": "text-[#EA3C00]",
+          "header-text": "text-black",
+          "warning-bg": "bg-yellow-50",
+          "warning-border": "border-yellow-200",
+          "warning-icon": "text-yellow-600",
+          "warning-text": "text-gray-800",
+          "card-bg": "bg-[#FEA352]/60",
+          "card-border": "border-[#EA3C00]/50",
+          "table-header-bg": "bg-[#FEA352]/40",
+          "table-header-text": "text-[#ea4201]",
+          "row-hover": "hover:bg-[#FEA352]/80",
+          "row-text": "text-[#EA3C00]",
+          "label-text": "text-[#ea4201]",
+          "value-text": "text-[#EA3C00]",
+          "button-primary-bg": "bg-gradient-to-r from-[#EA3C00] to-[#ea4201]",
+
+          "button-primary-hover": "hover:from-[#ea4201] hover:to-[#EA3C00]",
+          "button-primary-text": "text-white",
+          "button-secondary-bg": "bg-gradient-to-r from-[#FEA352] to-[#DBD8D4]",
+          "button-secondary-hover": "hover:from-[#f99300] hover:to-[#EA3C00]",
+          "button-secondary-text": "text-[#EA3C00]",
+          "form-bg": "bg-[#FEA352]/50",
+
+          "form-border": "border-[#EA3C00]/30",
+          "form-text": "text-[#EA3C00]",
+          "info-bg": "bg-[#FEA352]/50",
+          "info-border": "border-[#EA3C00]/30",
+          "info-text": "text-[#ea4201]",
+          "input-bg": "bg-gradient-to-r from-[#DBD8D4] to-[#FEA352]",
+          "input-border": "border-[#EA3C00]",
+          "input-text": "text-[#EA3C00]",
+          "balance-text": "text-[#ea4201]",
+          "balance-value": "text-green-400",
+          "quick-button-bg": "bg-[#FEA352]/30",
+          "quick-button-hover": "hover:bg-[#FEA352]/40",
+          "quick-button-text": "text-[#EA3C00]",
+          "quick-button-border": "border-[#EA3C00]",
+          "security-bg": "bg-[#EA3C00]/10",
+          "security-border": "border-[#EA3C00]/20",
+          "security-text": "text-[#ea4201]",
+        },
+        game_options_modal: {
+          "modal-border": "border-[#EA3C00]/40",
+          "header-title": "text-[#884816]",
+          "header-subtitle": "text-[#ea4201]",
+          "header-vs-text": "text-[#EA3C00]",
+          "header-date-text": "text-[#ea4201]",
+          "title-text": "text-[#EA3C00]",
+          "subtitle-text": "text-[#ea4201]",
+          "market-card-bg": "bg-[#FCE4BF]/50",
+          "market-card-border": "border-[#EA3C00]/20",
+          "market-card-hover": "hover:border-[#EA3C00]/20 hover:bg-[#FEA352]/5",
+          "market-title": "text-[#884816]",
+          "axis-label-text": "text-[#EA3C00]",
+          "axis-label-bg": "bg-[#EA3C00]/20",
+          "odds-button-bg": "bg-white",
+          "odds-button-hover": "hover:bg-[#ffcfab]",
+          "odds-button-text": "text-[#884816]",
+          "odds-button-border": "border-[#884816]/30",
+          "odds-button-selected-bg":
+            "bg-gradient-to-r from-[#EA3C00] to-[#ea4201]",
+          "odds-button-selected-border": "border-[#EA3C00]/40",
+          "odds-button-selected-text": "text-white",
+          "odds-button-selected-hover": "hover:bg-[#f99300]/40",
+          "odds-button-disabled-bg": "bg-gray-400/50",
+          "odds-button-disabled-text": "text-gray-700",
+          "odds-button-disabled-border": "border-gray-400",
+        },
+        main_input: {
+          background: "bg-gradient-to-r from-[#FEA352] to-[#DBD8D4]",
+          border: "border border-[#EA3C00]",
+          "text-color": "text-[#EA3C00]",
+        },
+        account_page: {
+          "container-bg": "bg-gradient-to-br from-gray-50 via-white to-gray-50",
+          "card-bg": "bg-white",
+          "card-border": "border-gray-300",
+          "header-text": "text-slate-800",
+          "subtitle-text": "text-slate-600",
+          "section-header-text": "text-slate-700",
+          "section-header-border": "border-gray-300",
+          "input-bg": "bg-gradient-to-r from-slate-50 to-slate-50",
+          "input-border": "border-slate-300 focus:border-blue-500",
+          "input-text": "text-gray-600",
+          "balance-card-bg": "bg-gradient-to-br from-blue-50/20 to-white",
+          "balance-card-border": "border-gray-300",
+          "balance-label-text": "text-slate-600",
+          "balance-value-text": "text-blue-700",
+          "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
+          "button-primary-hover": "hover:from-blue-700 hover:to-blue-800",
+          "button-primary-text": "text-white",
+        },
+        user_management_page: {
+          "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
+          "button-primary-hover": "hover:from-blue-700 hover:to-blue-800",
+          "button-primary-text": "text-white",
+          "button-secondary-bg": "bg-gray-200",
+          "button-secondary-hover": "hover:bg-gray-300",
+          "button-secondary-text": "text-gray-700",
+          "page-bg": "bg-gradient-to-br from-gray-50 via-white to-gray-50",
+          "page-text": "text-gray-900",
+          "header-icon-bg": "bg-blue-100",
+          "header-icon-text": "text-blue-600",
+          "header-text": "text-gray-900",
+          "subtitle-text": "text-gray-600",
+          "card-bg": "bg-white",
+          "card-border": "border-gray-300",
+          "section-header-text": "text-gray-700",
+          "section-header-border": "border-gray-300",
+          "column-header-bg": "bg-gray-100",
+          "column-header-text": "text-gray-700",
+          "row-hover": "hover:bg-gray-50",
+          "row-text": "text-gray-900",
+          "row-border": "border-gray-200",
+          "balance-text": "text-emerald-600",
+          "input-bg": "bg-white",
+          "input-border": "border-gray-300",
+          "input-text": "text-gray-900",
+
+          "button-action-deposit-bg": "bg-green-100",
+          "button-action-deposit-hover": "hover:bg-green-200",
+          "button-action-deposit-text": "text-green-700",
+          "button-action-withdraw-bg": "bg-red-100",
+          "button-action-withdraw-hover": "hover:bg-red-200",
+          "button-action-withdraw-text": "text-red-700",
+          "info-card-bg": "bg-gray-50",
+          "info-card-border": "border-gray-300",
+          "info-label-text": "text-gray-600",
+          "info-value-text": "text-gray-900",
+          "badge-deposit-bg": "bg-green-100",
+          "badge-deposit-text": "text-green-700",
+          "badge-withdraw-bg": "bg-red-100",
+          "badge-withdraw-text": "text-red-700",
+        },
+        "bg-main": "bg-[#FCEDCB]",
+        "bg-secondary": "bg-[#FEA352]",
+        "bg-tertiary": "bg-[#EA3C00]",
+        "bg-gradient": "bg-gradient-to-br from-blue-800 to-blue-950",
+        "bg-gradient-hover": "hover:from-blue-700 hover:to-blue-900",
+        "text-primary": "text-gray-700",
+        "text-secondary": "text-gray-600",
+        "text-muted": "text-gray-400",
+        "light-divider": "bg-gray-300",
+        "dark-divider": "bg-gray-700",
+        border: "border-gray-300",
+        "border-light": "border-gray-500",
+        primary: "text-blue-400",
+        "primary-bg": "bg-blue-600",
+        "primary-hover": "hover:bg-blue-500",
+        accent: "text-blue-300",
+        "accent-bg": "bg-blue-400",
+        "card-bg": "bg-[#DBD8D4]",
+        card: "bg-gray-800/30 border-gray-700/30",
+        "card-hover": "hover:border-blue-600/60",
+        "input-focus-within":
+          "focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 focus-within:bg-[#FEA352]/10 focus:ring-[#EA3C00]/80 focus:ring-2 focus:border-[#EA3C00]/80 focus-within:border-[#EA3C00]/80 ",
+        "input-ring":
+          "outline-none ring-2 ring-[#EA3C00]/80 outline-none ring-ring ring-offset-0 bg-[#FEA352]/10 border-[#EA3C00]/80",
+        "select-option-bg":
+          "bg-gradient-to-br from-[#EA3C00] to-[#f99300] text-white",
+        "item-hover-border-l": "hover:border-l-[#EA3C00]/60",
+        "input-bg":
+          "bg-gradient-to-r from-slate-50 to-slate-50 placeholder-slate-400 ",
+        "input-border": "border-slate-300  ",
+
+        // "input-focus-within":
+        //   "focus-within:outline-none focus-within:ring-2 focus:outline-none focus:ring-2 focus-within:ring-ring focus-within:ring-offset-0 focus-within:bg-smalltext/10 focus:ring-blue-500/80  focus:ring-2 focus:border-blue-500/80 focus:ring-blue-500/80 focus-within:border-blue-500/80 ",
+        // "input-ring":
+        //   "outline-none ring-2 ring-blue-500/80 outline-none ring-ring ring-offset-0 bg-smalltext/10 border-blue-500/80",
+        // "select-option-bg":
+        // "bg-gradient-to-br from-blue-800 to-blue-900  text-white",
+        "input-text": "text-[#894824]",
+        "modal-bg": "bg-[#ffffff]",
+        "button-primary": "bg-blue-600 hover:bg-blue-500 text-white",
+        "button-secondary": "bg-gray-700 hover:bg-gray-600 text-white",
+        "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
+        "button-primary-border": "border border-blue-300",
+        "button-primary-hover": "hover:from-blue-700 hover:to-blue-800",
+        "button-primary-text": "text-white",
+        "button-secondary-bg": "bg-gray-200",
+        "button-secondary-border": "border border-gray-300",
+        "button-secondary-hover": "hover:bg-gray-300",
+        "button-secondary-text": "text-gray-700",
+        "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
+        "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
+        "button-cancel-text": "text-white",
+        "button-cancel-border": "border-rose-500/80",
+        "button-proceed-bg": "bg-gradient-to-r from-emerald-600 to-green-600",
+        "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
+        "button-proceed-text": "text-white",
+        "button-proceed-border": "border-emerald-500",
+      };
     default: // Default Deep Blue theme
       return {
         app_header: {
@@ -2867,6 +3352,7 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
           "bg-gradient-to-br from-blue-800 to-blue-900  text-white",
         "input-text": "text-gray-600",
         "skeleton-bg": "bg-gray-200",
+        "modal-bg": "bg-slate-50",
         "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
         "button-primary-border": "border border-blue-300",
         "button-primary-hover": "hover:from-blue-700 hover:to-blue-800",
@@ -2875,7 +3361,6 @@ const getThemeClassesForClient = (clientId: string): ThemeClasses => {
         "button-secondary-border": "border border-gray-300",
         "button-secondary-hover": "hover:bg-gray-300",
         "button-secondary-text": "text-gray-700",
-        "modal-bg": "bg-slate-50",
         "button-cancel-bg": "bg-gradient-to-r from-rose-600 to-red-600",
         "button-cancel-hover": "hover:from-rose-700 hover:to-red-700",
         "button-cancel-text": "text-white",
@@ -2959,6 +3444,7 @@ const clientThemes: Record<string, ClientTheme> = {
   "3": buildClientTheme("3"),
   "5": buildClientTheme("5"),
   "9": buildClientTheme("9"),
+  "10": buildClientTheme("10"),
   default: buildClientTheme("default"),
 };
 
@@ -2979,6 +3465,8 @@ export const getClientTheme = (): ClientTheme => {
       return clientThemes["5"];
     case 9:
       return clientThemes["9"];
+    case 10:
+      return clientThemes["10"];
     default:
       return clientThemes.default;
   }

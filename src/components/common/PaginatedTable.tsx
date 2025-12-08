@@ -149,11 +149,8 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
                         colIndex !== 0
                           ? `borde-r-l ${classes["border"]} pl--1`
                           : ""
-                      } p-2 `}
+                      } p-2 break-all`}
                     >
-                      {col.id?.toLocaleLowerCase() === "id" && (
-                        <span className="w-2 h-2 bg-green-500 rounded-full mr-2 inline-block" />
-                      )}
                       {col.render ? col.render(value, row, rowIndex) : value}
                     </span>
                   );

@@ -114,12 +114,7 @@ const SportsMenu = (props: Props) => {
   return (
     <section className="sticky top-[100px]">
       <aside
-        className={`lg:w-72 w-full ${
-          classes.sports_sidebar["main-bg"]
-        } border-b ${classes.sports_sidebar["card-border"].replace(
-          "border-",
-          "border-l"
-        )} overflow-hidden shadow-2xl`}
+        className={`lg:w-72 rounded-b-lg w-full ${classes.sports_sidebar["main-bg"]} border ${classes.sports_sidebar["card-border"]} overflow-hidden shadow-2xl`}
       >
         <div className="flex-1 items-center justify-center gap-2 p-2">
           {/* Restore SingleSearchInput at the top */}

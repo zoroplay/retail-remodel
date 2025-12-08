@@ -200,14 +200,14 @@ const AccountMenu = (props: Props) => {
   return (
     <section className="sticky top-[6.4rem]">
       <aside
-        className={`w-72 ${sidebarClasses["main-bg"]} overflow-hidden shadow-md`}
+        className={`w-72 ${sidebarClasses["main-bg"]} overflow-hidden shadow-md ${classes.sports_page["card-border"]} border rounded-lg`}
       >
         {/* Sidebar Header */}
         <div
           className={`${classes.sports_page["header-bg"]} border-b ${classes.sports_page["header-text"]} ${classes.sports_page["header-border"]} border-b ${sidebarClasses["sport-item-border"]} px-4 py-2`}
         >
           <h2 className={` font-bold text-xs flex items-center gap-2`}>
-            <User size={18} className={sidebarClasses["account-icon-active"]} />
+            <User size={18} />
             Account Menu
           </h2>
         </div>

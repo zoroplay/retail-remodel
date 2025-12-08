@@ -21,6 +21,7 @@ import { useGetGlobalVariablesQuery } from "@/store/services/app.service";
 import { setTournamentDetails } from "@/store/features/slice/app.slice";
 import { useLogin } from "@/hooks/useLogin";
 import { getClientTheme } from "@/config/theme.config";
+import environmentConfig from "@/store/services/configs/environment.config";
 
 export const AppHeader: React.FC = ({}) => {
   const { user, refetch_user } = useAppSelector((state) => state.user);
@@ -72,8 +73,20 @@ export const AppHeader: React.FC = ({}) => {
         // ],
       },
       { name: "Live", href: OVERVIEW.LIVE, sub_links: [] },
-      { name: "Soccer Print", href: "#", current: false, sub_links: [] },
-      { name: "Todays's Print", href: "#", current: false, sub_links: [] },
+      {
+        name: "Soccer Print",
+        href: `${environmentConfig.BASE_URL}/soccer-print`,
+        target: "_blank",
+        current: false,
+        sub_links: [],
+      },
+      {
+        name: "Todays's Print",
+        href: `${environmentConfig.BASE_URL}/today-print`,
+        target: "_blank",
+        current: false,
+        sub_links: [],
+      },
       {
         name: "Cashdesk",
         href: OVERVIEW.CASHDESK,
@@ -361,6 +374,7 @@ export const AppHeader: React.FC = ({}) => {
           <Link
             key={item.name}
             to={item.href}
+            target={item?.target}
             className={`relative outline-none flex justify-center items-center h-[32px] uppercase text-xs font-medium py-1 px-2 transition-all duration-300    ${
               isActive(item.href)
                 ? `${classes.app_header["active-route-indicator"]} z-10`

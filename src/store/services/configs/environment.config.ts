@@ -10,6 +10,7 @@ export enum ENVIRONMENT_VARIABLES {
   MQTT_USERNAME = "MQTT_USERNAME",
   MQTT_PASSWORD = "MQTT_PASSWORD",
   MQTT_CLIENTID = "MQTT_CLIENTID",
+  BASE_URL = "BASE_URL",
 }
 
 // Type-safe environment variable getter
@@ -35,10 +36,12 @@ export const environmentConfig = {
   MQTT_URI: getEnvironmentVariable(ENVIRONMENT_VARIABLES.MQTT_URI),
   MQTT_USERNAME: getEnvironmentVariable(ENVIRONMENT_VARIABLES.MQTT_USERNAME),
   MQTT_PASSWORD: getEnvironmentVariable(ENVIRONMENT_VARIABLES.MQTT_PASSWORD),
+  MQTT_CLIENTID: getEnvironmentVariable(ENVIRONMENT_VARIABLES.MQTT_CLIENTID),
   // ACCESS_TOKEN: getEnvironmentVariable(ENVIRONMENT_VARIABLES.ACCESS_TOKEN),
   // REFRESH_TOKEN: getEnvironmentVariable(ENVIRONMENT_VARIABLES.REFRESH_TOKEN),
-  // CLIENT_ID: "3",
+  // CLIENT_ID: "10",
   CLIENT_ID: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID),
+  BASE_URL: getEnvironmentVariable(ENVIRONMENT_VARIABLES.BASE_URL),
 };
 
 console.log(
