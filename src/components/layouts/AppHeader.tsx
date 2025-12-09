@@ -204,12 +204,12 @@ export const AppHeader: React.FC = ({}) => {
     return activeIndex >= 0 ? getTabWidth() : getTabWidth(); // Default to tab width
   }, [getTabWidth, top_nav, pathname, isActive]);
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = () => {
     openModal({
       modal_name: MODAL_COMPONENTS.CONFIRM_LOGOUT,
       title: "Confirm Logout",
     });
-  }, [dispatch]);
+  };
 
   const openMenuModal = useCallback(() => {
     openModal({
