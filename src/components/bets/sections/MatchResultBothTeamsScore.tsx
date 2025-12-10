@@ -56,15 +56,7 @@ const MatchResultBothTeamsScore: React.FC<MatchResultBothTeamsScoreProps> = ({
     { key: "away", label: "Away Win", icon: "2" },
   ];
 
-  if (outcomes.length === 0) {
-    return (
-      <div className="bg-gray-800 rounded-lg p-4">
-        <p className="text-gray-400 text-center">
-          No outcomes available for this market
-        </p>
-      </div>
-    );
-  }
+  if (outcomes.length === 0) return null;
 
   return (
     <div className="bg-gray-800 rounded-lg overflow-hidden">

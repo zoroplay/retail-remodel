@@ -7,6 +7,7 @@ export interface User {
   lastName: string;
   email: string;
   phone: string;
+  group: string;
   role: string;
   roleId: number;
   availableBalance: number;

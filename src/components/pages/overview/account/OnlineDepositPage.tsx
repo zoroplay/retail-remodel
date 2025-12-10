@@ -367,7 +367,7 @@ const OnlineDepositPage = () => {
                       <div
                         key={user.id || index}
                         onClick={() => handleSelectUser(user)}
-                        className={`p-2 cursor-pointer ${pageClasses["button-secondary-hover"]} border-b ${pageClasses["form-border"]} last:border-b-0`}
+                        className={`p-2 cursor-pointer ${pageClasses["row-hover"]} border-b ${pageClasses["form-border"]} last:border-b-0`}
                       >
                         <div className="flex justify-between items-center">
                           <div className="flex-1">
@@ -546,7 +546,7 @@ const OnlineDepositPage = () => {
                         !amount ||
                         Number(amount) <= 0
                       }
-                      className={`flex-1 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} text-xs font-medium rounded-md transition-all shadow-md py-2 px-4  duration-200 flex items-center justify-center gap-2 `}
+                      className={`flex-1 h-9 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} text-xs font-medium rounded-md transition-all shadow-md py-2 px-4  duration-200 flex items-center justify-center gap-2 `}
                     >
                       {isLoading ? (
                         <>
@@ -570,7 +570,7 @@ const OnlineDepositPage = () => {
                         setShowDropdown(false);
                         setErrMessage("");
                       }}
-                      className={`px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow text-xs rounded-lg transition-colors duration-200`}
+                      className={`px-4 h-9 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow text-xs rounded-lg transition-colors duration-200`}
                     >
                       Reset
                     </button>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import SideOverlay from "../SideOverlay";
 import { useAppDispatch, useAppSelector } from "../../../hooks/useAppDispatch";
 import { useBetting } from "../../../hooks/useBetting";
@@ -164,6 +164,7 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
     specifier: string,
     outcomes: any[]
   ): string => {
+    console.log("Detecting market type for market:", marketName);
     const name = marketName.toLowerCase().trim();
     const spec = specifier?.toLowerCase().trim() || "";
 
@@ -203,6 +204,28 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
       return "AWAY_TOTAL";
     }
 
+    // Handicap detection (specifier like hcp=X:Y)
+    if (
+      name.includes("handicap") ||
+      spec.includes("hcp=") ||
+      outcomes.some((o) => o.outcomeName?.includes("("))
+    ) {
+      return "HANDICAP";
+    }
+
+    // Combination markets: look for 'and under', 'and over', '&&', 'or under', 'or over', '&', '+', 'gg/ng' in market name
+    if (
+      name.includes("and under") ||
+      name.includes("and over") ||
+      name.includes("&&") ||
+      name.includes("or under") ||
+      name.includes("or over") ||
+      name.includes("&") ||
+      name.includes("+") ||
+      name.includes("gg/ng")
+    ) {
+      return "COMBINATION";
+    }
     // Over/Under detection - general totals
     if (
       name.includes("over/under") ||
@@ -215,20 +238,6 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
         outcomes.some((o) => o.outcomeName?.toLowerCase().includes("under")))
     ) {
       return "OVER_UNDER";
-    }
-
-    // Handicap detection (specifier like hcp=X:Y)
-    if (
-      name.includes("handicap") ||
-      spec.includes("hcp=") ||
-      outcomes.some((o) => o.outcomeName?.includes("("))
-    ) {
-      return "HANDICAP";
-    }
-
-    // Combination markets (& or + in market name)
-    if (name.includes("&") || name.includes("+") || name.includes("gg/ng")) {
-      return "COMBINATION";
     }
 
     // Exact goals detection
@@ -377,11 +386,13 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
         return {
           type: marketType,
           component: (
-            <CombinationMarket
-              key={`${marketType}-${marketId}`}
-              {...componentProps}
-              market_id={marketId}
-            />
+            <>
+              <CombinationMarket
+                key={`${marketType}-${marketId}`}
+                {...componentProps}
+                market_id={marketId}
+              />
+            </>
           ),
         };
       } else if (marketType === "EXACT_GOALS") {
@@ -525,15 +536,17 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
         {/* Show skeleton components while loading */}
         {isFixtureLoading &&
           skeletonSections.map((section, index) => (
-            <div key={`skeleton-${section.type}-${index}`}>
+            <Fragment key={`skeleton-${section.type}-${index}`}>
               {section.component}
-            </div>
+            </Fragment>
           ))}
 
         {/* Show actual market sections when data is loaded */}
         {!isFixtureLoading &&
           dynamicMarketSections.map((section, index) => (
-            <div key={`${section.type}-${index}`}>{section.component}</div>
+            <Fragment key={`${section.type}-${index}`}>
+              {section.component}
+            </Fragment>
           ))}
 
         {/* Fallback message if no markets available */}

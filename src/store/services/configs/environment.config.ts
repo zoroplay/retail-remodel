@@ -11,6 +11,9 @@ export enum ENVIRONMENT_VARIABLES {
   MQTT_PASSWORD = "MQTT_PASSWORD",
   MQTT_CLIENTID = "MQTT_CLIENTID",
   BASE_URL = "BASE_URL",
+  FRONTEND_URL = "FRONTEND_URL",
+  XPRESS_LAUNCH_URL = "XPRESS_LAUNCH_URL",
+  XPRESS_PRIVATE_KEY = "XPRESS_PRIVATE_KEY",
 }
 
 // Type-safe environment variable getter
@@ -42,6 +45,13 @@ export const environmentConfig = {
   // CLIENT_ID: "10",
   CLIENT_ID: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID),
   BASE_URL: getEnvironmentVariable(ENVIRONMENT_VARIABLES.BASE_URL),
+  FRONTEND_URL: getEnvironmentVariable(ENVIRONMENT_VARIABLES.FRONTEND_URL),
+  XPRESS_LAUNCH_URL: getEnvironmentVariable(
+    ENVIRONMENT_VARIABLES.XPRESS_LAUNCH_URL
+  ),
+  XPRESS_PRIVATE_KEY: getEnvironmentVariable(
+    ENVIRONMENT_VARIABLES.XPRESS_PRIVATE_KEY
+  ),
 };
 
 console.log(

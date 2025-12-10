@@ -6,16 +6,13 @@ import {
 import { useParams } from "react-router-dom";
 import {
   ArrowRightLeft,
-  Search,
   Loader,
   ArrowUpRight,
   ArrowDownLeft,
-  User,
   Wallet,
 } from "lucide-react";
 import Input from "../../../inputs/Input";
 import { useGetAgentUsersQuery } from "../../../../store/services/user.service";
-import { environmentConfig } from "../../../../store/services/configs/environment.config";
 import { getClientTheme } from "@/config/theme.config";
 import { useTransferFundsMutation } from "@/store/services/wallet.service";
 import { showToast } from "@/components/tools/toast";
@@ -62,6 +59,7 @@ const TransferFunds = () => {
       skip: !user?.id,
     }
   );
+  console.log("Agent Users Data: ", data, "@!&*!&@=----", user?.id);
 
   const users = data?.data || [];
 
@@ -182,7 +180,7 @@ const TransferFunds = () => {
         <div className="grid lg:grid-cols-2 gap-4 justify-start items-start">
           {/* User List */}
           <div
-            className={`backdrop-blur-sm rounded-lg border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}`}
+            className={`backdrop-blur-sm rounded-lg overflow-hidden pb-0.5 border ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}`}
           >
             <div className="p-2 px-3">
               <Input
@@ -247,12 +245,13 @@ const TransferFunds = () => {
                 ),
               }))}
               isLoading={isLoading}
+              bodyClassName=""
             />
           </div>
 
           {/* Transfer Form */}
           <div
-            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border p-4`}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border p-2`}
           >
             <h3
               className={`text-sm font-semibold border-b ${classes["border"]} pb-2 mb-4`}
@@ -334,7 +333,7 @@ const TransferFunds = () => {
                 <button
                   type="submit"
                   disabled={is_sending || !formData.toUsername}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} text-xs font-medium rounded-md transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`w-full flex items-center justify-center gap-2 px-4 py-2 h-9 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} text-xs font-medium rounded-md transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {is_sending ? (
                     <>

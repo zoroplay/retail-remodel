@@ -16,38 +16,31 @@ import { ACCOUNT, AUTH, OVERVIEW } from "@/data/routes/routes";
 import { useModal } from "@/hooks/useModal";
 import { MODAL_COMPONENTS } from "@/store/features/types";
 import { setThemeByClient } from "@/utils/setThemeByClient";
-import { useSportsMenuQuery } from "@/store/services/bets.service";
 import { useGetGlobalVariablesQuery } from "@/store/services/app.service";
 import { setTournamentDetails } from "@/store/features/slice/app.slice";
 import { useLogin } from "@/hooks/useLogin";
 import { getClientTheme } from "@/config/theme.config";
 import environmentConfig from "@/store/services/configs/environment.config";
+import { USER_ROLES } from "@/data/enums/enum";
+import { AppHelper } from "@/lib/helper";
 
 export const AppHeader: React.FC = ({}) => {
   const { user, refetch_user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const { handleLogin, handleInputChange, formData, errors, isLoading } =
     useLogin();
-  // Memoize query to prevent unnecessary re-initialization
   useGetGlobalVariablesQuery();
 
-  // Memoize commission balance query to prevent unnecessary re-initialization
   const { refetch: refetchCommissionBalance } =
     useFetchUserCommissionBalanceQuery(undefined, {
-      refetchOnMountOrArgChange: 30, // Only refetch if data is older than 30 seconds
+      refetchOnMountOrArgChange: 30,
       refetchOnReconnect: true,
-      refetchOnFocus: false, // Disable refetch on window focus to reduce API calls
+      refetchOnFocus: false,
     });
 
-  // Memoize sports query parameters to prevent unnecessary refetches
-
-  // Get client_id from user or fallback
-  // Safely get client_id from user object, fallback to 'default'
-  // Set global theme on body when client_id changes
   useEffect(() => {
     setThemeByClient();
   }, []);
-  // Memoize theme map to prevent recreation on every render
 
   const dispatch = useAppDispatch();
   const [windowWidth, setWindowWidth] = useState(
@@ -64,13 +57,6 @@ export const AppHeader: React.FC = ({}) => {
         name: "Sports",
         href: OVERVIEW.SPORTS,
         current: true,
-        // sub_links: [
-        //   { name: "All Sports", href: OVERVIEW.SPORTS },
-        //   ...sports_data.slice(0, 8).map((sport) => ({
-        //     name: sport.sportName,
-        //     href: getSportRoute(sport.sportID),
-        //   })),
-        // ],
       },
       { name: "Live", href: OVERVIEW.LIVE, sub_links: [] },
       {
@@ -78,29 +64,51 @@ export const AppHeader: React.FC = ({}) => {
         href: `${environmentConfig.BASE_URL}/soccer-print`,
         target: "_blank",
         current: false,
-        sub_links: [],
       },
       {
         name: "Todays's Print",
         href: `${environmentConfig.BASE_URL}/today-print`,
         target: "_blank",
         current: false,
-        sub_links: [],
       },
-      {
-        name: "Cashdesk",
-        href: OVERVIEW.CASHDESK,
-        current: false,
-        sub_links: [],
-      },
-      { name: "Cashbook", href: "#", sub_links: [] },
+      ...(USER_ROLES.CASHIER === user?.role
+        ? [
+            {
+              name: "Cashdesk",
+              href: OVERVIEW.CASHDESK,
+              current: false,
+            },
+          ]
+        : []),
+      { name: "Cashbook", href: "#" },
       // Only show My Account when user is logged in
       ...(user?.id
         ? [
             {
+              name: "Golden Race",
+              // href: ACCOUNT.HOME,
+              href: `${environmentConfig.XPRESS_LAUNCH_URL}?token=${
+                user.authCode
+              }&game=10160&backurl=${
+                environmentConfig.FRONTEND_URL
+              }&mode=1&group=${
+                user.group
+              }&clientPlatform=retail&h=${AppHelper.generateMD5Hash(
+                [
+                  user.authCode,
+                  10160,
+                  environmentConfig.FRONTEND_URL,
+                  1,
+                  user.group,
+                  "retail",
+                  environmentConfig.XPRESS_PRIVATE_KEY,
+                ].join("")
+              )}`,
+              target: "_blank",
+            },
+            {
               name: "My Account",
               href: ACCOUNT.HOME,
-              sub_links: [],
             },
           ]
         : []),
@@ -161,7 +169,7 @@ export const AppHeader: React.FC = ({}) => {
       clearTimeout(resizeTimeout);
     };
   }, []);
-
+  //
   // Optimized position updates with reduced frequency
   useEffect(() => {
     // Small delay to ensure DOM elements are rendered

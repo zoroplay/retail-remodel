@@ -18,6 +18,7 @@ import type {
   SuperAgentCommissionResponse,
   TotalSuperAgentCommissionResponse,
 } from "./types/responses";
+import { store } from "../store";
 
 const UserApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -172,6 +173,23 @@ const UserApiSlice = apiSlice.injectEndpoints({
         }),
         method: REQUEST_ACTIONS.GET,
       }),
+      transformResponse: (response: any, meta, arg) => {
+        // Try to get the user id from the Redux store
+
+        // Dynamically require the store to avoid circular deps
+        const state = store.getState();
+        // console.log("STATE FROM USER SERVICE", state);
+        const userId = state.user?.user?.id;
+        console.log("USER ID FROM STORE", userId, response.data);
+        return {
+          ...response,
+          data: Array.isArray(response.data)
+            ? response.data.filter((u: any) => u.id !== userId)
+            : response.data,
+        };
+
+        return response;
+      },
     }),
     superAgentCommission: builder.query<
       SuperAgentCommissionResponse,

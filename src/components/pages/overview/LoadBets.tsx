@@ -43,7 +43,9 @@ import { PreMatchFixture } from "@/store/features/types/fixtures.types";
 import { Fixture, SelectedMarket } from "@/data/types/betting.types";
 import { removeCashDeskFixture } from "@/store/features/slice/fixtures.slice";
 import OddsButton from "@/components/buttons/OddsButton";
-import { BET_TYPES_ENUM, MARKET_SECTION } from "@/data/enums/enum";
+import { BET_TYPES_ENUM, MARKET_SECTION, USER_ROLES } from "@/data/enums/enum";
+import { useNavigate } from "react-router-dom";
+import { OVERVIEW } from "@/data/routes/routes";
 
 const FixtureDisplay = forwardRef<
   HTMLDivElement,
@@ -56,6 +58,9 @@ const FixtureDisplay = forwardRef<
 >(({ displayFixtures, selectedMarkets, sport_id, is_loading }, ref) => {
   const { classes } = getClientTheme();
   const sportsPageClasses = classes.sports_page;
+  const { user } = useAppSelector((state) => state.user);
+  const navigate = useNavigate();
+
   const { openModal } = useModal();
   const { selected_bets } = useBetting();
   selectedMarkets = Array.isArray(selectedMarkets) ? selectedMarkets : [];

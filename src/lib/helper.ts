@@ -11,7 +11,7 @@ import {
   ENVIRONMENT_VARIABLES,
   getEnvironmentVariable,
 } from "../store/services/configs/environment.config";
-
+import * as crypto from "crypto-js";
 export interface TimeComponents {
   minutes: number;
   seconds: number;
@@ -253,7 +253,11 @@ export class AppHelper {
   static setGlobalTimeOffset(timeOffset: string): void {
     AppHelper._globalTimeOffset = timeOffset;
   }
-
+  static generateMD5Hash = (hashString: string): string => {
+    // return MD5(hashString).toString();
+    // return crypto.createHash("md5").update(hashString).digest("hex");
+    return "";
+  };
   static formatDate = (dateString: string): string => {
     try {
       const date = new Date(dateString);
@@ -1137,7 +1141,11 @@ export class AppHelper {
   private static getReceiptStyles = (): string => {
     return `
       @page {
-        size: 80mm auto;
+        size: 50mm 50mm;
+        min-width: 50mm;
+        min-height: 50mm;
+        max-width: 80mm;
+        max-height: 80mm;
         margin: 0;
       }
       * {
@@ -1150,6 +1158,10 @@ export class AppHelper {
         font-size: 11px;
         line-height: 1.4;
         padding: 10px;
+        min-width: 50mm;
+        min-height: 50mm;
+        max-width: 80mm;
+        max-height: 80mm;
         width: 80mm;
         background: white;
       }

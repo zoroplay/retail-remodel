@@ -49,81 +49,141 @@ const OverUnder = ({
   if (filterOutcomes) {
     outcomes = filterOutcomes(outcomes);
   }
+  let title = (
+    customTitle ||
+    outcomes.find((item) => !!item.marketName)?.marketName ||
+    ""
+  ).toLowerCase();
+  // let title =
+  //   customTitle || outcomes.find((item) => !!item.marketName)?.marketName || "";
 
-  let title =
-    customTitle || outcomes.find((item) => !!item.marketName)?.marketName || "";
-  if (!customTitle) {
-    title = title === "O/U" ? "Over/Under" : title || "Over/Under";
-  }
-  switch (market_id) {
-    case MARKET_SECTION.HOME_TOTAL:
-      pairsObject = homeTotalPairsBySpecifier;
-      outcomes.forEach((outcome) => {
-        const spec = outcome.specifier;
-        // Only process outcomes with valid specifier format and displayName
-        if (
-          !spec ||
-          !outcome.displayName ||
-          !spec.match(/total=(\d+(?:\.\d+)?)/)
-        )
-          return;
-        if (!homeTotalPairsBySpecifier[spec])
-          homeTotalPairsBySpecifier[spec] = {};
-        if ((outcome.displayName || "").toLowerCase().includes("over")) {
-          homeTotalPairsBySpecifier[spec].over = outcome;
-        } else if (outcome.displayName.toLowerCase().includes("under")) {
-          homeTotalPairsBySpecifier[spec].under = outcome;
-        }
-      });
-      break;
-    case MARKET_SECTION.AWAY_TOTAL:
-      pairsObject = awayTotalPairsBySpecifier;
+  title = title === "o/u" ? "Over/Under" : title || title;
 
-      outcomes.forEach((outcome) => {
-        const spec = outcome.specifier;
-        // Only process outcomes with valid specifier format and displayName
-        if (
-          !spec ||
-          !outcome.displayName ||
-          !spec.match(/total=(\d+(?:\.\d+)?)/)
-        )
-          return;
-        if (!awayTotalPairsBySpecifier[spec])
-          awayTotalPairsBySpecifier[spec] = {};
-        if ((outcome.displayName || "")?.toLowerCase()?.includes("over")) {
-          awayTotalPairsBySpecifier[spec].over = outcome;
-        } else if (outcome.displayName?.toLowerCase().includes("under")) {
-          awayTotalPairsBySpecifier[spec].under = outcome;
-        }
-      });
-      break;
-    default:
-      pairsObject = ouPairsBySpecifier;
+  // switch (market_id) {
+  //   case MARKET_SECTION.HOME_TOTAL:
+  //     pairsObject = homeTotalPairsBySpecifier;
+  //     outcomes.forEach((outcome) => {
+  //       const spec = outcome.specifier;
+  //       // Only process outcomes with valid specifier format and displayName
+  //       if (
+  //         !spec ||
+  //         !outcome.displayName ||
+  //         !spec.match(/total=(\d+(?:\.\d+)?)/)
+  //       )
+  //         return;
+  //       if (!homeTotalPairsBySpecifier[spec])
+  //         homeTotalPairsBySpecifier[spec] = {};
+  //       if ((outcome.displayName || "").toLowerCase().includes("over")) {
+  //         homeTotalPairsBySpecifier[spec].over = outcome;
+  //       } else if (outcome.displayName.toLowerCase().includes("under")) {
+  //         homeTotalPairsBySpecifier[spec].under = outcome;
+  //       }
+  //     });
+  //     break;
+  //   case MARKET_SECTION.AWAY_TOTAL:
+  //     pairsObject = awayTotalPairsBySpecifier;
 
-      outcomes.forEach((outcome) => {
-        const spec = outcome.specifier;
-        const outcomeName = (
-          outcome.outcomeName ||
-          outcome.displayName ||
-          ""
-        ).toLowerCase();
+  //     outcomes.forEach((outcome) => {
+  //       const spec = outcome.specifier;
+  //       // Only process outcomes with valid specifier format and displayName
+  //       if (
+  //         !spec ||
+  //         !outcome.displayName ||
+  //         !spec.match(/total=(\d+(?:\.\d+)?)/)
+  //       )
+  //         return;
+  //       if (!awayTotalPairsBySpecifier[spec])
+  //         awayTotalPairsBySpecifier[spec] = {};
+  //       if ((outcome.displayName || "")?.toLowerCase()?.includes("over")) {
+  //         awayTotalPairsBySpecifier[spec].over = outcome;
+  //       } else if (outcome.displayName?.toLowerCase().includes("under")) {
+  //         awayTotalPairsBySpecifier[spec].under = outcome;
+  //       }
+  //     });
+  //     break;
+  //   default:
+  //     pairsObject = ouPairsBySpecifier;
 
-        // Match both formats: "total=X.5" and "total=X.5|quarternr=1"
-        if (!spec || !spec.match(/total=(\d+(?:\.\d+)?)/)) return;
+  //     outcomes.forEach((outcome) => {
+  //       const spec = outcome.specifier;
+  //       const outcomeName = (
+  //         outcome.outcomeName ||
+  //         outcome.displayName ||
+  //         ""
+  //       ).toLowerCase();
 
-        if (!ouPairsBySpecifier[spec]) ouPairsBySpecifier[spec] = {};
+  //       // Match both formats: "total=X.5" and "total=X.5|quarternr=1"
+  //       if (!spec || !spec.match(/total=(\d+(?:\.\d+)?)/)) return;
 
-        if (outcomeName.includes("over")) {
-          ouPairsBySpecifier[spec].over = outcome;
-        } else if (outcomeName.includes("under")) {
-          ouPairsBySpecifier[spec].under = outcome;
-        }
-        title = "Over/Under";
-      });
-      break;
+  //       if (!ouPairsBySpecifier[spec]) ouPairsBySpecifier[spec] = {};
+
+  //       if (outcomeName.includes("over")) {
+  //         ouPairsBySpecifier[spec].over = outcome;
+  //       } else if (outcomeName.includes("under")) {
+  //         ouPairsBySpecifier[spec].under = outcome;
+  //       }
+  //       title = "Over/Under";
+  //     });
+  //     break;
+  // }
+
+  if (title.includes("home total")) {
+    pairsObject = homeTotalPairsBySpecifier;
+    outcomes.forEach((outcome) => {
+      const spec = outcome.specifier;
+      const name = (
+        outcome.displayName ||
+        outcome.outcomeName ||
+        ""
+      ).toLowerCase();
+      if (!spec || !name || !spec.match(/total=(\d+(?:\.\d+)?)/)) return;
+      if (!homeTotalPairsBySpecifier[spec])
+        homeTotalPairsBySpecifier[spec] = {};
+      if (/over|and over|or over|\+|&&|&|gg\/ng/.test(name)) {
+        homeTotalPairsBySpecifier[spec].over = outcome;
+      } else if (/under|and under|or under|\+|&&|&|gg\/ng/.test(name)) {
+        homeTotalPairsBySpecifier[spec].under = outcome;
+      }
+    });
+  } else if (title.includes("away total")) {
+    pairsObject = awayTotalPairsBySpecifier;
+    outcomes.forEach((outcome) => {
+      const spec = outcome.specifier;
+      const name = (
+        outcome.displayName ||
+        outcome.outcomeName ||
+        ""
+      ).toLowerCase();
+      if (!spec || !name || !spec.match(/total=(\d+(?:\.\d+)?)/)) return;
+      if (!awayTotalPairsBySpecifier[spec])
+        awayTotalPairsBySpecifier[spec] = {};
+      if (/over|and over|or over|\+|&&|&|gg\/ng/.test(name)) {
+        awayTotalPairsBySpecifier[spec].over = outcome;
+      } else if (/under|and under|or under|\+|&&|&|gg\/ng/.test(name)) {
+        awayTotalPairsBySpecifier[spec].under = outcome;
+      }
+    });
+  } else {
+    pairsObject = ouPairsBySpecifier;
+    outcomes.forEach((outcome) => {
+      const spec = outcome.specifier;
+      const name = (
+        outcome.outcomeName ||
+        outcome.displayName ||
+        ""
+      ).toLowerCase();
+      if (!spec || !name || !spec.match(/total=(\d+(?:\.\d+)?)/)) return;
+      if (!ouPairsBySpecifier[spec]) ouPairsBySpecifier[spec] = {};
+      if (/over|and over|or over|\+|&&|&|gg\/ng/.test(name)) {
+        ouPairsBySpecifier[spec].over = outcome;
+      } else if (/under|and under|or under|\+|&&|&|gg\/ng/.test(name)) {
+        ouPairsBySpecifier[spec].under = outcome;
+      }
+      // title = "Over/Under";
+    });
   }
   if (is_loading) return <SkeletonCard title={title} />;
-  if (outcomes.length === 0) return null;
+  if (outcomes.length === 0 || !title) return null;
 
   const specifiers = Object.keys(pairsObject).sort((a, b) => {
     // Extract numeric value from specifier (handles both "total=3.5" and "total=3.5|quarternr=1")
@@ -178,7 +238,7 @@ const OverUnder = ({
               />
             )}
             <span
-              className={`font-semibold text-xs ${marketClasses["market-title"]}`}
+              className={`font-semibold text-xs ${marketClasses["market-title"]} capitalize`}
             >
               {title}
             </span>

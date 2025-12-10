@@ -69,3 +69,11 @@ export enum BET_STATUS_CODES {
   BET_CANCELLED = -1,
   BET_CASHOUT = 5,
 }
+
+export enum USER_ROLES {
+  SUPER_ADMIN = "Super Admin",
+  ADMIN = "Admin",
+  SHOP = "Shop",
+  CASHIER = "Cashier",
+  PLAYER = "Player",
+}

@@ -39,6 +39,7 @@ import { getClientTheme } from "./config/theme.config";
 import LiveOverviewScreen from "./components/pages/overview/LiveOverview";
 import Withdraw from "./components/pages/overview/account/Withdraw";
 import PoolOverviewScreen from "./components/pages/overview/PoolOverview";
+import { USER_ROLES } from "./data/enums/enum";
 
 // Route constants
 
@@ -68,6 +69,12 @@ function AuthenticationManager() {
 
       // If no user and trying to access account routes, redirect to sports
       if (!user?.id && pathname.startsWith(ACCOUNT.HOME)) {
+        navigate(OVERVIEW.SPORTS, { replace: true });
+      }
+      if (
+        USER_ROLES.CASHIER !== user?.role &&
+        pathname.startsWith(OVERVIEW.CASHDESK)
+      ) {
         navigate(OVERVIEW.SPORTS, { replace: true });
       }
     } catch (err) {

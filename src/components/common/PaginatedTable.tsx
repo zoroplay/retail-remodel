@@ -1,13 +1,14 @@
 import { getClientTheme } from "@/config/theme.config";
-import { ChevronLeft, ChevronRight, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
 import React from "react";
-import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
 import {
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
   BsChevronLeft,
   BsChevronRight,
 } from "react-icons/bs";
+const { classes } = getClientTheme();
+const pageClasses = classes.transactions_page;
 
 interface TableColumn {
   id: string;
@@ -31,6 +32,7 @@ interface PaginatedTableProps {
   isLoading?: boolean;
   pagination?: PaginationProps;
   className: string;
+  bodyClassName?: string;
 }
 
 const PaginatedTable: React.FC<PaginatedTableProps> = ({
@@ -39,9 +41,8 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
   isLoading = false,
   pagination,
   className,
+  bodyClassName = `shadow-lg border rounded-md ${classes.sports_page["card-border"]}`,
 }) => {
-  const { classes } = getClientTheme();
-  const pageClasses = classes.transactions_page;
   console.log("pagination", pagination);
 
   let base_styles = "";
@@ -66,7 +67,7 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
   //   grid-cols-[repeat(17,minmax(0,1fr))]
   return (
     <div
-      className={`rounded-md overflow-hidden shadow-lg ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  flex flex-col h-full border ${pageClasses["card-border"]}`}
+      className={`overflow-hidden ${bodyClassName} ${classes.sports_page["card-bg"]} flex flex-col h-full `}
     >
       {/* Table Header - Static */}
       <div
