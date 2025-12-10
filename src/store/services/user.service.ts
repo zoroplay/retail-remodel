@@ -10,6 +10,7 @@ import type {
   CommissionRequest,
   PayoutCommissionRequest,
   DepositCommissionRequest,
+  CreateUserRequest,
 } from "./types/requests";
 import type {
   CommissionTransactionsResponse,
@@ -216,6 +217,13 @@ const UserApiSlice = apiSlice.injectEndpoints({
         method: REQUEST_ACTIONS.POST,
       }),
     }),
+    createUser: builder.mutation<any, CreateUserRequest>({
+      query: (body) => ({
+        url: AppHelper.buildQueryUrl(USER_ACTIONS.CREATE_USER, {}),
+        method: REQUEST_ACTIONS.POST,
+        body,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -235,4 +243,5 @@ export const {
   useGetAgentUsersQuery,
   useSuperAgentCommissionQuery,
   useTotalSuperAgentCommissionQuery,
+  useCreateUserMutation,
 } = UserApiSlice;

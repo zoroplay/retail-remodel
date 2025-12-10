@@ -81,6 +81,7 @@ export const USER_ACTIONS = {
     "/commission/:client_id/preview-super-agent-commission",
   TOTAL_SUPER_AGENT_COMMISSION:
     "/commission/:client_id/super-agent-total-commissions",
+  CREATE_USER: "/retail/create-user",
 };
 export const WALLET_ACTIONS = {
   GET_PAYMENT_METHODS: "/user/wallet/:client_id/payment-methods",

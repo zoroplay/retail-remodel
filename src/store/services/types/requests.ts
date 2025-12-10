@@ -39,6 +39,26 @@ export interface PayoutCommissionRequest {
   betId: string;
 }
 
+export interface CreateUserRequest {
+  clientId: string;
+  userId: string;
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  city: string;
+  state: string;
+  country: string;
+  gender: string;
+  dateOfBirth: string;
+  currency: string;
+  phoneNumber: string;
+  address: string;
+  language: string;
+  roleId: string;
+}
+
 export interface DepositCommissionRequest {
   clientId: number;
   userId: number;

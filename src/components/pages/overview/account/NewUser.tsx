@@ -7,6 +7,8 @@ import { environmentConfig } from "../../../../store/services/configs/environmen
 import Input from "../../../inputs/Input";
 import Select from "@/components/inputs/Select";
 import { getClientTheme } from "@/config/theme.config";
+import { useCreateUserMutation } from "@/store/services/user.service";
+import { USER_ROLES } from "@/data/enums/enum";
 
 interface FormValues {
   country: string;
@@ -30,7 +32,6 @@ const NewUser = () => {
   const pageClasses = classes.user_management_page;
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const usertype = searchParams.get("usertype") || "cashier";
   const { user } = useAppSelector((state) => state.user);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormValues>({
@@ -47,8 +48,10 @@ const NewUser = () => {
     email: "",
     username: "",
     password: "",
-    userType: usertype,
+    userType: "",
   });
+  const is_cashier = user?.role === USER_ROLES.CASHIER;
+  const [createUser, { isLoading }] = useCreateUserMutation();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -89,37 +92,84 @@ const NewUser = () => {
       const data = {
         ...formData,
         parentId: user?.id,
-        roleId: usertype === "cashier" ? 12 : 13,
+        roleId: is_cashier ? 12 : 13,
         clientId: Number(environmentConfig.CLIENT_ID),
       };
-
+      // address
+      // :
+      // ""
+      // country
+      // :
+      // "160"
+      // currency
+      // :
+      // "₦"
+      // dateOfBirth
+      // :
+      // ""
+      // email
+      // :
+      // "test@account.com"
+      // firstName
+      // :
+      // "test"
+      // gender
+      // :
+      // "Male"
+      // language
+      // :
+      // "EN"
+      // lastName
+      // :
+      // "account"
+      // parentId
+      // :
+      // 239718
+      // password
+      // :
+      // "123456"
+      // phoneNumber
+      // :
+      // ""
+      // roleId
+      // :
+      // 13
+      // state
+      // :
+      // ""
+      // userType
+      // :
+      // "player"
+      // username
+      // :
+      // "11123333"
       // Replace with actual API call
       // const response = await addUser(data);
 
       // Simulate API call
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setFormData({
-          country: "160",
-          state: "",
-          language: "EN",
-          currency: "NGN",
-          firstName: "",
-          lastName: "",
-          dateOfBirth: "",
-          gender: "Male",
-          address: "",
-          phoneNumber: "",
-          email: "",
-          username: "",
-          password: "",
-          userType: usertype,
-        });
-        toast.success("User details has been submitted successfully");
-      }, 1000);
+      // setTimeout(() => {
+      //   setIsSubmitting(false);
+      //   setFormData({
+      //     country: "160",
+      //     state: "",
+      //     language: "EN",
+      //     currency: "NGN",
+      //     firstName: "",
+      //     lastName: "",
+      //     dateOfBirth: "",
+      //     gender: "Male",
+      //     address: "",
+      //     phoneNumber: "",
+      //     email: "",
+      //     username: "",
+      //     password: "",
+      //     userType: usertype,
+      //   });
+      //   toast.success("User details has been submitted successfully");
+      // }, 1000);
     } catch (error) {
       setIsSubmitting(false);
-      toast.error(`Something went wrong. Unable to save new ${usertype}!`);
+      // toast.error(`Something went wrong. Unable to save new ${usertype}!`);
     }
   };
 
@@ -137,10 +187,10 @@ const NewUser = () => {
           </div>
           <div>
             <h1 className={`text-base font-bold`}>
-              New {usertype === "cashier" ? "Cashier" : "Player"}
+              New {is_cashier ? "Cashier" : "Player"}
             </h1>
             <p className={`${classes["text-secondary"]} text-xs`}>
-              Create a new {usertype} account
+              Create a new {is_cashier ? "Cashier" : "Player"} account
             </p>
           </div>
         </div>
