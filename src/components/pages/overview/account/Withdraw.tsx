@@ -225,7 +225,7 @@ const BankWithdrawal = () => {
         <div className="grid lg:grid-cols-2 gap-2 justify-center items-start">
           {/* Left Side - Instructions */}
           <div
-            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  backdrop-blur-sm rounded-lg p-2 border `}
+            className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg p-2 border `}
           >
             <h2
               className={`text-sm font-semibold mb-3 flex items-center gap-2 ${classes["text-primary"]}`}
@@ -237,7 +237,7 @@ const BankWithdrawal = () => {
             <div className={`space-y-2.5 ${classes["text-secondary"]}`}>
               <div className={`flex gap-2.5 `}>
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   1
                 </div>
@@ -248,7 +248,7 @@ const BankWithdrawal = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   2
                 </div>
@@ -260,7 +260,7 @@ const BankWithdrawal = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   3
                 </div>
@@ -270,7 +270,7 @@ const BankWithdrawal = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   4
                 </div>
@@ -282,7 +282,7 @@ const BankWithdrawal = () => {
             </div>
 
             <div
-              className={`mt-4 p-3 ${pageClasses["warning-bg"]} border ${pageClasses["warning-border"]} rounded-lg`}
+              className={`mt-4 p-2 ${pageClasses["warning-bg"]} border ${pageClasses["warning-border"]} rounded-lg`}
             >
               <div
                 className={`flex items-center gap-2 ${pageClasses["warning-text"]} mb-1.5`}

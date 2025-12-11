@@ -135,7 +135,7 @@ const TransactionsPage = () => {
     >
       {/* Filters and Actions Section - Static */}
       <div
-        className={`p-2 ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  border border-gray-300 rounded-lg ${pageClasses["card-border"]}`}
+        className={`p-2 ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  border  rounded-lg`}
       >
         {/* Transaction Filters */}
         <div className="flex gap-2">

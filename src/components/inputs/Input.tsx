@@ -14,6 +14,7 @@ import { cn } from "../../lib/utils";
 import { useTheme } from "../providers/ThemeProvider";
 import { Eye, EyeClosed } from "lucide-react";
 import { getClientTheme } from "@/config/theme.config";
+import { useAppSelector } from "@/hooks/useAppDispatch";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -242,6 +243,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
       isValid: true,
       message: "",
     });
+    const { global_variables } = useAppSelector((store) => store.app);
 
     const { theme } = useTheme();
 
@@ -251,7 +253,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
       return `${border_color} border `; // gray-200
     };
 
-    const inputStyle = `flex ${height} text-black ${bg_color} text-black w-full ${rounded} border border text-xs ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground ${
+    const inputStyle = `flex ${height} ${bg_color} w-full ${rounded} border border text-xs ring-offset-background file:border-0 file:text-xs file:font-medium placeholder:text-muted-foreground ${
       classes["input-focus-within"]
     } disabled:cursor-not-allowed disabled:opacity-50 transition-all  ${getBorderColor()} ${
       AppHelper.isDarkColor(bg_color)
@@ -260,34 +262,6 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
     } `;
 
     const [phoneNo, setPhoneNumber] = useState(value);
-
-    const handlePhoneNumberChange = (
-      e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-      let newPhoneNumber = e.target.value;
-
-      // If input is empty, don't add any prefix
-      if (!newPhoneNumber) {
-        setPhoneNumber("");
-        onChange({ target: { name: name || "phone_number", value: "" } });
-        return;
-      }
-
-      // Remove any non-digit characters except + at the start
-      newPhoneNumber = newPhoneNumber.replace(/[^\d+]/g, "");
-
-      // Ensure only one + at the start
-      if (newPhoneNumber.startsWith("+")) {
-        newPhoneNumber = "+" + newPhoneNumber.substring(1).replace(/\+/g, "");
-      } else {
-        newPhoneNumber = "+" + newPhoneNumber;
-      }
-
-      setPhoneNumber(newPhoneNumber);
-      onChange({
-        target: { name: name || "phone_number", value: newPhoneNumber },
-      });
-    };
 
     useEffect(() => {
       if (value !== previousValue && (showError || error)) {
@@ -436,7 +410,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
               )}
               <div
                 onClick={() => setShowPassword((prev) => !prev)}
-                className={`w-12  min-w-[2rem] cursor-pointer 4  h-full flex justify-center items-center p-2 px-3 ${text_color}`}
+                className={`w-10 min-w-[2rem] cursor-pointer 4  h-full flex justify-center items-center p-2 ${text_color}`}
               >
                 {showPassword ? (
                   <Eye fontSize={24} className={text_color} />
@@ -752,26 +726,41 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
                 optionalLabel={optionalLabel}
               />
             )}
-            <input
-              required={required}
-              name={name}
-              type="tel"
-              ref={ref}
-              onFocus={onFocus}
-              onKeyDown={onKeyDown}
-              tabIndex={tabIndex}
-              disabled={disabled}
-              value={phoneNo}
-              onChange={handlePhoneNumberChange}
-              placeholder={placeholder}
-              className={`${inputStyle} ${className} ${
-                showError || error ? "border-[tomato]" : ""
-              } px-3 py-2`}
-              onBlur={handleBlur}
-              onInvalid={handleInvalid}
-              pattern="^\+[0-9]+$"
-              title="Please enter a valid phone number starting with + followed by digits"
-            />
+            <div
+              className={`${inputStyle} ${className} overflow-hidden`}
+              tabIndex={-1}
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget))
+                  setIsFocused(false);
+              }}
+            >
+              <div
+                className={`w-10 min-w-[2rem] font-semibold h-full flex justify-center items-center p-2 ${text_color}`}
+              >
+                {global_variables?.dial_code || ""}
+              </div>
+              <input
+                required={required}
+                name={name}
+                type="text"
+                ref={ref}
+                onFocus={onFocus}
+                onKeyDown={onKeyDown}
+                tabIndex={tabIndex}
+                disabled={disabled}
+                // value={phoneNo}
+                value={value}
+                // onChange={handlePhoneNumberChange}
+                onChange={onChange}
+                placeholder={placeholder}
+                className={`outline-none border-none disabled:cursor-not-allowed disabled:opacity-50 !bg-transparent w-full focus:!bg-transparent focus-within:!bg-transparent focus-visible:!bg-transparent  px-3 py-2`}
+                onBlur={handleBlur}
+                onInvalid={handleInvalid}
+                // pattern="^\+[0-9]+$"
+                // title="Please enter a valid phone number starting with + followed by digits"
+              />
+            </div>
+
             {bottomLabel && <BottomLabel>{bottomLabel}</BottomLabel>}
             <ErrorMessage
               showError={showError}
@@ -873,7 +862,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
               defaultValue={defaultValue}
               onChange={onChange}
               placeholder={placeholder}
-              className={`${inputStyle} ${className} text-black px-3 py-2`}
+              className={`${inputStyle} ${className}  px-3 py-2`}
               onBlur={handleBlur}
               onInvalid={handleInvalid}
             />

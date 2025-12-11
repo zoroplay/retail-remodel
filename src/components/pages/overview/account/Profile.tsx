@@ -132,7 +132,7 @@ const Profile = () => {
 
         {/* Personal Information Section */}
         <div
-          className={`${classes.sports_page["card-bg"]} backdrop-blur-sm rounded-lg border ${classes["border"]} p-4 flex flex-col gap-2`}
+          className={`${classes.sports_page["card-bg"]} backdrop-blur-sm rounded-lg border ${classes.sports_page["card-border"]} p-4 flex flex-col gap-2`}
         >
           <div className="flex items-center justify-between pb-2">
             {/* <div className="space-y-3"> */}

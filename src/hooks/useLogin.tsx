@@ -14,6 +14,7 @@ export const useLogin = () => {
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const navigate = useNavigate();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Input Change Event:", e.target.name, e.target.value);
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };

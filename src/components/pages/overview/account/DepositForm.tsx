@@ -2,16 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, CreditCard, DollarSign, Shield, Clock } from "lucide-react";
-import { useAppSelector } from "../../../../hooks/useAppDispatch";
-import { useInitializeTransactionMutation } from "../../../../store/services/wallet.service";
-import environmentConfig, {
-  getEnvironmentVariable,
-  ENVIRONMENT_VARIABLES,
-} from "../../../../store/services/configs/environment.config";
 import Input from "@/components/inputs/Input";
 import { getClientTheme } from "@/config/theme.config";
 import Spinner from "@/components/layouts/Spinner";
 import { showToast } from "@/components/tools/toast";
+import { useAppSelector } from "@/hooks/useAppDispatch";
+import environmentConfig from "@/store/services/configs/environment.config";
+import { useInitializeTransactionMutation } from "@/store/services/wallet.service";
 
 const DepositForm = () => {
   const { classes } = getClientTheme();
@@ -200,13 +197,13 @@ const DepositForm = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-2">
+        <div className="grid lg:grid-cols-2 gap-2 justify-center items-start">
           {/* Left Side - Instructions */}
           <div
             className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg p-2 border `}
           >
             <h2
-              className={`text-sm font-semibold mb-3 flex items-center gap-2 ${pageClasses["form-text"]}`}
+              className={`text-sm font-semibold mb-3 flex items-center gap-2 `}
             >
               <Shield className={classes["text-secondary"]} size={18} />
               How to Fund Your Wallet
@@ -215,7 +212,7 @@ const DepositForm = () => {
             <div className="space-y-2.5">
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   1
                 </div>
@@ -227,7 +224,7 @@ const DepositForm = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   2
                 </div>
@@ -239,7 +236,7 @@ const DepositForm = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   3
                 </div>
@@ -251,7 +248,7 @@ const DepositForm = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   4
                 </div>
@@ -263,7 +260,7 @@ const DepositForm = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   5
                 </div>
@@ -276,7 +273,7 @@ const DepositForm = () => {
             </div>
 
             <div
-              className={`mt-4 p-3 ${pageClasses["warning-bg"]} border ${pageClasses["warning-border"]} rounded-lg`}
+              className={`mt-4 p-2 ${pageClasses["warning-bg"]} border ${pageClasses["warning-border"]} rounded-lg`}
             >
               <div
                 className={`flex items-center gap-2 ${pageClasses["warning-text"]} mb-1.5`}
@@ -320,7 +317,7 @@ const DepositForm = () => {
                     />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm">
+                    <h3 className="font-semibold text-white text-sm">
                       {providerInfo.name}
                     </h3>
                     <p className="text-white/80 text-xs">
@@ -363,7 +360,7 @@ const DepositForm = () => {
                     key={quickAmount}
                     type="button"
                     onClick={() => updateAmount(quickAmount)}
-                    className={`${pageClasses["quick-button-bg"]} ${pageClasses["quick-button-hover"]} border ${pageClasses["quick-button-border"]} ${pageClasses["quick-button-text"]} text-xs py-1.5 pb-1 rounded-md transition-all duration-200 hover:scale-105`}
+                    className={`${pageClasses["quick-button-bg"]} ${pageClasses["quick-button-hover"]} border ${pageClasses["quick-button-border"]} ${pageClasses["quick-button-text"]} text-[11px] py-1 rounded-lg transition-all duration-200 hover:scale-105`}
                   >
                     +₦{formatNumber(quickAmount)}
                   </button>

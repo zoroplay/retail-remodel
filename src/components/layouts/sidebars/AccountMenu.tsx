@@ -171,7 +171,7 @@ const AccountMenu = (props: Props) => {
         relative overflow-hidden
         ${
           isActive
-            ? `${sidebarClasses["category-item-bg"]} ${sidebarClasses["category-item-text"]} border-l-4 ${sidebarClasses["category-item-border"]} shadow-sm`
+            ? `${sidebarClasses["category-item-bg"]} ${sidebarClasses["category-item-text"]} border-l-4 ${sidebarClasses["category-item-border"]} shadow-md`
             : `${sidebarClasses["tournament-item-text"]} hover:border-l-4 ${classes["item-hover-border-l"]}`
         }
       `}

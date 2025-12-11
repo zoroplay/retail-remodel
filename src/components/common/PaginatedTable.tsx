@@ -112,7 +112,7 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
         ) : !data || data?.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-4 p-10">
             <div
-              className={`w-14 h-14 ${pageClasses["input-bg"]} rounded-full flex items-center justify-center`}
+              className={`w-14 h-14 ${classes["bg-secondary"]} rounded-full flex items-center justify-center`}
             >
               <FileText size={26} className={pageClasses["row-text"]} />
             </div>

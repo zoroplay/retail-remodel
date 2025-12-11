@@ -57,7 +57,7 @@ const OnlineDepositPage = () => {
 
   const [depositCommision] = useDepositCommissionMutation();
 
-  const currency = global_variables?.currency || "NGN";
+  const currency = global_variables?.currency_code || "NGN";
 
   // Format number with commas
   const formatNumber = (num: number | string) => {
@@ -231,7 +231,7 @@ const OnlineDepositPage = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-2">
+        <div className="grid lg:grid-cols-2 gap-2 justify-center items-start">
           {/* Left Side - Instructions */}
           <div
             className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg p-2 border`}
@@ -246,7 +246,7 @@ const OnlineDepositPage = () => {
             <div className={`space-y-2.5 ${classes["text-secondary"]}`}>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   1
                 </div>
@@ -257,7 +257,7 @@ const OnlineDepositPage = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   2
                 </div>
@@ -268,7 +268,7 @@ const OnlineDepositPage = () => {
               </div>
               <div className="flex gap-2.5">
                 <div
-                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
+                  className={`w-6 h-6 ${pageClasses["button-primary-bg"]} ${classes.transactions_page["column-header-text"]} rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
                 >
                   3
                 </div>
@@ -280,7 +280,7 @@ const OnlineDepositPage = () => {
             </div>
 
             <div
-              className={`mt-4 p-3 ${pageClasses["warning-bg"]} border ${pageClasses["warning-border"]} rounded-lg`}
+              className={`mt-4 p-2 ${pageClasses["warning-bg"]} border ${pageClasses["warning-border"]} rounded-lg`}
             >
               <div
                 className={`flex items-center gap-2 ${pageClasses["warning-text"]} mb-1.5`}
@@ -312,8 +312,11 @@ const OnlineDepositPage = () => {
                 <span
                   className={`text-base font-bold ${pageClasses["balance-value"]}`}
                 >
-                  {currency}{" "}
-                  {formatNumber(user?.availableBalance || user?.balance || 0)}
+                  <CurrencyFormatter
+                    amount={user?.availableBalance || user?.balance || 0}
+                    className=""
+                    spanClassName=""
+                  />
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -361,7 +364,7 @@ const OnlineDepositPage = () => {
                 {/* Dropdown for user selection */}
                 {showDropdown && usersList.length > 0 && (
                   <div
-                    className={`absolute z-50 w-full mt-1 ${pageClasses["form-bg"]} border ${pageClasses["form-border"]} rounded-lg shadow-lg max-h-60 overflow-y-auto`}
+                    className={`absolute z-50 w-full mt-1 ${pageClasses["form-bg"]} backdrop-blur-[4px] border ${pageClasses["form-border"]} rounded-lg shadow-lg max-h-60 overflow-y-auto`}
                   >
                     {usersList.map((user, index) => (
                       <div
@@ -371,10 +374,10 @@ const OnlineDepositPage = () => {
                       >
                         <div className="flex justify-between items-center">
                           <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span
-                                className={`text-xs font-semibold ${pageClasses["form-text"]}`}
-                              >
+                            <div
+                              className={`flex items-center gap-2 mb-1 ${pageClasses["form-text"]}`}
+                            >
+                              <span className={`text-xs font-semibold `}>
                                 {user.username}
                               </span>
                               {user.code && (
@@ -401,7 +404,7 @@ const OnlineDepositPage = () => {
                           </div>
                           <User
                             size={16}
-                            className={pageClasses["button-primary-text"]}
+                            className={pageClasses["form-text"]}
                           />
                         </div>
                       </div>
@@ -416,9 +419,7 @@ const OnlineDepositPage = () => {
                   className={`${pageClasses["info-bg"]} rounded-lg p-2 border ${pageClasses["info-border"]} flex items-center justify-between`}
                 >
                   <div className="flex flex-col gap-0.5">
-                    <span
-                      className={`text-xs font-semibold ${pageClasses["form-text"]}`}
-                    >
+                    <span className={`text-xs font-semibold `}>
                       {selectedUser.username}
                     </span>
                     <span
@@ -439,9 +440,7 @@ const OnlineDepositPage = () => {
               {selectedUser && (
                 <>
                   <div className="flex flex-col gap-1">
-                    <label
-                      className={`block text-xs font-semibold ${pageClasses["form-text"]}`}
-                    >
+                    <label className={`block text-xs font-semibold`}>
                       Quick Amount Selection
                     </label>
                     <div className="grid grid-cols-5 gap-1">
@@ -480,10 +479,6 @@ const OnlineDepositPage = () => {
                       }}
                       placeholder="Enter amount"
                       name="amount"
-                      bg_color={classes["input-bg"]}
-                      text_color={classes["input-text"]}
-                      border_color={`border ${classes["input-border"]}`}
-                      className={`w-full rounded-lg ${classes["input-text"]} transition-all duration-200`}
                       type="num_select"
                       num_select_placeholder={currency}
                     />
@@ -517,10 +512,13 @@ const OnlineDepositPage = () => {
                       <span
                         className={`${pageClasses["balance-value"]} font-medium`}
                       >
-                        {currency}{" "}
-                        {formatNumber(
-                          (selectedUser.balance || 0) + (Number(amount) || 0)
-                        )}
+                        <CurrencyFormatter
+                          amount={
+                            (selectedUser.balance || 0) + (Number(amount) || 0)
+                          }
+                          className=""
+                          spanClassName=""
+                        />
                       </span>
                     </div>
                   </div>

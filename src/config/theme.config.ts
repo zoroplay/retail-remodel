@@ -508,7 +508,7 @@ const clientThemes: Record<string, ClientTheme> = {
 };
 
 export const getClientTheme = (): ClientTheme => {
-  const clientId = Number(environmentConfig.CLIENT_ID);
+  const clientId = Number(environmentConfig.FRONTEND_CLIENT_ID);
 
   switch (clientId) {
     case 3:
