@@ -411,7 +411,7 @@ export const BASE_STYLES: ThemeClasses = {
     "outline-none ring-2 ring-blue-500/80 outline-none ring-ring ring-offset-0 bg-smalltext/10 border-blue-500/80",
   "select-option-bg": "bg-gradient-to-br from-blue-800 to-blue-900  text-white",
   "input-text": "text-gray-600",
-  "skeleton-bg": "bg-gray-200",
+  "skeleton-bg": "bg-gray-800/30",
   "modal-bg": "bg-slate-50",
   "button-primary-bg": "bg-gradient-to-r from-blue-600 to-blue-700",
   "button-primary-border": "border border-blue-300",

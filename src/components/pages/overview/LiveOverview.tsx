@@ -415,7 +415,7 @@ export default function LiveOverviewScreen({
                     className={`${sportsPageClasses["date-separator-bg"]} px-6 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
                   >
                     <div
-                      className={`h-4 ${sportsPageClasses["skeleton-secondary"]} rounded animate-pulse w-32`}
+                      className={`h-4  ${classes["skeleton-bg"]} rounded animate-pulse w-32`}
                     ></div>
                   </div>
                   {[...Array(4)].map((_, gameIndex) => (
@@ -428,17 +428,17 @@ export default function LiveOverviewScreen({
                         className={`col-span-2 ${sportsPageClasses["time-border"]} border-r flex flex-col items-start justify-center`}
                       >
                         <div
-                          className={`h-4 ${sportsPageClasses["skeleton-bg"]} rounded w-12 mb-1 animate-pulse`}
+                          className={`h-4  ${classes["skeleton-bg"]} rounded w-12 mb-1 animate-pulse`}
                         ></div>
                       </div>
 
                       {/* Match Info Skeleton */}
                       <div className="col-span-6 flex flex-col justify-center">
                         <div
-                          className={`h-3 ${sportsPageClasses["skeleton-bg"]} rounded w-32 mb-2 animate-pulse`}
+                          className={`h-3  ${classes["skeleton-bg"]} rounded w-32 mb-2 animate-pulse`}
                         ></div>
                         <div
-                          className={`h-4 ${sportsPageClasses["skeleton-bg"]} rounded w-48 animate-pulse`}
+                          className={`h-4 ${classes["skeleton-bg"]} rounded w-48 animate-pulse`}
                         ></div>
                       </div>
 
@@ -451,7 +451,7 @@ export default function LiveOverviewScreen({
                           {market.outcomes.map((outcome: MarketOutcome) => (
                             <div
                               key={outcome.outcomeID}
-                              className={`h-11 ${sportsPageClasses["skeleton-bg"]} rounded flex-1 animate-pulse`}
+                              className={`h-11 ${classes["skeleton-bg"]} rounded flex-1 animate-pulse`}
                             ></div>
                           ))}
                         </div>
@@ -460,7 +460,7 @@ export default function LiveOverviewScreen({
                       {/* More Button Skeleton */}
                       <div className="col-span-1 ml-2 px-2 flex items-center justify-center">
                         <div
-                          className={`h-8 ${sportsPageClasses["skeleton-bg"]} rounded w-12 animate-pulse`}
+                          className={`h-8 ${classes["skeleton-bg"]} rounded w-12 animate-pulse`}
                         ></div>
                       </div>
                     </div>

@@ -5,6 +5,7 @@ import TournamentItem from "./TournamentItem";
 import TournamentSkeleton from "./TournamentSkeleton";
 import { getClientTheme } from "@/config/theme.config";
 import { IoChevronDown } from "react-icons/io5";
+import CategorySkeleton from "./CategorySkeleton";
 
 type Props = {
   category: SportCategory;

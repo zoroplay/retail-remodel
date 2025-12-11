@@ -174,7 +174,7 @@ const Combined: React.FC<CombinedProps> = ({
 
       {/* Play All Option */}
       <div
-        className={`flex items-center justify-between p-2 py-1 pb-0 border-b ${betslipClasses["divider"]} ${betslipClasses["header-bg"]}`}
+        className={`flex items-center justify-between p-2 py-1 pb-0 border-b ${betslipClasses["divider"]} `}
       >
         <div className="flex items-center">
           <button
@@ -228,9 +228,11 @@ const Combined: React.FC<CombinedProps> = ({
               key={idx}
               className={`${
                 classes["text-secondary"]
-              } grid grid-cols-[2fr_1fr_1.5fr_1fr_1.5fr] gap-4 p-2 py-1 border-b ${[
+              } grid grid-cols-[2fr_1fr_1.5fr_1fr_1.5fr] gap-4 p-1 py-1 border-b ${[
                 "divider",
-              ]} last:border-b-0 hover:${betslipClasses["tab-bg"]}`}
+              ]} border-l-4 border-l-transparent ${
+                classes["item-hover-border-l"]
+              }  last:border-b-0 hover:${betslipClasses["tab-bg"]}`}
             >
               {/* Checkbox & Type */}
               <div className="flex items-center gap-1">
@@ -300,10 +302,10 @@ const Combined: React.FC<CombinedProps> = ({
       )}
 
       {/* Summary Section */}
-      <div className={`${betslipClasses["header-bg"]} rounded-b-lg`}>
+      <div className={`rounded-b-lg`}>
         {/* Total Stake */}
         <div
-          className={`flex items-center justify-between p-2 py-1 pb-0 border-b ${betslipClasses["divider"]}`}
+          className={`flex items-center justify-between p-2 py-1 pb-0 border-y ${betslipClasses["divider"]}`}
         >
           <div
             className={`text-xs font-semibold ${betslipClasses["tab-inactive-text"]}`}
@@ -352,7 +354,7 @@ const Combined: React.FC<CombinedProps> = ({
                   bonus_list: bonusList,
                 });
               }}
-              className={`${betslipClasses["tab-bg"]} hover:bg-black/20 border ${betslipClasses["tab-border"]} ${betslipClasses["tab-inactive-text"]} hover:${betslipClasses["tab-active-text"]} text-xs py-1 pb-0.5 rounded-lg transition-all duration-200 hover:scale-105`}
+              className={`${classes.deposit_page["quick-button-bg"]} ${classes.deposit_page["quick-button-hover"]} border ${classes.deposit_page["quick-button-border"]} ${classes.deposit_page["quick-button-text"]} text-[11px] h-6 flex justify-center items-center py-1 rounded-lg transition-all duration-200 hover:scale-105`}
             >
               {" "}
               <CurrencyFormatter
