@@ -12,13 +12,10 @@ import OnlineDeposit from "./components/OnlineDeposit";
 import { useAppDispatch, useAppSelector } from "../../hooks/useAppDispatch";
 import { useModal } from "../../hooks/useModal";
 import { MODAL_COMPONENTS } from "../../store/features/types";
-import {
-  showModal,
-  closeModal as closeModalAction,
-} from "../../store/features/slice/modal.slice";
 import LogoutModal from "./components/LogoutModal";
 import ChangePasswordModal from "./components/ChangePasswordModal";
 import ConfirmationModal from "./components/ConfirmationModal";
+import LoginModal from "./components/LoginModal";
 
 const ModalProvider = () => {
   const [searchParams] = useSearchParams();
@@ -84,6 +81,8 @@ const ModalProvider = () => {
         return <ChangePasswordModal onClose={handleClose} />;
       case MODAL_COMPONENTS.CONFIRMATION_MODAL:
         return <ConfirmationModal onClose={handleClose} />;
+      case MODAL_COMPONENTS.LOGIN:
+        return <LoginModal onClose={handleClose} />;
       default:
         return null;
     }

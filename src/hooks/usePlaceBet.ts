@@ -10,7 +10,10 @@ import { CommissionRequest } from "../store/services/types/requests";
 import { useCommissionPayoutMutation } from "../store/services/user.service";
 import { useBetting } from "./useBetting";
 import { useAppDispatch, useAppSelector } from "./useAppDispatch";
-import { usePlaceBetMutation } from "../store/services/bets.service";
+import {
+  useBookBetMutation,
+  usePlaceBetMutation,
+} from "../store/services/bets.service";
 import { useModal } from "./useModal";
 import { MODAL_COMPONENTS } from "../store/features/types";
 import { showToast } from "@/components/tools/toast";
@@ -32,6 +35,7 @@ export const usePlaceBet = (options?: UsePlaceBetOptions) => {
   const { global_variables } = useAppSelector((state) => state.app);
   const { openModal } = useModal();
   const [placeBetMutation] = usePlaceBetMutation();
+  const [bookBetMutation, { isLoading }] = useBookBetMutation();
   // const { data: commissionData } = useUserCommissionProfileQuery({
   //   user_id: user?.id!,
   //   commission_type: "livebet",
@@ -50,6 +54,13 @@ export const usePlaceBet = (options?: UsePlaceBetOptions) => {
   } = useBetting();
 
   const validateBet = () => {
+    if (!user || !user.id) {
+      openModal({
+        modal_name: MODAL_COMPONENTS.LOGIN,
+        title: "Login Required",
+      });
+      return false;
+    }
     // Check if user has any balance first
     if (!user?.availableBalance || user.availableBalance <= 0) {
       openModal({
@@ -375,6 +386,59 @@ export const usePlaceBet = (options?: UsePlaceBetOptions) => {
       dispatch(setUserRerender());
     }
   };
+  const bookBet = async () => {
+    if (!validateBet()) {
+      return;
+    }
+
+    try {
+      setIsPlacingBet(true);
+      const placeBetPayload = buildPlaceBetPayload();
+
+      const result = await bookBetMutation(placeBetPayload).unwrap();
+
+      if (result?.success) {
+        // Show success modal after printing
+        openModal({
+          modal_name: MODAL_COMPONENTS.SUCCESS,
+          title: "Bet Booked Successfully",
+          props: {
+            potential_winnings,
+            stake,
+            betslip_id:
+              (result as any)?.data?.betslipId ||
+              (result as any)?.betslipId ||
+              "",
+          },
+          description: `Your bet has been booked`,
+        });
+
+        clearBets();
+        updateStake({ stake: 0 });
+        setIsConfirming(false);
+
+        options?.onSuccess?.();
+      } else {
+        showToast({
+          type: "error",
+          title: "Failed to Book bet",
+          description:
+            (result as any)?.message || "Failed to book bet. Please try again.",
+        });
+      }
+    } catch (error: any) {
+      showToast({
+        type: "error",
+        title: "Failed to Book bet",
+        description: error?.message || "Failed to book bet. Please try again.",
+      });
+
+      options?.onError?.(error);
+    } finally {
+      setIsPlacingBet(false);
+      dispatch(setUserRerender());
+    }
+  };
 
   const confirmBet = () => {
     setIsConfirming(true);
@@ -388,8 +452,10 @@ export const usePlaceBet = (options?: UsePlaceBetOptions) => {
     // State
     isConfirming,
     isPlacingBet,
+    is_booking: isLoading,
 
     // Actions
+    bookBet,
     placeBet,
     confirmBet,
     cancelBet,

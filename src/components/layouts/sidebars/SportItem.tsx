@@ -20,11 +20,6 @@ const SportItem = ({ sport, onSportClick }: Props) => {
   const navigate = useNavigate();
 
   const toggleExpansion = () => {
-    if (sport.sportID === "pool") {
-      navigate(OVERVIEW.SPORTS_POOL);
-
-      return;
-    }
     setIsExpanded(!isExpanded);
     // For now, just call the click handler
     if (onSportClick) {

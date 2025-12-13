@@ -33,6 +33,7 @@ export const BETTING_ACTIONS = {
   FIND_BET: "/bets/find-bet",
   FIND_COUPON: "/bets/find-coupon",
   PLACE_BET: "/bets/place-bet/:client_id?channel=shop",
+  BOOK_BET: "/bets/book-bet/:client_id?channel=shop",
   GET_TRANSACTIONS: "/user/wallet/transactions?page=:page&limit=:limit",
   GET_BET_LIST: "/retail/:client_id/betlist?page=:page&limit=:limit",
   GET_BET_HISTORY: "/bets/history?page=:page&limit=:limit",

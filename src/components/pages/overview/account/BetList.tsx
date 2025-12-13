@@ -11,7 +11,7 @@ import {
 } from "../../../../store/services/configs/environment.config";
 import Select from "../../../inputs/Select";
 import { getClientTheme } from "@/config/theme.config";
-import { BET_STATUS_CODES } from "@/data/enums/enum";
+import { BET_STATUS_CODES, USER_ROLES } from "@/data/enums/enum";
 import { useModal } from "@/hooks/useModal";
 import { MODAL_COMPONENTS, MODAL_FUNCTION_ENUM } from "@/store/features/types";
 import { MdCancel } from "react-icons/md";
@@ -267,19 +267,22 @@ const BetListPage = () => {
               />
             </div>
           </div>
-          <div className="">
-            <Select
-              label="Cashier"
-              value={cashier !== null ? [cashier.toString()] : []}
-              options={users.map((user) => ({
-                id: user.id.toString(),
-                name: user.username,
-              }))}
-              onChange={(e) => setCashier(Number(e[0]))}
-              placeholder={""} // className="w-full"
-              className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
-            />
-          </div>
+          {(user?.role === USER_ROLES.SUPER_ADMIN ||
+            user?.role === USER_ROLES.ADMIN) && (
+            <div className="">
+              <Select
+                label="Cashier"
+                value={cashier !== null ? [cashier.toString()] : []}
+                options={users.map((user) => ({
+                  id: user.id.toString(),
+                  name: user.username,
+                }))}
+                onChange={(e) => setCashier(Number(e[0]))}
+                placeholder={""} // className="w-full"
+                className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
+              />
+            </div>
+          )}
           {/* 
           <div className="ml-auto flex gap-3">
             <button

@@ -46,6 +46,7 @@ import OddsButton from "@/components/buttons/OddsButton";
 import { BET_TYPES_ENUM, MARKET_SECTION, USER_ROLES } from "@/data/enums/enum";
 import { useNavigate } from "react-router-dom";
 import { OVERVIEW } from "@/data/routes/routes";
+import { FixturesSkeletonCard } from "@/components/skeletons/OutComesSkeleton";
 
 const FixtureDisplay = forwardRef<
   HTMLDivElement,
@@ -140,73 +141,12 @@ const FixtureDisplay = forwardRef<
               ))}
             </div>
           ))}
-          <div className="col-span-1 text-center">+</div>
+          <div className="col-span-1 text-sm text-center">+</div>
         </div>
-        {is_loading && (
-          <div
-            className={`divide-y ${sportsPageClasses["card-border"]} max-h-[84vh] overflow-y-auto `}
-          >
-            {[...Array(1)].map((_, groupIndex) => (
-              <div key={groupIndex}>
-                <div
-                  className={`${sportsPageClasses["date-separator-bg"]} px-6 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
-                >
-                  <div
-                    className={`h-4 ${sportsPageClasses["skeleton-secondary"]} rounded animate-pulse w-32`}
-                  ></div>
-                </div>
-                {[...Array(3)].map((_, gameIndex) => (
-                  <div
-                    key={gameIndex}
-                    className="grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 px-2 py-4 border-l-4 border-transparent animate-pulse"
-                  >
-                    {/* Time Skeleton */}
-                    <div
-                      className={`col-span-2 ${sportsPageClasses["time-border"]} border-r flex flex-col items-start justify-center`}
-                    >
-                      <div
-                        className={`h-4 ${sportsPageClasses["skeleton-bg"]} rounded w-12 mb-1 animate-pulse`}
-                      ></div>
-                    </div>
-
-                    {/* Match Info Skeleton */}
-                    <div className="col-span-6 flex flex-col justify-center">
-                      <div
-                        className={`h-3 ${sportsPageClasses["skeleton-bg"]} rounded w-32 mb-2 animate-pulse`}
-                      ></div>
-                      <div
-                        className={`h-4 ${sportsPageClasses["skeleton-bg"]} rounded w-48 animate-pulse`}
-                      ></div>
-                    </div>
-
-                    {/* Dynamic Market Outcomes Skeleton */}
-                    {selectedMarkets.map((market) => (
-                      <div
-                        key={market.marketID}
-                        className="col-span-4 flex items-center justify-center gap-1"
-                      >
-                        {market.outcomes.map((outcome) => (
-                          <div
-                            key={outcome.outcomeID}
-                            className={`h-11 ${sportsPageClasses["skeleton-bg"]} rounded flex-1 animate-pulse`}
-                          ></div>
-                        ))}
-                      </div>
-                    ))}
-
-                    {/* More Button Skeleton */}
-                    <div className="col-span-1 ml-2 px-2 flex items-center justify-center">
-                      <div
-                        className={`h-8 ${sportsPageClasses["skeleton-bg"]} rounded w-12 animate-pulse`}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
+      {is_loading && (
+        <FixturesSkeletonCard selected_markets={selectedMarkets} />
+      )}
       {!is_loading && displayFixtures.length > 0 && (
         <div className="divide-y divide-gray-700 max-h-[70vh] overflow-y-auto overflow-x-hidden">
           {Object.entries(
@@ -247,7 +187,7 @@ const FixtureDisplay = forwardRef<
                 return (
                   <div
                     key={fixture.matchID}
-                    className={`grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 p-2 ${sportsPageClasses["card-hover"]} transition-colors duration-200 cursor-pointer border-l-4 border-transparent`}
+                    className={`grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 p-2 ${sportsPageClasses["card-hover"]} ${classes["item-hover-border-l"]} transition-colors duration-200 cursor-pointer border-l-4 border-transparent`}
                   >
                     {/* Time */}
                     <div
@@ -667,7 +607,8 @@ const LoadBetsPage = () => {
                   <div className="addFormflex items-center gap-2">
                     <button
                       onClick={addForm}
-                      className={`${cashdeskClasses["add-button-bg"]} border ${cashdeskClasses["add-button-border"]} ${cashdeskClasses["add-button-hover"]} text-white font-medium text-[10px] px-3 py-1.5 rounded-full transition`}
+                      disabled={form_data.some((item) => !item.eventId)}
+                      className={`${cashdeskClasses["add-button-bg"]} border ${cashdeskClasses["add-button-border"]} ${cashdeskClasses["add-button-hover"]} text-white font-medium text-[10px] px-3 py-1.5 rounded-full transition disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                       Add Another
                     </button>
@@ -808,19 +749,19 @@ const LoadBetsPage = () => {
                         num_select_placeholder={"NGN"}
                       />
                       {isConfirming ? (
-                        <div className="grid grid-cols-2 gap-1">
+                        <div className="grid grid-cols-[1fr_2fr] gap-0.5">
                           <button
                             onClick={cancelBet}
                             disabled={isPlacingBet}
-                            className={`${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} border border-red-500 text-white font-semibold p2-2 rounded-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-xs h-9`}
+                            className={`${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} border ${classes["button-cancel-border"]} text-white font-semibold p2-2 rounded-md rounded-r-none transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-xs h-9`}
                           >
-                            Cancel
+                            CANCEL
                           </button>
 
                           <button
                             onClick={placeBet}
                             disabled={isPlacingBet}
-                            className={`${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} border border-emerald-500 ${classes["button-proceed-text"]} font-semibold p-2 rounded-md transition-all duration-200 text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 h-9`}
+                            className={`${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} border ${classes["button-proceed-border"]} ${classes["button-proceed-text"]} rounded-l-none font-semibold p-2 rounded-md transition-all duration-200 text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 h-9`}
                           >
                             {isPlacingBet ? (
                               <>
@@ -828,24 +769,28 @@ const LoadBetsPage = () => {
                                 PLACING...
                               </>
                             ) : (
-                              <>Place Bet</>
+                              <>CONFIRM BET</>
                             )}
                           </button>
                         </div>
                       ) : (
-                        <div className="grid grid-cols-2 gap-1">
+                        <div className="grid grid-cols-[1fr_2fr] gap-0.5">
                           <button
                             onClick={clearBets}
-                            className={`p-2 ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-text"]} border  shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center ${classes["button-cancel-border"]}`}
+                            className={`p-2 ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-text"]} border  shadow-md  text-xs font-semibold rounded-md rounded-r-none h-9 flex justify-center items-center ${classes["button-cancel-border"]}`}
                           >
-                            Clear
+                            CLEAR
                           </button>
                           <button
                             onClick={confirmBet}
                             disabled={!canPlaceBet}
-                            className={`p-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-border"]} ${classes["button-proceed-text"]} border   shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center`}
+                            className={`p-2 ${
+                              canPlaceBet
+                                ? `${classes["button-primary-bg"]} ${classes["button-primary-hover"]} border ${classes["button-primary-border"]} ${classes["button-primary-text"]} shadow-md `
+                                : "bg-gradient-to-r from-slate-700 to-slate-600 border border-slate-600 text-slate-400"
+                            } border rounded-l-none shadow-md  text-xs font-semibold rounded-md h-9 flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed`}
                           >
-                            Proceed
+                            PLACE BET
                           </button>
                         </div>
                       )}

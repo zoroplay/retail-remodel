@@ -191,9 +191,16 @@ const BetsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    bookBet: builder.mutation<{ success: boolean; data: any }, PlaceBetDto>({
+      query: ({ clientId, ...data }) => ({
+        url: AppHelper.buildQueryUrl(BETTING_ACTIONS.BOOK_BET, {}),
+        method: REQUEST_ACTIONS.POST,
+        body: data,
+      }),
+    }),
     placeBet: builder.mutation<{ success: boolean; data: any }, PlaceBetDto>({
       query: ({ clientId, ...data }) => ({
-        url: BETTING_ACTIONS.PLACE_BET.replace(":client_id", String(clientId)),
+        url: AppHelper.buildQueryUrl(BETTING_ACTIONS.PLACE_BET, {}),
         method: REQUEST_ACTIONS.POST,
         body: data,
       }),
@@ -260,10 +267,10 @@ const BetsApiSlice = apiSlice.injectEndpoints({
               categoryID: liveFixture.categoryID,
               categoryName: liveFixture.categoryName,
               event_type: "live",
-              eventTime:
-                liveFixture.eventTime === "--:--"
-                  ? "Live"
-                  : `${liveFixture.eventTime} ⚡`,
+              eventTime: AppHelper.createLiveTimeString(
+                AppHelper.extractCleanTime(liveFixture.eventTime),
+                true
+              ),
               homeScore: liveFixture.homeScore,
               matchStatus: liveFixture.matchStatus,
               status: 0,
@@ -276,7 +283,11 @@ const BetsApiSlice = apiSlice.injectEndpoints({
               awayTeamID: liveFixture.awayTeamID || 0,
               sportName: liveFixture.sportName,
               outcomes: liveFixture.outcomes.map((outcome) => ({
-                marketName: "",
+                marketName:
+                  data.markets.find(
+                    (market) =>
+                      Number(market.marketID) === Number(outcome.marketID)
+                  )?.marketName || "",
                 outcomeName: outcome.outcomeName,
                 specifier: outcome.specifier,
                 outcomeID: outcome.outcomeID,
@@ -286,6 +297,7 @@ const BetsApiSlice = apiSlice.injectEndpoints({
                 active: outcome.active,
                 producerID: outcome.producerID,
                 marketID: outcome.marketID,
+                marketId: outcome.marketId,
                 producerStatus: outcome.producerStatus,
                 displayName: outcome.displayName || outcome.outcomeName,
               })),
@@ -376,6 +388,7 @@ export const {
   useFindBetMutation,
   useFindCouponMutation,
   usePlaceBetMutation,
+  useBookBetMutation,
   useLazyFetchTransactionsQuery,
   useLazyFetchBetListQuery,
   useLazyFetchBetHistoryQuery,

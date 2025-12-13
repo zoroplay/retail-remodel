@@ -164,20 +164,20 @@ const AccountMenu = (props: Props) => {
     <Link
       to={item.href}
       className={`
-        group flex items-center gap-2 px-4 py-2 text-xs transition-all duration-200
-        ${sidebarClasses["tournament-item-hover"]} border-b ${
+        group flex items-center gap-2 px-4 py-2 text-xs border-b  transition-all duration-200
+        ${sidebarClasses["tournament-item-hover"]} ${
         sidebarClasses["tournament-item-border"]
       } ${classes.sports_page["date-separator-text"]}  last:border-b-0
         relative overflow-hidden
         ${
           isActive
-            ? `${sidebarClasses["category-item-bg"]} ${sidebarClasses["category-item-text"]} border-l-4 ${sidebarClasses["category-item-border"]} shadow-md`
+            ? `${sidebarClasses["category-item-bg"]} ${sidebarClasses["category-item-text"]} border-l-4 ${sidebarClasses["category-item-border"]} shadow-md border-y `
             : `${sidebarClasses["tournament-item-text"]} hover:border-l-4 ${classes["item-hover-border-l"]}`
         }
       `}
     >
       {/* Hover Effect Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+      {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" /> */}
 
       <span
         className={`relative z-10 transition-colors duration-200 ${

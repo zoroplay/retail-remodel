@@ -45,9 +45,9 @@ export const environmentConfig = {
   // REFRESH_TOKEN: getEnvironmentVariable(ENVIRONMENT_VARIABLES.REFRESH_TOKEN),
   // CLIENT_ID: "10",
   CLIENT_ID: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID),
-  FRONTEND_CLIENT_ID: getEnvironmentVariable(
-    ENVIRONMENT_VARIABLES.FRONTEND_CLIENT_ID
-  ),
+  FRONTEND_CLIENT_ID:
+    getEnvironmentVariable(ENVIRONMENT_VARIABLES.FRONTEND_CLIENT_ID) ||
+    getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID),
   BASE_URL: getEnvironmentVariable(ENVIRONMENT_VARIABLES.BASE_URL),
   FRONTEND_URL: getEnvironmentVariable(ENVIRONMENT_VARIABLES.FRONTEND_URL),
   XPRESS_LAUNCH_URL: getEnvironmentVariable(

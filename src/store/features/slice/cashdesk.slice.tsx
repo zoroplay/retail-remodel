@@ -23,6 +23,7 @@ const CashDeskSlice = createSlice({
       );
     },
     addCashDeskItem: (state) => {
+      if (state.form_data.some((item) => !item.eventId)) return;
       state.form_data.push(initialCashDeskFormData);
     },
     clearCashDeskItems: (state) => {

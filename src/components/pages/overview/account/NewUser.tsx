@@ -197,18 +197,21 @@ const NewUser = () => {
 
         {/* Form */}
         <div
-          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border ${pageClasses["card-border"]} p-4`}
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-lg border p-3`}
         >
-          <form onSubmit={submitForm} className="space-y-4">
+          <form
+            onSubmit={submitForm}
+            className="flex flex-col gap-4 justify-start items-start"
+          >
             {/* Personal Information */}
-            <div className="space-y-3">
+            <div className="flex flex-col gap-2 justify-start items-start w-full">
               <h3
                 className={`text-sm font-semibold  border-b ${classes["border"]} pb-2`}
               >
                 Personal Information
               </h3>
 
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 gap-2 w-full">
                 <Input
                   label="First Name"
                   name="firstName"
@@ -275,14 +278,14 @@ const NewUser = () => {
             </div>
 
             {/* Contact Information */}
-            <div className="space-y-3">
+            <div className="flex flex-col gap-2 justify-start items-start w-full">
               <h3
                 className={`text-sm font-semibold  border-b ${classes["border"]} pb-2`}
               >
                 Contact Information
               </h3>
 
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 gap-2 w-full">
                 <Input
                   label="Email"
                   name="email"
@@ -330,14 +333,14 @@ const NewUser = () => {
             </div>
 
             {/* Account Information */}
-            <div className="space-y-3">
+            <div className="flex flex-col gap-2 justify-start items-start w-full">
               <h3
                 className={`text-sm font-semibold  border-b ${classes["border"]} pb-2`}
               >
                 Account Information
               </h3>
 
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 gap-2 w-full">
                 <Input
                   label="Username"
                   name="username"
@@ -403,7 +406,7 @@ const NewUser = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-end gap-2 pt-4">
+            <div className="flex items-center w-full justify-end gap-2 pt-4">
               <button
                 type="button"
                 onClick={() => navigate(-1)}

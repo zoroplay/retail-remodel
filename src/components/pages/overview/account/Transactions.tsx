@@ -17,6 +17,7 @@ import PaginatedTable from "@/components/common/PaginatedTable";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
 import { useAppSelector } from "@/hooks/useAppDispatch";
 import { useGetAgentUsersQuery } from "@/store/services/user.service";
+import { USER_ROLES } from "@/data/enums/enum";
 
 interface Transaction {
   id: string;
@@ -135,7 +136,7 @@ const TransactionsPage = () => {
     >
       {/* Filters and Actions Section - Static */}
       <div
-        className={`p-2 ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  border  rounded-lg`}
+        className={`p-2 ${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} border rounded-lg`}
       >
         {/* Transaction Filters */}
         <div className="flex gap-2">
@@ -201,19 +202,23 @@ const TransactionsPage = () => {
                     placeholder="DD/MM/YYYY"
                   />
                 </div>
-                <div className="">
-                  <Select
-                    label="Cashier"
-                    value={cashier !== null ? [cashier.toString()] : []}
-                    options={users.map((user) => ({
-                      id: user.id.toString(),
-                      name: user.username,
-                    }))}
-                    onChange={(e) => setCashier(Number(e[0]))}
-                    placeholder={""} // className="w-full"
-                    className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
-                  />
-                </div>
+                {(user?.role === USER_ROLES.SUPER_ADMIN ||
+                  user?.role === USER_ROLES.ADMIN) && (
+                  <div className="">
+                    <Select
+                      label="Cashier"
+                      value={cashier !== null ? [cashier.toString()] : []}
+                      options={users.map((user) => ({
+                        id: user.id.toString(),
+                        name: user.username,
+                      }))}
+                      onChange={(e) => setCashier(Number(e[0]))}
+                      placeholder={""} // className="w-full"
+                      className={`w-full border rounded-lg px-3 py-2 placeholder-slate-400 transition-all disabled:opacity-50`}
+                    />
+                  </div>
+                )}
+
                 <div className="flex flex-row items-center justify-center gap-4 h-full">
                   <button
                     type="button"

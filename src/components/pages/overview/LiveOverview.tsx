@@ -1,6 +1,7 @@
 "use client";
 import OddsButton from "@/components/buttons/OddsButton";
 import SwitchInput from "@/components/inputs/SwitchInput";
+import { FixturesSkeletonCard } from "@/components/skeletons/OutComesSkeleton";
 import { getClientTheme } from "@/config/theme.config";
 import { MARKET_SECTION } from "@/data/enums/enum";
 import { Fixture } from "@/data/types/betting.types";
@@ -52,69 +53,20 @@ interface SelectedMarket {
 export default function LiveOverviewScreen({
   sportId: propSportId,
 }: OverviewScreenProps = {}) {
-  const [searchParams] = useSearchParams();
-  const location = useLocation();
   const { tournament_details } = useAppSelector((state) => state.app);
   const { user } = useAppSelector((state) => state.user);
   const live_fixtures = useAppSelector(selectLiveFixtures);
   const dispatch = useAppDispatch();
   const { openModal } = useModal();
-  const params = useParams();
-  const sport_id = params.sport_id?.replace("sport_", "");
   const { classes } = getClientTheme();
   const sportsPageClasses = classes.sports_page;
-
-  // State for selected sport filter
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
-
-  const { hasLiveGamesWithTime } = useLiveTimeIncrement(1000); //
   const {
     subscribeToLiveOdds,
     subscribeToLiveBetStop,
     subscribeToLiveFixtureChange,
   } = useLiveMqtt();
   const { selected_bets, toggleBet } = useBetting();
-
-  const { data: data_to_bets, isLoading: is_top_bets_loading } =
-    useTopBetsQuery();
-  const top_bets = Array.isArray(data_to_bets?.data) ? data_to_bets.data : [];
-  const top_bet = top_bets.find(
-    (bet) => bet?.sportName.toLowerCase() === "soccer"
-  );
-  const tournamentId = useMemo(
-    () =>
-      String(
-        !sport_id
-          ? top_bet?.tournamentID
-          : tournament_details?.tournament_id || top_bet?.tournamentID || ""
-      ),
-    [tournament_details?.tournament_id, top_bet?.tournamentID]
-  );
-
-  const sportId = useMemo(
-    () =>
-      String(
-        !sport_id
-          ? top_bet?.sportID
-          : tournament_details?.sport_id ?? top_bet?.sportID ?? ""
-      ),
-    [tournament_details?.sport_id, top_bet?.sportID]
-  );
-
-  const {
-    data: sports_data,
-    // isLoading: fixturesLoading,
-    // refetch,
-    // status: fixturesStatus,
-  } = useSportsQuery(
-    {
-      sport_id: String(sport_id ?? 1),
-    },
-    {
-      skip: !!tournament_details.query,
-    }
-  );
-
   const {
     data: liveData,
     isLoading: liveLoading,
@@ -130,8 +82,6 @@ export default function LiveOverviewScreen({
       skip: !!tournament_details.query,
     }
   );
-
-  // Get markets by sport from the live data response
   const marketsBySport = useMemo(() => {
     if (!liveData?.markets) return {};
 
@@ -200,32 +150,22 @@ export default function LiveOverviewScreen({
     }
   }, [tournament_details.query, liveStatus, liveRefetch]);
 
-  // Set up 1-minute polling for live games
   useEffect(() => {
     const pollingInterval = setInterval(() => {
-      safeRefetchLive(); // Refetch live games
-    }, 60000); // 1 minute
+      safeRefetchLive();
+    }, 60000);
 
-    // Cleanup interval on unmount
     return () => {
       clearInterval(pollingInterval);
     };
   }, [safeRefetchLive]);
 
-  // Set up MQTT subscriptions for real-time updates
   useEffect(() => {
-    // Subscribe to live odds changes
     const unsubscribeLiveOdds = subscribeToLiveOdds(handleLiveOddsChange);
-
-    // Subscribe to live bet stops
     const unsubscribeLiveBetStop = subscribeToLiveBetStop(handleLiveBetStop);
-
-    // Subscribe to live fixture changes
     const unsubscribeLiveFixtureChange = subscribeToLiveFixtureChange(
       handleLiveFixtureChange
     );
-
-    // Cleanup subscriptions on unmount
     return () => {
       unsubscribeLiveOdds();
       unsubscribeLiveBetStop();
@@ -237,46 +177,9 @@ export default function LiveOverviewScreen({
     subscribeToLiveFixtureChange,
   ]);
 
-  // Process live data when it comes in and store in slice
-  useEffect(() => {
-    if (liveData?.fixtures) {
-      liveData.fixtures.forEach((liveFixture: SportsHighlightFixture) => {
-        // Check if it's a valid time format for live games
-        const cleanTime = AppHelper.extractCleanTime(liveFixture.eventTime);
-        if (AppHelper.isValidLiveTime(cleanTime)) {
-          // Store in live games slice for time increment
-          dispatch(
-            addLiveFixture({
-              ...liveFixture,
-              event_type: "live" as const,
-              status: 0,
-              eventTime: AppHelper.createLiveTimeString(cleanTime, true),
-              competitor1: "",
-              competitor2: "",
-              outcomes: liveFixture.outcomes.map((outcome) => ({
-                ...outcome,
-                marketId: outcome.marketID || outcome.marketId,
-                marketName: "", // SportsHighlightOutcome doesn't have marketName
-                displayName: outcome.displayName || outcome.outcomeName, // Ensure displayName is always present
-                active:
-                  typeof outcome.active === "boolean"
-                    ? outcome.active
-                      ? 1
-                      : 0
-                    : outcome.active,
-              })),
-            })
-          );
-        }
-      });
-    }
-  }, [liveData, dispatch]);
-
-  // Only display live fixtures
   const displayFixtures = live_fixtures;
   const isLoading = liveLoading;
 
-  // Helper function to get outcomes for a specific market from a fixture
   const getMarketOutcomes = (fixture: any, marketConfig: SelectedMarket) => {
     return marketConfig.outcomes
       .map((expectedOutcome: any) => {
@@ -287,7 +190,7 @@ export default function LiveOverviewScreen({
               expectedOutcome.outcomeID.toString()
         );
       })
-      .filter(Boolean); // Remove undefined outcomes
+      .filter(Boolean);
   };
 
   const handleMorePress = useCallback(
@@ -405,69 +308,8 @@ export default function LiveOverviewScreen({
         <div
           className={`${sportsPageClasses["card-bg"]} border ${sportsPageClasses["card-border"]} shadow-2xl overflow-hidden rounded-lg`}
         >
-          {(isLoading || is_top_bets_loading) && (
-            <div
-              className={`divide-y ${sportsPageClasses["card-border"]} max-h-[84vh] overflow-y-auto `}
-            >
-              {[...Array(3)].map((_, groupIndex) => (
-                <div key={groupIndex}>
-                  <div
-                    className={`${sportsPageClasses["date-separator-bg"]} px-6 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
-                  >
-                    <div
-                      className={`h-4  ${classes["skeleton-bg"]} rounded animate-pulse w-32`}
-                    ></div>
-                  </div>
-                  {[...Array(4)].map((_, gameIndex) => (
-                    <div
-                      key={gameIndex}
-                      className="grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 px-2 py-4 border-l-4 border-transparent animate-pulse"
-                    >
-                      {/* Time Skeleton */}
-                      <div
-                        className={`col-span-2 ${sportsPageClasses["time-border"]} border-r flex flex-col items-start justify-center`}
-                      >
-                        <div
-                          className={`h-4  ${classes["skeleton-bg"]} rounded w-12 mb-1 animate-pulse`}
-                        ></div>
-                      </div>
-
-                      {/* Match Info Skeleton */}
-                      <div className="col-span-6 flex flex-col justify-center">
-                        <div
-                          className={`h-3  ${classes["skeleton-bg"]} rounded w-32 mb-2 animate-pulse`}
-                        ></div>
-                        <div
-                          className={`h-4 ${classes["skeleton-bg"]} rounded w-48 animate-pulse`}
-                        ></div>
-                      </div>
-
-                      {/* Dynamic Market Outcomes Skeleton */}
-                      {defaultMarkets.map((market: SelectedMarket) => (
-                        <div
-                          key={market.marketID}
-                          className="col-span-4 flex items-center justify-center gap-1"
-                        >
-                          {market.outcomes.map((outcome: MarketOutcome) => (
-                            <div
-                              key={outcome.outcomeID}
-                              className={`h-11 ${classes["skeleton-bg"]} rounded flex-1 animate-pulse`}
-                            ></div>
-                          ))}
-                        </div>
-                      ))}
-
-                      {/* More Button Skeleton */}
-                      <div className="col-span-1 ml-2 px-2 flex items-center justify-center">
-                        <div
-                          className={`h-8 ${classes["skeleton-bg"]} rounded w-12 animate-pulse`}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
+          {isLoading && (
+            <FixturesSkeletonCard selected_markets={defaultMarkets} />
           )}
 
           {liveError && (
@@ -485,25 +327,23 @@ export default function LiveOverviewScreen({
             </div>
           )}
 
-          {!isLoading &&
-            !is_top_bets_loading &&
-            displayFixtures.length === 0 && (
-              <div className={`flex-1 justify-center items-center p-4`}>
-                <p className={`${sportsPageClasses["empty-text"]} text-lg`}>
-                  No live games available
-                </p>
-                <p
-                  className={`${sportsPageClasses["empty-secondary"]} text-sm mt-2`}
-                >
-                  Live data:{" "}
-                  {liveData
-                    ? `${liveData.fixtures?.length || 0} fixtures`
-                    : "No data"}
-                </p>
-              </div>
-            )}
+          {!isLoading && displayFixtures.length === 0 && (
+            <div className={`flex-1 justify-center items-center p-4`}>
+              <p className={`${sportsPageClasses["empty-text"]} text-lg`}>
+                No live games available
+              </p>
+              <p
+                className={`${sportsPageClasses["empty-secondary"]} text-sm mt-2`}
+              >
+                Live data:{" "}
+                {displayFixtures
+                  ? `${displayFixtures?.length || 0} fixtures`
+                  : "No data"}
+              </p>
+            </div>
+          )}
 
-          {!isLoading && !is_top_bets_loading && displayFixtures.length > 0 && (
+          {!isLoading && displayFixtures.length > 0 && (
             <div
               className={`${sportsPageClasses["header-bg"]} border-b ${sportsPageClasses["header-border"]} flex gap-2 flex-wrap`}
             >
@@ -536,7 +376,7 @@ export default function LiveOverviewScreen({
             </div>
           )}
 
-          {!isLoading && !is_top_bets_loading && displayFixtures.length > 0 && (
+          {!isLoading && displayFixtures.length > 0 && (
             <div className="max-h-[80vh] overflow-y-auto overflow-x-hidden space-y-6">
               {Object.entries(
                 displayFixtures

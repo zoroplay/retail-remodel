@@ -535,7 +535,7 @@ const OnlineDepositPage = () => {
                   )}
 
                   {/* Action Buttons */}
-                  <div className="flex gap-2">
+                  <div className="flex gap-0.5">
                     <button
                       type="submit"
                       disabled={
@@ -544,7 +544,7 @@ const OnlineDepositPage = () => {
                         !amount ||
                         Number(amount) <= 0
                       }
-                      className={`flex-1 h-9 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} text-xs font-medium rounded-md transition-all shadow-md py-2 px-4  duration-200 flex items-center justify-center gap-2 `}
+                      className={`flex-1 h-9 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} text-xs font-medium rounded-md rounded-r-none h-9 transition-all shadow-md py-2 px-4  duration-200 flex items-center justify-center gap-2 `}
                     >
                       {isLoading ? (
                         <>
@@ -568,7 +568,7 @@ const OnlineDepositPage = () => {
                         setShowDropdown(false);
                         setErrMessage("");
                       }}
-                      className={`px-4 h-9 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow text-xs rounded-lg transition-colors duration-200`}
+                      className={`px-4 h-9 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} rounded-l-none h-9 border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow text-xs rounded-lg transition-colors duration-200`}
                     >
                       Reset
                     </button>

@@ -43,8 +43,6 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
   className,
   bodyClassName = `shadow-lg border rounded-md ${classes.sports_page["card-border"]}`,
 }) => {
-  console.log("pagination", pagination);
-
   let base_styles = "";
   if (className) {
     base_styles += ` ${className}`;
@@ -114,7 +112,10 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
             <div
               className={`w-14 h-14 ${classes["bg-secondary"]} rounded-full flex items-center justify-center`}
             >
-              <FileText size={26} className={pageClasses["row-text"]} />
+              <FileText
+                size={26}
+                className={pageClasses["column-header-text"]}
+              />
             </div>
             <div className="text-center">
               <p

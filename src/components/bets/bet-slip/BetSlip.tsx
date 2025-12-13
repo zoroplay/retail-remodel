@@ -9,8 +9,7 @@ import { showToast } from "../../tools/toast";
 import SwitchInput from "../../inputs/SwitchInput";
 import { BET_TYPES_ENUM } from "@/data/enums/enum";
 import { FindBetResponse } from "@/store/services/data/betting.types";
-import { Split, X, Check } from "lucide-react";
-import Input from "../../inputs/Input";
+import { X, Check, Book } from "lucide-react";
 import Spinner from "../../layouts/Spinner";
 import Combined from "../Combined";
 import Multiple from "../Multiple";
@@ -18,7 +17,6 @@ import { useBetting } from "@/hooks/useBetting";
 import { usePlaceBet } from "@/hooks/usePlaceBet";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { getClientTheme } from "@/config/theme.config";
-import { updateBetType as updateBetTypeAction } from "@/store/features/slice/betting.slice";
 
 type Props = {};
 
@@ -44,8 +42,10 @@ const BetSlip = (props: Props) => {
   const {
     isConfirming,
     isPlacingBet,
+    is_booking,
     placeBet,
     confirmBet,
+    bookBet,
     cancelBet,
     canPlaceBet,
   } = usePlaceBet();
@@ -186,10 +186,10 @@ const BetSlip = (props: Props) => {
               ]}
               selected={activeTab}
               onChange={(i) => setActiveTab(i)}
-              rounded="rounded-d"
+              rounded="rounded-md"
               background={`${betslipClasses["tab-bg"]} ${betslipClasses["tab-border"]} !p-[2px] border shadow-sm`}
               thumb_background={`${betslipClasses["tab-bg"]}`}
-              thumb_color={`${betslipClasses["tab-active-bg"]} ${betslipClasses["tab-active-text"]} transition-all duration-300`}
+              thumb_color={`${betslipClasses["tab-active-bg"]} ${betslipClasses["tab-active-text"]} transition-all duration-300 !rounded-[4px]`}
               text_color={`${betslipClasses["tab-inactive-text"]} !text-[11px] font-medium`}
               selected_text_color={`${betslipClasses["tab-active-text"]} !text-[11px] font-medium`}
             />
@@ -323,10 +323,10 @@ const BetSlip = (props: Props) => {
                       : BET_TYPES_ENUM.SPLIT
                   )
                 }
-                rounded="rounded-d"
+                rounded="rounded-md"
                 background={`${betslipClasses["tab-bg"]} ${betslipClasses["tab-border"]} !p-[2px] border shadow-sm`}
                 thumb_background={`${betslipClasses["tab-bg"]}`}
-                thumb_color={`${betslipClasses["tab-active-bg"]} ${betslipClasses["tab-active-text"]} transition-all duration-300`}
+                thumb_color={`${betslipClasses["tab-active-bg"]} ${betslipClasses["tab-active-text"]} transition-all duration-300 !rounded-[4px]`}
                 text_color={`${betslipClasses["tab-inactive-text"]} !text-[11px] font-medium`}
                 selected_text_color={`${betslipClasses["tab-active-text"]} !text-[11px] font-medium`}
               />
@@ -379,11 +379,11 @@ const BetSlip = (props: Props) => {
           {/* Action Buttons */}
           <div className="space-y-2">
             {isConfirming ? (
-              <div className="grid grid-cols-2 gap-1">
+              <div className="grid grid-cols-[1fr_2fr] gap-0.5">
                 <button
                   onClick={cancelBet}
                   disabled={isPlacingBet}
-                  className={`${betslipClasses["button-cancel-bg"]} ${betslipClasses["button-cancel-hover"]} border border-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm`}
+                  className={`${betslipClasses["button-cancel-bg"]} ${betslipClasses["button-cancel-hover"]} border border-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-xs rounded-r-none h-9`}
                 >
                   <X size={16} />
                   CANCEL
@@ -392,7 +392,7 @@ const BetSlip = (props: Props) => {
                 <button
                   onClick={placeBet}
                   disabled={isPlacingBet}
-                  className={`${betslipClasses["button-confirm-bg"]} ${betslipClasses["button-confirm-hover"]} border border-emerald-500 ${betslipClasses["button-place-text"]} font-semibold py-2 px-4 rounded-lg transition-all duration-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1`}
+                  className={`${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} border ${classes["button-proceed-border"]} ${classes["button-proceed-text"]} font-semibold py-2 px-4 rounded-lg transition-all duration-200 text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 rounded-l-none h-9`}
                 >
                   {isPlacingBet ? (
                     <>
@@ -408,18 +408,41 @@ const BetSlip = (props: Props) => {
                 </button>
               </div>
             ) : (
-              <button
-                onClick={confirmBet}
-                disabled={!canPlaceBet}
-                className={`w-full font-semibold py-2 px-4 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm duration-300 ${
-                  canPlaceBet
-                    ? `${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} border border-emerald-500 ${classes["button-proceed-text"]} shadow-md `
-                    : "bg-gradient-to-r from-slate-700 to-slate-600 border border-slate-600 text-slate-400"
-                }`}
-              >
-                <Check size={20} />
-                <span>PLACE BET</span>
-              </button>
+              <div className="grid grid-cols-[1fr_2fr] gap-0.5">
+                <button
+                  onClick={bookBet}
+                  disabled={!canPlaceBet}
+                  className={`w-full h-9 rounded-r-none font-semibold py-2 px-4 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-xs duration-300 ${
+                    canPlaceBet
+                      ? `${classes["button-tertiary-bg"]} ${classes["button-tertiary-hover"]} border ${classes["button-tertiary-border"]} ${classes["button-tertiary-text"]} shadow-md `
+                      : "bg-gradient-to-r from-slate-700 to-slate-600 border border-slate-600 text-slate-400"
+                  }`}
+                >
+                  {is_booking ? (
+                    <>
+                      <Spinner />
+                      BOOKING...
+                    </>
+                  ) : (
+                    <>
+                      <Book size={16} />
+                      <span>BOOK BET</span>
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={confirmBet}
+                  disabled={!canPlaceBet}
+                  className={`w-full h-9 font-semibold py-2 px-4 rounded-l-none rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-xs duration-300 ${
+                    canPlaceBet
+                      ? `${classes["button-primary-bg"]} ${classes["button-primary-hover"]} border ${classes["button-primary-border"]} ${classes["button-primary-text"]} shadow-md `
+                      : "bg-gradient-to-r from-slate-700 to-slate-600 border border-slate-600 text-slate-400"
+                  }`}
+                >
+                  <Check size={16} />
+                  <span>PLACE BET</span>
+                </button>
+              </div>
             )}
           </div>
         </div>

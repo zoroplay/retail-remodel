@@ -6,7 +6,7 @@ import { ChevronRight } from "lucide-react";
 import { useSearchParams, useLocation, useParams } from "react-router-dom";
 import { getClientTheme } from "@/config/theme.config";
 import { MARKET_SECTION, DISPLAY_NAME_ENUM } from "@/data/enums/enum";
-import { Outcome, Fixture } from "@/data/types/betting.types";
+import { Outcome, Fixture, SelectedMarket } from "@/data/types/betting.types";
 import { useAppSelector, useAppDispatch } from "@/hooks/useAppDispatch";
 import { useBetting } from "@/hooks/useBetting";
 import { useModal } from "@/hooks/useModal";
@@ -15,48 +15,21 @@ import {
   setSelectedGame,
   updateFixtureOutcome,
 } from "@/store/features/slice/fixtures.slice";
-import { LiveFixture } from "@/store/features/slice/live-games.slice";
 import { MODAL_COMPONENTS } from "@/store/features/types";
 import { PreMatchFixture } from "@/store/features/types/fixtures.types";
 import {
   useTopBetsQuery,
   useFixturesQuery,
-  useSportsQuery,
-  useSportsHighlightLiveQuery,
 } from "@/store/services/bets.service";
+import { FixturesSkeletonCard } from "@/components/skeletons/OutComesSkeleton";
 
 interface OverviewScreenProps {
   sportId?: string;
 }
 
-interface MarketOutcome {
-  outcomeID: number;
-  outcomeName: string;
-}
-
-interface SelectedMarket {
-  marketID: string;
-  marketName: string;
-  specifier: string;
-  outcomes: MarketOutcome[];
-}
-
 export default function OverviewScreen({
   sportId: propSportId,
 }: OverviewScreenProps = {}) {
-  const [searchParams] = useSearchParams();
-  const location = useLocation();
-
-  // Dynamic market configuration based on selected markets
-  // This should ideally come from API response or props
-  //
-  // Example configurations:
-  // 1. Only 1X2: [{ marketID: "1", marketName: "1X2", ... }]
-  // 2. Only Double Chance: [{ marketID: "10", marketName: "Double Chance", ... }]
-  // 3. 1X2 + Over/Under: [1X2_config, over_under_config]
-  // 4. Any combination based on selectedMarkets from API
-
-  // Use prop sportId if provided, otherwise parse from route/search params
   const { tournament_details } = useAppSelector((state) => state.app);
   const { app_refresh } = useAppSelector((state) => state.app);
   const { fixtures = [] } = useAppSelector((state) => state.fixtures);
@@ -70,9 +43,7 @@ export default function OverviewScreen({
 
   const { subscribeToPrematchOdds, subscribeToPrematchBetStop } =
     usePrematchMqtt();
-
-  // Use betting hook
-  const { selected_bets, toggleBet } = useBetting();
+  const { selected_bets } = useBetting();
 
   const { data: data_to_bets, isLoading: is_top_bets_loading } =
     useTopBetsQuery();
@@ -124,20 +95,6 @@ export default function OverviewScreen({
       skip: !!tournament_details.query,
     }
   );
-  const {
-    data: sports_data,
-    // isLoading: fixturesLoading,
-    // refetch,
-    // status: fixturesStatus,
-  } = useSportsQuery(
-    {
-      sport_id: String(sport_id ?? 1),
-    },
-    {
-      skip: !!tournament_details.query,
-    }
-  );
-  // Filter selected markets based on sport ID
   let selectedMarkets: SelectedMarket[] = Array.isArray(
     fixturesData?.selectedMarket
   )
@@ -152,23 +109,9 @@ export default function OverviewScreen({
         market.marketID === String(MARKET_SECTION.DOUBLE_CHANCE) // Double Chance
     );
   }
-
-  // Live sports highlight query
-  const {
-    data: liveData,
-    isLoading: liveLoading,
-    error: liveError,
-    refetch: liveRefetch,
-    status: liveStatus,
-  } = useSportsHighlightLiveQuery(
-    {
-      sport_id: "0", // 0 for all sports
-      markets: "1,10,18", // 1X2, DC, Over/Under markets
-    },
-    {
-      skip: !!tournament_details.query,
-    }
-  );
+  if (selectedMarkets.length > 2) {
+    selectedMarkets = selectedMarkets.slice(0, 2);
+  }
 
   // Safe refetch helpers
   const safeRefetchFixtures = useCallback(() => {
@@ -185,48 +128,18 @@ export default function OverviewScreen({
     }
   }, [tournament_details.query, fixturesStatus, refetch]);
 
-  const safeRefetchLive = useCallback(() => {
-    if (
-      !tournament_details.query &&
-      liveStatus !== "uninitialized" &&
-      liveRefetch
-    ) {
-      try {
-        return liveRefetch();
-      } catch (error) {
-        console.warn("Failed to refetch live games:", error);
-      }
-    }
-  }, [tournament_details.query, liveStatus, liveRefetch]);
-
   useEffect(() => {
-    // Refetch fixtures when tournament changes
     if (tournament_details.tournament_id) {
       safeRefetchFixtures();
     }
   }, [tournament_details.tournament_id]);
 
-  // Refetch fixtures when app_refresh changes
   useEffect(() => {
     if (!tournament_details.query && refetch) {
       refetch();
     }
   }, [app_refresh, tournament_details.query, refetch]);
 
-  // Set up 1-minute polling for both live and pre-match games
-  // useEffect(() => {
-  //   const pollingInterval = setInterval(() => {
-  //     safeRefetchFixtures(); // Refetch pre-match games
-  //     safeRefetchLive(); // Refetch live games
-  //   }, 60000); // 1 minute
-
-  //   // Cleanup interval on unmount
-  //   return () => {
-  //     clearInterval(pollingInterval);
-  //   };
-  // }, [safeRefetchFixtures, safeRefetchLive]);
-
-  // Set up MQTT subscriptions for real-time updates
   useEffect(() => {
     const unsubscribePrematchOdds = subscribeToPrematchOdds(
       handlePrematchOddsChange
@@ -243,7 +156,6 @@ export default function OverviewScreen({
   const displayFixtures = fixtures;
   const isLoading = fixturesLoading;
 
-  // Helper function to get outcomes for a specific market from a fixture
   const getMarketOutcomes = (fixture: any, marketConfig: SelectedMarket) => {
     return marketConfig.outcomes
       .map((expectedOutcome: any) => {
@@ -268,28 +180,6 @@ export default function OverviewScreen({
     },
     [openModal]
   );
-
-  const handleOddsPress = ({
-    game_id,
-    odds_type,
-    odds_value,
-  }: {
-    game_id: string;
-    odds_type: DISPLAY_NAME_ENUM;
-    odds_value: number;
-  }) => {
-    const game = displayFixtures.find((g) => g.matchID === game_id);
-    if (!game) return;
-    const outcome = game.outcomes.find((o) => o.displayName === odds_type);
-    toggleBet({
-      fixture_data: game as PreMatchFixture | LiveFixture,
-      outcome_data: outcome! as Outcome,
-      element_id: game_id,
-      bet_type: "Single",
-      global_vars: {},
-      bonus_list: [],
-    });
-  };
 
   const handlePrematchOddsChange = (data: any) => {
     const matchId = data.event_id || data.match_id;
@@ -361,68 +251,7 @@ export default function OverviewScreen({
           </div>
 
           {(isLoading || is_top_bets_loading) && (
-            <div
-              className={`divide-y ${sportsPageClasses["card-border"]} max-h-[84vh] overflow-y-auto `}
-            >
-              {[...Array(3)].map((_, groupIndex) => (
-                <div key={groupIndex}>
-                  <div
-                    className={`${sportsPageClasses["date-separator-bg"]} px-6 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
-                  >
-                    <div
-                      className={`h-4 $ ${classes["skeleton-bg"]} rounded animate-pulse w-32`}
-                    ></div>
-                  </div>
-                  {[...Array(4)].map((_, gameIndex) => (
-                    <div
-                      key={gameIndex}
-                      className="grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 px-2 py-4 border-l-4 border-transparent animate-pulse"
-                    >
-                      {/* Time Skeleton */}
-                      <div
-                        className={`col-span-2 ${sportsPageClasses["time-border"]} border-r flex flex-col items-start justify-center`}
-                      >
-                        <div
-                          className={`h-4  ${classes["skeleton-bg"]} rounded w-12 mb-1 animate-pulse`}
-                        ></div>
-                      </div>
-
-                      {/* Match Info Skeleton */}
-                      <div className="col-span-6 flex flex-col justify-center">
-                        <div
-                          className={`h-3 ${classes["skeleton-bg"]} rounded w-32 mb-2 animate-pulse`}
-                        ></div>
-                        <div
-                          className={`h-4 ${classes["skeleton-bg"]} rounded w-48 animate-pulse`}
-                        ></div>
-                      </div>
-
-                      {/* Dynamic Market Outcomes Skeleton */}
-                      {selectedMarkets.map((market) => (
-                        <div
-                          key={market.marketID}
-                          className="col-span-4 flex items-center justify-center gap-1"
-                        >
-                          {market.outcomes.map((outcome) => (
-                            <div
-                              key={outcome.outcomeID}
-                              className={`h-11  ${classes["skeleton-bg"]} rounded flex-1 animate-pulse`}
-                            ></div>
-                          ))}
-                        </div>
-                      ))}
-
-                      {/* More Button Skeleton */}
-                      <div className="col-span-1 ml-2 px-2 flex items-center justify-center">
-                        <div
-                          className={`h-8 ${classes["skeleton-bg"]} rounded w-12 animate-pulse`}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
+            <FixturesSkeletonCard selected_markets={selectedMarkets} />
           )}
 
           {!isLoading &&
@@ -476,7 +305,7 @@ export default function OverviewScreen({
                     return (
                       <div
                         key={fixture.matchID}
-                        className={`grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 p-2 ${sportsPageClasses["card-hover"]} transition-colors duration-200 cursor-pointer border-l-4 border-transparent`}
+                        className={`grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 p-2 ${sportsPageClasses["card-hover"]} transition-colors duration-200 cursor-pointer border-l-4 ${classes["item-hover-border-l"]} border-transparent`}
                       >
                         {/* Time */}
                         <div

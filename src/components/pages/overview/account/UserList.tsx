@@ -216,7 +216,7 @@ const UserList = () => {
           <div
             className={`w-10 h-10 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
           >
-            <Users size={20} className={pageClasses["header-icon-text"]} />
+            <Users size={20} className={`${classes["text-secondary"]}`} />
           </div>
           <div>
             <h1 className={`text-base font-bold`}>User List</h1>
@@ -228,9 +228,9 @@ const UserList = () => {
 
         {/* Filters */}
         <div
-          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  backdrop-blur-sm rounded-lg p-4 border  mb-4`}
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]}  backdrop-blur-sm rounded-lg p-2 border  mb-4`}
         >
-          <div className="grid md:grid-cols-2 gap-3">
+          <div className="grid md:grid-cols-2 gap-2">
             {/* Role Filter */}
             <div>
               <Select

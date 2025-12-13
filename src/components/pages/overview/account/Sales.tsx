@@ -17,6 +17,7 @@ import { useSuperAgentCommissionQuery } from "@/store/services/user.service";
 import PaginatedTable from "@/components/common/PaginatedTable";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
 import SwitchInput from "@/components/inputs/SwitchInput";
+import { USER_ROLES } from "@/data/enums/enum";
 
 interface SalesData {
   channel: string;
@@ -148,7 +149,7 @@ const Sales = () => {
           >
             <ShoppingCart
               size={20}
-              className={pageClasses["header-icon-text"]}
+              className={`${classes["text-secondary"]}`}
             />
           </div>
           <div>
@@ -160,7 +161,7 @@ const Sales = () => {
         </div>
 
         {/* Tabs */}
-        {user?.role === "Shop" && (
+        {user?.role === USER_ROLES.SHOP && (
           <div
             className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-md border ${pageClasses["card-border"]} p-2`}
           >
@@ -201,7 +202,7 @@ const Sales = () => {
 
         {/* Filters */}
         <div
-          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-md border ${pageClasses["card-border"]} p-2`}
+          className={`${classes.sports_page["card-bg"]} ${classes.sports_page["card-border"]} backdrop-blur-sm rounded-md border p-2`}
         >
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-center">
@@ -255,20 +256,18 @@ const Sales = () => {
         {/* Super Agent Commission Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3  gap-2">
           <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-md p-2`}
+            className={`${pageClasses["info-card-bg"]} border ${classes.sports_page["card-border"]} rounded-md p-2`}
           >
             <div className="flex items-center gap-2 mb-2">
               <DollarSign
                 size={16}
-                className={pageClasses["header-icon-text"]}
+                className={`${classes["text-secondary"]}`}
               />
-              <div className={`text-xs ${pageClasses["info-label-text"]}`}>
+              <div className={`text-xs ${classes["text-secondary"]}`}>
                 Total Revenue
               </div>
             </div>
-            <div
-              className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
-            >
+            <div className={`text-sm font-bold `}>
               <CurrencyFormatter
                 amount={totals.totalStake}
                 className={""}
@@ -277,20 +276,15 @@ const Sales = () => {
             </div>
           </div>
           <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-md p-2`}
+            className={`${pageClasses["info-card-bg"]} border ${classes.sports_page["card-border"]} rounded-md p-2`}
           >
             <div className="flex items-center gap-2 mb-2">
-              <BarChart3
-                size={16}
-                className={pageClasses["header-icon-text"]}
-              />
-              <div className={`text-xs ${pageClasses["info-label-text"]}`}>
+              <BarChart3 size={16} className={`${classes["text-secondary"]}`} />
+              <div className={`text-xs ${classes["text-secondary"]}`}>
                 Total Commission
               </div>
             </div>
-            <div
-              className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
-            >
+            <div className={`text-sm font-bold `}>
               <CurrencyFormatter
                 amount={totals.grossProfit}
                 className={""}
@@ -299,20 +293,15 @@ const Sales = () => {
             </div>
           </div>
           <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-md p-2`}
+            className={`${pageClasses["info-card-bg"]} border ${classes.sports_page["card-border"]} rounded-md p-2`}
           >
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign
-                size={16}
-                className={pageClasses["header-icon-text"]}
-              />
-              <div className={`text-xs ${pageClasses["info-label-text"]}`}>
+              <DollarSign size={16} className={classes["text-secondary"]} />
+              <div className={`text-xs ${classes["text-secondary"]}`}>
                 Super Agent Commission
               </div>
             </div>
-            <div
-              className={`text-sm font-bold ${pageClasses["info-value-text"]}`}
-            >
+            <div className={`text-sm font-bold ${classes["text-primary"]}`}>
               <CurrencyFormatter
                 amount={totals.netRevenue}
                 className={""}

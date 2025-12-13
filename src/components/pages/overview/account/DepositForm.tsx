@@ -427,11 +427,11 @@ const DepositForm = () => {
 
               {isLoading && <Spinner />}
               {/* Action Buttons */}
-              <div className="flex gap-2">
+              <div className="flex gap-0.5">
                 <button
                   type="submit"
                   disabled={isLoading || !amount || Number(amount) < minDeposit}
-                  className={`flex-1  disabled:opacity-50 disabled:cursor-not-allowed py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} font-medium rounded-md transition-all shadow-md border py-2 px-4  duration-200 flex items-center justify-center gap-2 text-[11px] `}
+                  className={`flex-1  disabled:opacity-50 disabled:cursor-not-allowed py-2 ${classes["button-proceed-bg"]} ${classes["button-proceed-border"]} ${classes["button-proceed-hover"]} ${classes["button-proceed-text"]} h-9 font-semibold rounded-md rounded-r-none transition-all shadow-md border py-2 px-4  duration-200 flex items-center justify-center gap-2 text-[11px] `}
                 >
                   {isLoading ? (
                     <>
@@ -448,7 +448,7 @@ const DepositForm = () => {
                 <button
                   type="button"
                   onClick={handleGoBack}
-                  className={`px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} border font-medium rounded-md transition-all ${classes["button-secondary-border"]} shadow text-[11px] rounded-lg transition-colors duration-200`}
+                  className={`px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} h-9 border font-medium rounded-md transition-all ${classes["button-secondary-border"]} rounded-l-none shadow text-[11px] rounded-lg transition-colors duration-200`}
                 >
                   Cancel
                 </button>

@@ -11,6 +11,7 @@ import CurrencyFormatter from "../inputs/CurrencyFormatter";
 import { removeCashDeskItem } from "@/store/features/slice/cashdesk.slice";
 import SlipItem from "./bet-slip/SlipItem";
 import { getClientTheme } from "@/config/theme.config";
+import { EmptyBetSlip } from "./Multiple";
 
 interface Combo {
   Grouping: number;
@@ -118,27 +119,7 @@ const Combined: React.FC<CombinedProps> = ({
       {/* Header */}
       <div className={`flex flex-col gap-2 max-h-[24vh] overflow-y-auto`}>
         {selected_bets.length === 0 ? (
-          <div className="py-12 flex flex-col items-center justify-center text-center">
-            <div className="w-14 h-14 bg-slate-700/50 rounded-full flex items-center justify-center mb-4">
-              <Ticket size={24} className="text-slate-400" />
-            </div>
-            <h3
-              className={`${betslipClasses["tab-active-text"]} text-base font-semibold mb-2`}
-            >
-              Empty Betting Slip
-            </h3>
-            <p
-              className={`${betslipClasses["tab-inactive-text"]} text-xs mb-1`}
-            >
-              No selections yet
-            </p>
-            <p
-              className={`${betslipClasses["tab-inactive-text"]} text-[11px] max-w-sm`}
-            >
-              Add games to your betting slip by entering Event ID and Smart Code
-              above
-            </p>
-          </div>
+          <EmptyBetSlip />
         ) : (
           <div className=" ">
             {selected_bets.map((sel, idx: number) => (

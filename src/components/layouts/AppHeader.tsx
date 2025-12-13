@@ -9,10 +9,10 @@ import React, {
 import AppImage from "../inputs/AppImage";
 import { useFetchUserCommissionBalanceQuery } from "../../store/services/user.service";
 import { useAppSelector } from "../../store/hooks/useAppDispatch";
-import { ChevronDown, Loader, LogOut, Menu } from "lucide-react";
+import { Loader, LogOut } from "lucide-react";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { Link, useNavigate } from "react-router-dom";
-import { ACCOUNT, AUTH, OVERVIEW } from "@/data/routes/routes";
+import { Link } from "react-router-dom";
+import { ACCOUNT, OVERVIEW } from "@/data/routes/routes";
 import { useModal } from "@/hooks/useModal";
 import { MODAL_COMPONENTS } from "@/store/features/types";
 import { setThemeByClient } from "@/utils/setThemeByClient";
@@ -27,7 +27,6 @@ import Input from "../inputs/Input";
 
 export const AppHeader: React.FC = ({}) => {
   const { user, refetch_user } = useAppSelector((state) => state.user);
-  const navigate = useNavigate();
   const { handleLogin, handleInputChange, formData, errors, isLoading } =
     useLogin();
   useGetGlobalVariablesQuery();
@@ -59,7 +58,8 @@ export const AppHeader: React.FC = ({}) => {
         href: OVERVIEW.SPORTS,
         current: true,
       },
-      { name: "Live", href: OVERVIEW.LIVE, sub_links: [] },
+      { name: "Live", href: OVERVIEW.LIVE },
+      { name: "Pool Games", href: OVERVIEW.SPORTS_POOL },
       {
         name: "Soccer Print",
         href: `${environmentConfig.BASE_URL}/soccer-print`,
@@ -267,7 +267,7 @@ export const AppHeader: React.FC = ({}) => {
         className={`flex items-center justify-between w-full  relative max-w-[80rem]`}
       >
         <div className="flex items-center justify-between w-full bg gap-4 min-w-0">
-          <div className="p-3">
+          <div className="p-2">
             <AppImage imageKey="logo" style={{ width: 140, height: 32 }} />
           </div>
         </div>
@@ -374,7 +374,7 @@ export const AppHeader: React.FC = ({}) => {
         </div>
       </div>
       <div
-        className={`relative max-w-[60rem] flex gap-2  px-2 py-1 rounded-lg shadow-inner`}
+        className={`relative max-w-[75rem] flex gap-2  px-2 py-1 rounded-lg shadow-inner`}
         data-nav-container
       >
         {/* Moving highlight indicator - only show when a nav item is active */}

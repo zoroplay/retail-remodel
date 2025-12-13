@@ -32,12 +32,12 @@ const LogoutModal = ({ onClose }: Props) => {
       }}
       className="max-w-[425px] !w-[425px] py-2 backdrop-blur-xl border"
       footer={
-        <div className="flex items-center justify-center gap-3 w-full">
+        <div className="flex items-center justify-center gap-1 w-full">
           <button
             type="button"
             onClick={onClose}
             // disabled={isLoading}
-            className={`flex-1  ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-border"]} ${classes["button-secondary-text"]} rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={`flex-1  ${classes["button-secondary-bg"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-border"]} ${classes["button-secondary-text"]} rounded-r-none rounded-md h-9 py-2 px-4 flex items-center justify-center gap-2 text-xs font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             <X size={16} />
             Cancel
@@ -46,7 +46,7 @@ const LogoutModal = ({ onClose }: Props) => {
             onClick={handleLogout}
             // disabled={isLoading}
             type="button"
-            className={`flex-1 ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-border"]} ${classes["button-cancel-text"]} rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 text-sm font-semibold transition-all  disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={`flex-1 ${classes["button-cancel-bg"]} ${classes["button-cancel-hover"]} ${classes["button-cancel-border"]} ${classes["button-cancel-text"]} rounded-l-none rounded-md h-9 py-2 px-4 flex items-center justify-center gap-2 text-xs font-semibold transition-all  disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {/* {isLoading ? (
               <>
@@ -63,14 +63,14 @@ const LogoutModal = ({ onClose }: Props) => {
         </div>
       }
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         {/* Header */}
-        <div className="flex flex-col gap-3 items-center">
-          <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center">
-            <LogOut size={32} className="text-red-400" />
+        <div className="flex flex-col gap-2 items-center">
+          <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center">
+            <LogOut size={24} className="text-red-400" />
           </div>
           <h2 className="text-xl font-bold text-center">Confirm Logout</h2>
-          <p className="text-sm text-gray-400 text-center">
+          <p className={`text-sm ${classes["text-secondary"]} text-center`}>
             Are you sure you want to logout from your account?
           </p>
         </div>

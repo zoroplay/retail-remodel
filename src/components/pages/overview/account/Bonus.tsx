@@ -104,7 +104,7 @@ const Bonus = () => {
             <div
               className={`w-10 h-10 ${pageClasses["header-icon-bg"]} rounded-lg flex items-center justify-center`}
             >
-              <Gift size={20} className={pageClasses["header-icon-text"]} />
+              <Gift size={20} className={`${classes["text-secondary"]}`} />
             </div>
             <div>
               <h1 className={`text-base font-bold `}>Bonus Management</h1>
@@ -116,13 +116,13 @@ const Bonus = () => {
 
           {/* Total Summary */}
           <div
-            className={`${pageClasses["info-card-bg"]} border ${pageClasses["info-card-border"]} rounded-lg px-4 py-2`}
+            className={`${pageClasses["info-card-bg"]} border ${classes.sports_page["card-border"]} rounded-lg px-4 py-2`}
           >
-            <div className={`text-xs ${pageClasses["info-label-text"]} mb-1`}>
+            <div className={`text-xs ${classes["text-secondary"]} mb-1`}>
               Total Bonuses Awarded
             </div>
             <div
-              className={`text-lg font-bold ${pageClasses["header-icon-text"]}`}
+              className={`text-base font-bold ${pageClasses["header-icon-text"]}`}
             >
               <CurrencyFormatter
                 amount={totalBonuses}

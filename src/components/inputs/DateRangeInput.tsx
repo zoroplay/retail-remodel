@@ -52,7 +52,7 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
   border_color = `${classes["input-border"]}`,
   bg_color = classes["input-bg"],
   text_color = classes["input-text"],
-  accent_color = "text-gray-500",
+  accent_color = classes["text-accent"],
   height = "h-[40px]",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -638,26 +638,20 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
 
     return (
       <div
-        className={`w-1/2 p-6 ${bg_color} ${
-          isLeft ? `border-r ${border_color}` : ""
-        }`}
+        className={`w-1/2 p-6 ${isLeft ? `border-r ${classes["border"]}` : ""}`}
       >
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => navigateMonth("prev", isLeft ? "left" : "right")}
-            className={`p-2 ${
-              AppHelper.isDarkColor(bg_color)
-                ? "hover:bg-gray-100"
-                : "hover:bg-gray-400"
-            } rounded-full cursor-pointer`}
+            className={`p-2 ${classes["primary-hover"]} rounded-full cursor-pointer`}
           >
-            <ChevronLeft size={24} className={`${accent_color}`} />
+            <ChevronLeft size={24} className={`${classes["text-secondary"]}`} />
           </button>
           <div className="relative">
             <div
               className={`flex items-center gap-2 cursor-pointer  ${cn(
                 `hover:${border_color}/20`
-              )} ${text_color} px-2 py-1 rounded`}
+              )} ${classes["text-primary"]} px-2 py-1 rounded`}
               onClick={() => {
                 setShowYearDropdown(true);
                 setActiveCalendar(isLeft ? "left" : "right");
@@ -669,7 +663,10 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
               <span className="font-semibold text-base">
                 {format(month, "yyyy")}
               </span>
-              <ChevronDown size={16} className={`${accent_color}`} />
+              <ChevronDown
+                size={16}
+                className={`${classes["text-secondary"]}`}
+              />
             </div>
             {showYearDropdown &&
               activeCalendar === (isLeft ? "left" : "right") && (
@@ -720,11 +717,7 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
           </div>
           <button
             onClick={() => navigateMonth("next", isLeft ? "left" : "right")}
-            className={`p-2 ${
-              AppHelper.isDarkColor(bg_color)
-                ? "hover:bg-gray-100"
-                : "hover:bg-gray-400"
-            }  rounded-full cursor-pointer ${accent_color}`}
+            className={`p-2 ${classes["primary-hover"]}  rounded-full cursor-pointer ${classes["text-secondary"]}`}
           >
             <ChevronRight size={24} />
           </button>
@@ -734,7 +727,7 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
           {weekDays.map((day) => (
             <div
               key={day}
-              className={`text-center text-xs font-medium ${accent_color} py-2`}
+              className={`text-center text-xs font-medium ${classes["text-secondary"]} py-2`}
             >
               {day}
             </div>
@@ -767,18 +760,10 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
                   !isSameMonth(day, month)
                     ? "text-gray-300"
                     : isInRange
-                    ? `${
-                        AppHelper.isDarkColor(bg_color)
-                          ? "bg-gradient-to-br from-blue-500/50 to-blue-700/50 text-gray-300"
-                          : "bg-gradient-to-br from-blue-500/80 to-blue-700/80 text-gray-200 font-semibold"
-                      }`
+                    ? `${classes["select-option-range-bg"]}  font-semibold`
                     : isStart || isEnd
-                    ? "bg-gradient-to-br from-blue-500 to-blue-700 text-gray-300 hover:bg-gradient-to-br hover:from-blue-600 hover:to-blue-800 font-semibold"
-                    : `${
-                        AppHelper.isDarkColor(bg_color)
-                          ? "hover:bg-gray-100/30 text-gray-300"
-                          : "hover:bg-gray-400"
-                      }`
+                    ? `font-semibold ${classes["select-option-bg"]}`
+                    : `${classes["primary-hover"]}`
                 }`}
               >
                 {format(day, "d")}
@@ -964,7 +949,7 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
               : isOpen
               ? "bg-white/50 hover:bg-gray-100"
               : `hover:bg-gray-200 ${bg_color}`
-          } h-full flex justify-center items-center p-3  rounded-r-lg`}
+          } h-full flex justify-center items-center p-3 ${accent_color} rounded-r-lg`}
         >
           <Calendar size={20} />
         </div>
@@ -1000,9 +985,7 @@ const DateRangeInput: React.FC<DateRangeInputProps> = ({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -50 }}
                 transition={{ delay: 0.25, ease: "easeOut", duration: 0.25 }}
-                className={`rounded-lg shadow-lg overflow-hidden border ${
-                  AppHelper.isDarkColor(bg_color) ? "bg-black/90  " : bg_color
-                } backdrop-blur-[8px] border w-[700px] ${border_color}`}
+                className={`rounded-lg shadow-lg overflow-hidden border ${classes["modal-bg"]} backdrop-blur-[8px] border w-[700px] ${classes["text-primary"]} ${classes["border"]}`}
               >
                 <div className="flex ">
                   {renderCalendar(currentMonth, true)}

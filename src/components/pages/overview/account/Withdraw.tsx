@@ -475,7 +475,7 @@ const BankWithdrawal = () => {
               )}
 
               {/* Action Buttons */}
-              <div className="flex gap-2">
+              <div className="flex gap-0.5">
                 <button
                   type="submit"
                   disabled={
@@ -484,7 +484,7 @@ const BankWithdrawal = () => {
                     !amount ||
                     Number(amount) < 100
                   }
-                  className={`flex-1 h-9 ${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} disabled:opacity-50 disabled:cursor-not-allowed ${classes["button-proceed-text"]} font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-xs shadow-lg`}
+                  className={`flex-1 h-9 ${classes["button-proceed-bg"]} ${classes["button-proceed-hover"]} disabled:opacity-50 disabled:cursor-not-allowed ${classes["button-proceed-text"]} font-semibold py-2.5 px-4 rounded-md rounded-r-none transition-all duration-200 flex items-center h-9 justify-center gap-2 text-xs shadow-lg`}
                 >
                   {withdrawalLoading ? (
                     <>
@@ -501,7 +501,7 @@ const BankWithdrawal = () => {
                 <button
                   type="button"
                   onClick={handleGoBack}
-                  className={`px-4 h-9 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-border"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]}  text-[11px] rounded-lg transition-colors duration-200`}
+                  className={`px-4 h-9 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-border"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} rounded-l-none text-[11px] rounded-md h-9 transition-colors duration-200`}
                 >
                   Cancel
                 </button>

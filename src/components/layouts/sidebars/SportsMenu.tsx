@@ -37,43 +37,16 @@ const SportsMenu = (props: Props) => {
   const dispatch = useAppDispatch();
   const [queryFixtures, { isLoading, data }] = useQueryFixturesMutation();
 
-  // Helper to get ISO week number
-  function getWeekNumber(date: Date): number {
-    const tempDate = new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-    );
-    const dayNum = tempDate.getUTCDay() || 7;
-    tempDate.setUTCDate(tempDate.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(tempDate.getUTCFullYear(), 0, 1));
-    return Math.ceil(
-      ((tempDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
-    );
-  }
-
-  const { data: poolData } = usePoolFixturesQuery({
-    week: getWeekNumber(new Date()),
-    year: new Date().getFullYear(),
-  });
   const navigate = useNavigate();
   const pathname = window.location.pathname;
-
   const sports_data: Sport[] = Array.isArray(sportsData?.sports)
-    ? [
-        {
-          sportID: "pool",
-          sportName: "Pool Games",
-          total: Number(poolData?.total || 0),
-        },
-        ...sportsData?.sports,
-      ]
+    ? sportsData?.sports
     : [];
-  // Sidebar navigation state
   const [selectedSport, setSelectedSport] = useState<Sport | null>(null);
   const [selectedCategory, setSelectedCategory] =
     useState<SportCategory | null>(null);
   const [selectedTournament, setSelectedTournament] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  // Handle sport selection
   const handleSportClick = (sportId: string) => {
     const sport =
       sports_data.find((s: Sport) => String(s.sportID) === sportId) || null;
@@ -82,29 +55,7 @@ const SportsMenu = (props: Props) => {
     setSelectedTournament(null);
   };
 
-  // When a sport is selected, show categories
-  const handleSportSelect = (sportId: string) => {
-    const sport =
-      sportsData?.sports?.find((s: Sport) => String(s.sportID) === sportId) ||
-      null;
-    setSelectedSport(sport);
-    setSelectedCategory(null);
-    setSelectedTournament(null);
-  };
-
-  // Back navigation
-  const handleSidebarBack = () => {
-    if (selectedTournament) {
-      setSelectedTournament(null);
-    } else if (selectedCategory) {
-      setSelectedCategory(null);
-    } else if (selectedSport) {
-      setSelectedSport(null);
-    }
-  };
-
   useEffect(() => {
-    // Reset selections when search query changes
     if (searchQuery.trim() === "") {
       dispatch(setTournamentDetails({ query: "" }));
     }

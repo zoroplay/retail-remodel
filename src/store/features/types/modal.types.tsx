@@ -56,6 +56,7 @@ export enum MODAL_COMPONENTS {
   GAME_OPTIONS = "game-options",
   COUPON_DETAILS = "coupon-details",
   CONFIRM_LOGOUT = "confirm-logout",
+  LOGIN = "login",
   CHANGE_PASSWORD = "change-password",
   CONFIRMATION_MODAL = "confirmation-modal",
 }

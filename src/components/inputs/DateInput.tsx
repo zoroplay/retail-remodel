@@ -56,10 +56,10 @@ const DateInput: React.FC<DateInputProps> = (props) => {
     optional_label,
     bottom_label,
     name,
-    bg_color = "bg-white",
-    border_color = "border-gray-300",
-    text_color = "text-gray-700",
-    accent_color = "text-gray-500",
+    border_color = `${classes["input-border"]}`,
+    bg_color = classes["input-bg"],
+    text_color = classes["input-text"],
+    accent_color = classes["text-accent"],
     popup_position = "inset-x-12 bottom-8",
     height = "h-[38px]",
     isLoading = false,
@@ -525,29 +525,24 @@ const DateInput: React.FC<DateInputProps> = (props) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -50 }}
                 transition={{ delay: 0.25, ease: "easeOut", duration: 0.25 }}
-                className={`max-h-max z-10 mt-2 ${
-                  AppHelper.isDarkColor(bg_color)
-                    ? "bg-slate-800 !border-slate-800 "
-                    : bg_color
-                } rounded-lg backdrop-blur-[8px] shadow-lg border ${border_color} w-[455px]`}
+                className={`max-h-max z-10 mt-2 ${classes["modal-bg"]} rounded-lg backdrop-blur-[8px] shadow-lg border ${classes["text-primary"]} ${classes["border"]} w-[455px]`}
               >
                 <div className="flex items-center justify-between p-6 mb-6">
                   <button
                     type="button"
                     onClick={() => navigateMonth("prev")}
-                    className={`p-2 ${
-                      AppHelper.isDarkColor(bg_color)
-                        ? "hover:bg-gray-100"
-                        : "hover:bg-gray-400"
-                    }  rounded-full cursor-pointer ${accent_color}`}
+                    className={`p-2 ${classes["primary-hover"]} rounded-full cursor-pointer`}
                   >
-                    <ChevronLeft size={24} className={`${accent_color}`} />
+                    <ChevronLeft
+                      size={24}
+                      className={`${classes["text-secondary"]}`}
+                    />
                   </button>
                   <div className="relative">
                     <div
                       className={`flex items-center gap-2 cursor-pointer ${cn(
                         `hover:${border_color}/20`
-                      )} ${text_color} px-2 py-1 rounded`}
+                      )} px-2 py-1 rounded`}
                       onClick={() => setShowYearDropdown(true)}
                     >
                       <span className="font-medium text-lg">
@@ -556,12 +551,15 @@ const DateInput: React.FC<DateInputProps> = (props) => {
                       <span className="font-medium text-lg">
                         {format(currentMonth, "yyyy")}
                       </span>
-                      <ChevronDown size={16} className={`${accent_color}`} />
+                      <ChevronDown
+                        size={16}
+                        className={`${classes["text-secondary"]}`}
+                      />
                     </div>
                     {showYearDropdown && (
                       <div
                         ref={yearDropdownRef}
-                        className={`absolute z-20 max-h-[12rem] p-2 mt-1 ${bg_color} border border-[#7b7c80] rounded-lg shadow-lg w-[120px] overflow-y-auto`}
+                        className={`absolute z-20 max-h-[12rem] p-1 mt-1 ${bg_color} border border-[#7b7c80] rounded-lg shadow-lg w-[120px] overflow-y-auto`}
                       >
                         {generateYears().map((year) => {
                           const isSelected = selectedDate
@@ -571,9 +569,9 @@ const DateInput: React.FC<DateInputProps> = (props) => {
                             <div
                               key={year}
                               ref={isSelected ? selectedYearRef : null}
-                              className={`px-4 py-3 rounded-sm cursor-pointer text-center text-xs ${
+                              className={`px-4 py-2 rounded-sm cursor-pointer text-center text-xs ${
                                 isSelected
-                                  ? "bg-blue-600 text-white"
+                                  ? `${classes["select-option-bg"]} text-white`
                                   : "hover:bg-blue-500 hover:text-white"
                               }`}
                               onClick={() =>
@@ -592,11 +590,7 @@ const DateInput: React.FC<DateInputProps> = (props) => {
                   <button
                     type="button"
                     onClick={() => navigateMonth("next")}
-                    className={`p-2 ${
-                      AppHelper.isDarkColor(bg_color)
-                        ? "hover:bg-gray-100"
-                        : "hover:bg-gray-400"
-                    }  rounded-full cursor-pointer ${accent_color}`}
+                    className={`p-2 ${classes["primary-hover"]} rounded-full cursor-pointer ${accent_color}`}
                   >
                     <ChevronRight size={24} />
                   </button>
@@ -606,16 +600,14 @@ const DateInput: React.FC<DateInputProps> = (props) => {
                   {weekDays.map((day) => (
                     <div
                       key={day}
-                      className={`text-center text-xs font-medium ${accent_color} py-2`}
+                      className={`text-center text-xs font-medium py-2 ${classes["text-secondary"]}`}
                     >
                       {day}
                     </div>
                   ))}
                 </div>
 
-                <div
-                  className={`grid grid-cols-7 gap-2 px-6 pb-6 ${text_color}`}
-                >
+                <div className={`grid grid-cols-7 gap-2 px-6 pb-6`}>
                   {/* Render padding days */}
                   {paddingDays.map((_, index) => (
                     <div
@@ -633,14 +625,11 @@ const DateInput: React.FC<DateInputProps> = (props) => {
                         !isSameMonth(day, currentMonth)
                           ? " text-gray-300"
                           : selectedDate && isSameDay(day, selectedDate)
-                          ? "bg-gradient-to-br from-blue-500 to-blue-700 text-white hover:bg-gradient-to-br hover:from-blue-600 hover:to-blue-800 font-semibold"
-                          : isToday(day)
+                          ? `font-semibold ${classes["select-option-bg"]} text-white`
+                          : // ? "bg-gradient-to-br from-blue-500 to-blue-700 text-white hover:bg-gradient-to-br hover:from-blue-600 hover:to-blue-800 font-semibold"
+                          isToday(day)
                           ? "bg-gray-700 text-white font-semibold"
-                          : `${
-                              AppHelper.isDarkColor(bg_color)
-                                ? "hover:bg-gray-100/30"
-                                : "hover:bg-gray-400"
-                            }`
+                          : `${classes["primary-hover"]}`
                       }`}
                     >
                       {format(day, "d")}

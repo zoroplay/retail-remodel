@@ -413,9 +413,9 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
                 className={`w-10 min-w-[2rem] cursor-pointer 4  h-full flex justify-center items-center p-2 ${text_color}`}
               >
                 {showPassword ? (
-                  <Eye fontSize={24} className={text_color} />
+                  <Eye fontSize={20} className={text_color} />
                 ) : (
-                  <EyeClosed fontSize={24} className={text_color} />
+                  <EyeClosed fontSize={20} className={text_color} />
                 )}
               </div>
             </div>
@@ -568,13 +568,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
                 className="w-14  min-w-[3rem] cursor-pointer text-gray-900 h-full flex justify-center items-center p-2 px-3"
               >
                 {typeof num_select_placeholder === "string" ? (
-                  <span
-                    className={` ${
-                      AppHelper.isDarkColor(bg_color)
-                        ? "text-gray-300"
-                        : "text-[#737373]"
-                    }`}
-                  >
+                  <span className={` ${classes["text-secondary"]} `}>
                     {num_select_placeholder}
                   </span>
                 ) : (

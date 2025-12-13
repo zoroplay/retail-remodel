@@ -1,18 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/**
- * CRITICAL: Enable Immer ES5 mode for Android 4.x support
- *
- * Why needed:
- * - Redux Toolkit uses Immer for immutable state updates
- * - Immer can use either Proxy (modern) or ES5 getters/setters (legacy)
- * - Android 4.x doesn't support Proxy, and proxy-polyfill has limited trap support
- * - Specifically, the 'has' trap (for 'in' operator) is not supported by proxy-polyfill
- *
- * Why use enableES5() instead of proxy-polyfill:
- * - Immer's ES5 mode uses Object.defineProperty and getters/setters
- * - This is fully supported on Android 4.x without any polyfills
- * - It's slower than Proxy but more compatible
- */
 import { enableES5 } from "immer";
 enableES5();
 

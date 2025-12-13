@@ -426,9 +426,11 @@ export interface ThemeClasses {
   "bg-secondary": string;
   "bg-tertiary": string;
   "bg-gradient": string;
+  "text-accent": string;
   "bg-gradient-hover": string;
   "text-primary": string;
   "text-secondary": string;
+  "text-link": string;
   "text-muted": string;
   border: string;
   "border-light": string;
@@ -447,6 +449,7 @@ export interface ThemeClasses {
   "input-focus-within": string;
   "input-ring": string;
   "select-option-bg": string;
+  "select-option-range-bg": string;
   "input-text": string;
 
   // Base utility classes
@@ -462,6 +465,10 @@ export interface ThemeClasses {
   "button-secondary-border": string;
   "button-secondary-hover": string;
   "button-secondary-text": string;
+  "button-tertiary-bg": string;
+  "button-tertiary-border": string;
+  "button-tertiary-hover": string;
+  "button-tertiary-text": string;
   "modal-bg": string;
   "button-cancel-bg": string;
   "button-cancel-hover": string;

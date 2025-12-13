@@ -75,20 +75,20 @@ const ChangePasswordModal = ({ onClose }: Props) => {
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      className={`max-w-md !w-full backdrop-blur-xl  shadow-md ${modalClasses["modal-shadow"]}`}
+      className={`max-w-md !w-full backdrop-blur-xl  shadow-md `}
       footer={
-        <div className="flex gap-2">
+        <div className="flex gap-0.5">
           <button
             type="button"
             onClick={onClose}
-            className={`flex-1 px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-border"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} shadow text-[11px] font-medium rounded-md transition-all`}
+            className={`flex-1 px-4 py-2 ${classes["button-secondary-bg"]} ${classes["button-secondary-border"]} ${classes["button-secondary-hover"]} ${classes["button-secondary-text"]} shadow-sm text-[11px] font-medium rounded-md transition-all rounded-r-none`}
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className={`flex-1 px-4 py-2 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} shadow-md text-[11px] font-medium rounded-md transition-all  disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={`flex-1 px-4 py-2 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} shadow text-[11px] font-medium rounded-md transition-all rounded-l-none disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {isLoading ? "Processing..." : "Confirm"}
           </button>
@@ -134,7 +134,6 @@ const ChangePasswordModal = ({ onClose }: Props) => {
               onChange={handlePasswordChange}
               placeholder="Enter current password"
               required
-              height="h-[44px]"
               bg_color={classes["input-bg"]}
               border_color={classes["input-border"]}
               text_color={classes["input-text"]}
@@ -149,7 +148,6 @@ const ChangePasswordModal = ({ onClose }: Props) => {
               onChange={handlePasswordChange}
               placeholder="Enter new password"
               required
-              height="h-[44px]"
               bg_color={classes["input-bg"]}
               border_color={classes["input-border"]}
               text_color={classes["input-text"]}
@@ -164,7 +162,6 @@ const ChangePasswordModal = ({ onClose }: Props) => {
               onChange={handlePasswordChange}
               placeholder="Confirm new password"
               required
-              height="h-[44px]"
               bg_color={classes["input-bg"]}
               border_color={classes["input-border"]}
               text_color={classes["input-text"]}

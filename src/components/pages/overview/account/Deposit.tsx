@@ -153,71 +153,71 @@ const Deposit = () => {
     navigate(ACCOUNT.DEPOSIT_FORM.replace(":provider", provider));
   };
 
-  if (isLoading) {
-    return (
-      <div
-        className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["container-bg"]} ${pageClasses["page-text"]} p-2`}
-      >
-        <div className="flex flex-col gap-4">
-          {/* Header Skeleton */}
-          <div
-            className={`h-8 w-32 ${classes["bg-secondary"]} animate-pulse rounded`}
-          ></div>
+  // if (isLoading) {
+  //   return (
+  //     <div
+  //       className={`h-[calc(100vh-110px)] overflow-y-auto ${pageClasses["container-bg"]} ${pageClasses["page-text"]} p-2`}
+  //     >
+  //       <div className="flex flex-col gap-4">
+  //         {/* Header Skeleton */}
+  //         <div
+  //           className={`h-8 w-32 ${classes["bg-secondary"]} animate-pulse rounded`}
+  //         ></div>
 
-          {/* Warning Banner Skeleton */}
-          <div
-            className={`${classes["bg-secondary"]} animate-pulse rounded p-4 h-20`}
-          ></div>
+  //         {/* Warning Banner Skeleton */}
+  //         <div
+  //           className={`${classes["bg-secondary"]} animate-pulse rounded p-4 h-20`}
+  //         ></div>
 
-          {/* Table Skeleton */}
-          <div
-            className={`${pageClasses["card-bg"]} ${pageClasses["card-border"]} border rounded overflow-hidden`}
-          >
-            {/* Table Header */}
-            <div
-              className={`${pageClasses["table-header-bg"]} border-b ${pageClasses["card-border"]} px-4 py-3`}
-            >
-              <div className="grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-4">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-4 w-24 ${classes["bg-tertiary"]} animate-pulse rounded`}
-                  ></div>
-                ))}
-              </div>
-            </div>
-            {/* Table Rows */}
-            {[...Array(6)].map((_, index) => (
-              <div
-                key={index}
-                className={`border-b ${classes.border} px-4 py-4`}
-              >
-                <div className="grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-4 items-center">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-10 h-10 ${classes["bg-secondary"]} animate-pulse rounded`}
-                    ></div>
-                  </div>
-                  <div
-                    className={`h-4 w-48 ${classes["bg-secondary"]} animate-pulse rounded`}
-                  ></div>
-                  <div
-                    className={`h-4 w-16 ${classes["bg-secondary"]} animate-pulse rounded`}
-                  ></div>
-                  <div
-                    className={`h-4 w-16 ${classes["bg-secondary"]} animate-pulse rounded`}
-                  ></div>
-                  <div
-                    className={`h-10 w-full ${classes["bg-secondary"]} animate-pulse rounded`}
-                  ></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  //         {/* Table Skeleton */}
+  //         <div
+  //           className={`${pageClasses["card-bg"]} ${pageClasses["card-border"]} border rounded overflow-hidden`}
+  //         >
+  //           {/* Table Header */}
+  //           <div
+  //             className={`${pageClasses["table-header-bg"]} border-b ${pageClasses["card-border"]} px-4 py-3`}
+  //           >
+  //             <div className="grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-4">
+  //               {[...Array(5)].map((_, i) => (
+  //                 <div
+  //                   key={i}
+  //                   className={`h-4 w-24 ${classes["bg-tertiary"]} animate-pulse rounded`}
+  //                 ></div>
+  //               ))}
+  //             </div>
+  //           </div>
+  //           {/* Table Rows */}
+  //           {[...Array(6)].map((_, index) => (
+  //             <div
+  //               key={index}
+  //               className={`border-b ${classes.border} px-4 py-4`}
+  //             >
+  //               <div className="grid grid-cols-[2fr,3fr,1fr,1fr,150px] gap-4 items-center">
+  //                 <div className="flex items-center gap-3">
+  //                   <div
+  //                     className={`w-10 h-10 ${classes["bg-secondary"]} animate-pulse rounded`}
+  //                   ></div>
+  //                 </div>
+  //                 <div
+  //                   className={`h-4 w-48 ${classes["bg-secondary"]} animate-pulse rounded`}
+  //                 ></div>
+  //                 <div
+  //                   className={`h-4 w-16 ${classes["bg-secondary"]} animate-pulse rounded`}
+  //                 ></div>
+  //                 <div
+  //                   className={`h-4 w-16 ${classes["bg-secondary"]} animate-pulse rounded`}
+  //                 ></div>
+  //                 <div
+  //                   className={`h-10 w-full ${classes["bg-secondary"]} animate-pulse rounded`}
+  //                 ></div>
+  //               </div>
+  //             </div>
+  //           ))}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (error) {
     return (
@@ -310,7 +310,7 @@ const Deposit = () => {
             {
               id: "desc",
               name: "Description",
-              className: `text-[10px] ${pageClasses["label-text"]} col-span-3 h-full flex justify-start items-center`,
+              className: `text-[10px] col-span-3 h-full flex justify-start items-center`,
               render: (_: any, row: any) => row?.extraDescription,
             },
             {
