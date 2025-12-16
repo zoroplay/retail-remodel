@@ -3,7 +3,7 @@ import maxbet_logo from "../images/maxbet-logo.png";
 import sbe_logo from "../images/sbe-logo.png";
 import streetbet_logo from "../images/streetbet-logo.png";
 import header_bg from "../images/header-bg.png";
-import betcruz_logo from "../images/bet-cruz-logo.jpg";
+import betcruz_logo from "../images/bet-cruz-logo.png";
 import environmentConfig from "@/store/services/configs/environment.config";
 let logo = sbe_logo;
 switch (Number(environmentConfig.FRONTEND_CLIENT_ID)) {

@@ -332,7 +332,7 @@ export default function OverviewScreen({
                             {fixture.tournament} • {fixture.categoryName}
                           </div>
                           <div
-                            className={`text-xs font-medium ${sportsPageClasses["match-team-text"]}`}
+                            className={`text-sm font-semibold ${sportsPageClasses["match-team-text"]}`}
                           >
                             {fixture.homeTeam} vs {fixture.awayTeam}
                           </div>

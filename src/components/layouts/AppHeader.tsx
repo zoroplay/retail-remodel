@@ -81,7 +81,7 @@ export const AppHeader: React.FC = ({}) => {
             },
           ]
         : []),
-      { name: "Cashbook", href: "#" },
+      // { name: "Cashbook", href: "#" },
       // Only show My Account when user is logged in
       ...(user?.id
         ? [

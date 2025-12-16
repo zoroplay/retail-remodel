@@ -485,7 +485,7 @@ export default function PoolOverviewScreen({
                         {/* Match Info */}
                         <div className="col-span-6 flex flex-col justify-center">
                           <div
-                            className={`text-xs flex flex-col font-medium ${sportsPageClasses["match-team-text"]}`}
+                            className={`text-sm font-semibold flex flex-col font-medium ${sportsPageClasses["match-team-text"]}`}
                           >
                             <span className="font-semibold">
                               {fixture.homeTeam}

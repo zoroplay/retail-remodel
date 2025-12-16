@@ -92,7 +92,7 @@ const NewUser = () => {
       const data = {
         ...formData,
         parentId: user?.id,
-        roleId: is_cashier ? 12 : 13,
+        roleId: !is_cashier ? 12 : 13,
         clientId: Number(environmentConfig.CLIENT_ID),
       };
       // address
@@ -144,7 +144,20 @@ const NewUser = () => {
       // :
       // "11123333"
       // Replace with actual API call
-      // const response = await addUser(data);
+      const response = await createUser({
+        parentId: user?.id!,
+        username: formData.username,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        gender: formData.gender,
+        language: formData.language,
+        currency: formData.currency,
+        roleId: !is_cashier ? 12 : 13,
+        clientId: Number(environmentConfig.CLIENT_ID),
+      }).unwrap();
 
       // Simulate API call
       // setTimeout(() => {
@@ -187,10 +200,10 @@ const NewUser = () => {
           </div>
           <div>
             <h1 className={`text-base font-bold`}>
-              New {is_cashier ? "Cashier" : "Player"}
+              New {!is_cashier ? "Cashier" : "Player"}
             </h1>
             <p className={`${classes["text-secondary"]} text-xs`}>
-              Create a new {is_cashier ? "Cashier" : "Player"} account
+              Create a new {!is_cashier ? "Cashier" : "Player"} account
             </p>
           </div>
         </div>

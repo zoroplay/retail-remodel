@@ -518,7 +518,7 @@ export default function LiveOverviewScreen({
                                           {/* Match Info */}
                                           <div className="col-span-5 flex flex-col justify-center">
                                             <div
-                                              className={`text-[11px] flex flex-col font-semibold ${sportsPageClasses["match-team-text"]}`}
+                                              className={`text-sm font-semibold flex flex-col ${sportsPageClasses["match-team-text"]}`}
                                             >
                                               <span>{fixture.homeTeam}</span>
                                               <span className="">vs</span>
@@ -527,17 +527,17 @@ export default function LiveOverviewScreen({
                                           </div>
                                           <div className="flex items-center flex-col">
                                             <span
-                                              className={`${sportsPageClasses["score-text"]} font-bold text-xs`}
+                                              className={`${sportsPageClasses["score-text"]} font-bold text-sm`}
                                             >
                                               {fixture.homeScore || "0"}
                                             </span>
                                             <span
-                                              className={`${sportsPageClasses["match-tournament-text"]} text-xs`}
+                                              className={`${sportsPageClasses["match-tournament-text"]} text-sm`}
                                             >
                                               -
                                             </span>
                                             <span
-                                              className={`${sportsPageClasses["score-text"]} font-bold text-xs`}
+                                              className={`${sportsPageClasses["score-text"]} font-bold text-sm`}
                                             >
                                               {fixture.awayScore || "0"}
                                             </span>

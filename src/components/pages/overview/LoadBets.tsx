@@ -194,7 +194,7 @@ const FixtureDisplay = forwardRef<
                       className={`col-span-2 ${sportsPageClasses["time-border"]} border-r flex flex-col items-start justify-center`}
                     >
                       <span
-                        className={`text-[11px] font-semibold ${sportsPageClasses["time-text"]}`}
+                        className={`text-sm font-semibold ${sportsPageClasses["time-text"]}`}
                       >
                         {fixture.eventTime}
                       </span>

@@ -23,6 +23,8 @@ import {
   Eye,
 } from "lucide-react";
 import { getClientTheme } from "@/config/theme.config";
+import { USER_ROLES } from "@/data/enums/enum";
+import { useAppSelector } from "@/hooks/useAppDispatch";
 
 interface MenuSection {
   title: string;
@@ -42,6 +44,7 @@ const AccountMenu = (props: Props) => {
   const { classes } = getClientTheme();
   const sidebarClasses = classes.sports_sidebar;
   const location = useLocation();
+  const { user } = useAppSelector((state) => state.user);
 
   const menuSections: MenuSection[] = [
     {
@@ -82,11 +85,15 @@ const AccountMenu = (props: Props) => {
       title: "POS",
       color: "bg-blue-600",
       items: [
-        {
-          name: "New User",
-          href: ACCOUNT.NEW_USER,
-          icon: <UserPlus size={16} />,
-        },
+        ...(USER_ROLES.CASHIER === user?.role || USER_ROLES.SHOP === user?.role
+          ? [
+              {
+                name: "New User",
+                href: ACCOUNT.NEW_USER,
+                icon: <UserPlus size={16} />,
+              },
+            ]
+          : []),
         {
           name: "User List",
           href: ACCOUNT.USER_LIST,

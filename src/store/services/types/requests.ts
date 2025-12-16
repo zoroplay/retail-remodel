@@ -40,23 +40,24 @@ export interface PayoutCommissionRequest {
 }
 
 export interface CreateUserRequest {
-  clientId: string;
+  clientId: number;
   userId: string;
   username: string;
   password: string;
   firstName: string;
   lastName: string;
   email: string;
-  city: string;
-  state: string;
-  country: string;
+  parentId: number;
+  // city: string;
+  // state: string;
+  // country: string;
   gender: string;
-  dateOfBirth: string;
+  // dateOfBirth: string;
   currency: string;
   phoneNumber: string;
-  address: string;
+  // address: string;
   language: string;
-  roleId: string;
+  roleId: number;
 }
 
 export interface DepositCommissionRequest {

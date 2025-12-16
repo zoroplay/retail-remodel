@@ -177,7 +177,7 @@ const BetSlip = (props: Props) => {
           {/* <h3 className="text-white font-bold tracking-wide text-sm">
             Bet Slip
           </h3> */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 p-0.5">
             <SwitchInput
               options={[
                 { title: "Booking Code" },
