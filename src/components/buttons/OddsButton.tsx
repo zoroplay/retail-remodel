@@ -31,7 +31,7 @@ const OddsButton = ({
   const [is_disabled, setIsDisabled] = React.useState<boolean>(
     !!disabled || !outcome
   );
-  const theme = getClientTheme();
+  const { classes } = getClientTheme();
 
   useEffect(() => {
     setIsDisabled(!!disabled || !outcome);
@@ -61,16 +61,15 @@ const OddsButton = ({
   });
 
   // Get theme classes for odds button states
-  const oddsButtonClasses = theme.classes.game_options_modal;
 
   // Determine button state classes
   const getButtonClasses = () => {
     if (is_disabled) {
-      return `${oddsButtonClasses["odds-button-disabled-bg"]} ${oddsButtonClasses["odds-button-disabled-border"]} ${oddsButtonClasses["odds-button-disabled-text"]} opacity-50 cursor-not-allowed`;
+      return `${classes["odds-button-disabled-bg"]} ${classes["odds-button-disabled-border"]} ${classes["odds-button-disabled-text"]} opacity-50 cursor-not-allowed`;
     }
 
     if (isSelected) {
-      return `${oddsButtonClasses["odds-button-selected-bg"]} ${oddsButtonClasses["odds-button-selected-border"]} ${oddsButtonClasses["odds-button-selected-text"]} ${oddsButtonClasses["odds-button-selected-hover"]}`;
+      return `${classes["odds-button-selected-bg"]} ${classes["odds-button-selected-border"]} ${classes["odds-button-selected-text"]} ${classes["odds-button-selected-hover"]}`;
     }
 
     // Use bg_color if provided (for backwards compatibility), otherwise use theme
@@ -78,7 +77,7 @@ const OddsButton = ({
       return bg_color;
     }
 
-    return `${oddsButtonClasses["odds-button-bg"]} ${oddsButtonClasses["odds-button-border"]} ${oddsButtonClasses["odds-button-text"]} ${oddsButtonClasses["odds-button-hover"]}`;
+    return `${classes["odds-button-bg"]} ${classes["odds-button-border"]} ${classes["odds-button-text"]} ${classes["odds-button-hover"]}`;
   };
 
   return (

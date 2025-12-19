@@ -331,18 +331,6 @@ export const MAXBET_STYLES: ThemeClasses = {
     "market-title": "text-gray-300",
     "axis-label-text": "text-gray-400",
     "axis-label-bg": "bg-yellow-900/20",
-    "odds-button-bg": "bg-gray-200",
-    "odds-button-hover": "hover:bg-[#F87171]",
-    "odds-button-text": "text-gray-800",
-    "odds-button-border": "border-gray-600/50",
-    "odds-button-selected-bg":
-      "bg-gradient-to-r from-[#7F1D1D] via-rose-800 to-[#7F1D1D]",
-    "odds-button-selected-border": "border-[#DC2626]/70",
-    "odds-button-selected-text": "text-gray-200",
-    "odds-button-selected-hover": "hover:bg-[#DC2626]/30",
-    "odds-button-disabled-bg": "bg-gray-100/90",
-    "odds-button-disabled-text": "text-gray-800",
-    "odds-button-disabled-border": "border-gray-400",
   },
   modal: {
     change_password: {
@@ -439,4 +427,16 @@ export const MAXBET_STYLES: ThemeClasses = {
   "button-proceed-hover": "hover:from-emerald-700 hover:to-green-700",
   "button-proceed-text": "text-white",
   "button-proceed-border": "border-emerald-500",
+  "odds-button-bg": "bg-gray-200",
+  "odds-button-hover": "hover:bg-[#F87171]",
+  "odds-button-text": "text-gray-800",
+  "odds-button-border": "border-gray-600/50",
+  "odds-button-selected-bg":
+    "bg-gradient-to-r from-[#7F1D1D] via-rose-800 to-[#7F1D1D]",
+  "odds-button-selected-border": "border-[#DC2626]/70",
+  "odds-button-selected-text": "text-gray-200",
+  "odds-button-selected-hover": "hover:bg-[#DC2626]/30",
+  "odds-button-disabled-bg": "bg-gray-100/90",
+  "odds-button-disabled-text": "text-gray-800",
+  "odds-button-disabled-border": "border-gray-400",
 };

@@ -389,3 +389,53 @@ export interface SuperAgentCommissionResponse {
     }[];
   };
 }
+export interface ValidateWithdrawCodeResponse {
+  data: {
+    requestId: string;
+    amount: string;
+    withdrawalCharge: string;
+    withdrawalFinalAmount: string;
+    username: string;
+    userId: number;
+  };
+  message: string;
+  status: number;
+  success: boolean;
+}
+export interface ValidateDepositCodeResponse {
+  data: {
+    amount: string;
+    balance: string;
+    channel: string;
+    client_id: number;
+    created_at: string;
+    description: string;
+    externalTransactionId: null;
+    hookId: number;
+    hookType: string;
+
+    id: number;
+    settlementId: null;
+    source: string;
+    status: number;
+    subject: string;
+    transaction_no: string;
+    transaction_type: string;
+    updated_at: string;
+    user_id: number;
+    username: string;
+    wallet: string;
+  };
+  message: string;
+  status: number;
+  success: boolean;
+}
+export interface WalletBalanceResponse {
+  userId: number;
+  availableBalance: number;
+  trustBalance: number;
+  sportBonusBalance: number;
+  virtualBonusBalance: number;
+  casinoBonusBalance: number;
+  commissionBalance: number;
+}

@@ -272,7 +272,7 @@ const FixtureDisplay = forwardRef<
                           handleMorePress(fixture as PreMatchFixture);
                         }}
                         className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1   ${
-                          classes.game_options_modal["odds-button-hover"]
+                          classes["odds-button-hover"]
                         } shadow font-semibold transition-colors border-2 ${
                           selected_bets.some(
                             (bet) =>
@@ -280,8 +280,8 @@ const FixtureDisplay = forwardRef<
                               (bet.game.matchID == Number(fixture.matchID) ||
                                 bet.game.game_id == Number(fixture.gameID))
                           )
-                            ? `${classes.game_options_modal["odds-button-selected-bg"]}   ${classes.game_options_modal["odds-button-selected-text"]} ${classes.game_options_modal["odds-button-selected-border"]}`
-                            : `${classes.game_options_modal["odds-button-border"]} ${classes.game_options_modal["odds-button-bg"]} ${classes.game_options_modal["odds-button-text"]}`
+                            ? `${classes["odds-button-selected-bg"]}   ${classes["odds-button-selected-text"]} ${classes["odds-button-selected-border"]}`
+                            : `${classes["odds-button-border"]} ${classes["odds-button-bg"]} ${classes["odds-button-text"]}`
                         }`}
                       >
                         <span>+{fixture.activeMarkets || 0}</span>

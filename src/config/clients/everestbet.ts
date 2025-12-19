@@ -1,11 +1,10 @@
 import { ThemeClasses } from "../theme.config";
 
-export const BASE_STYLES: ThemeClasses = {
+export const EVERESTBET_STYLES: ThemeClasses = {
   app_header: {
-    "highlight-indicator": "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
-    "header-gradient":
-      "bg-gradient-to-r from-blue-950 via-blue-900 to-blue-950",
-    "active-route-indicator": "text-white hover:text-blue-200",
+    "highlight-indicator": "linear-gradient(135deg, #fafafa 0%, #eeeeee 100%)",
+    "header-gradient": "bg-[#2c3a8e]",
+    "active-route-indicator": "text-blue-950 hover:text-blue-500",
     "inactive-route-indicator": "text-white hover:text-blue-200",
     divider: "bg-blue-800",
     "login-button-bg": "bg-blue-600",
@@ -114,7 +113,7 @@ export const BASE_STYLES: ThemeClasses = {
     "container-bg": "bg-transparent",
     "card-bg": "bg-white",
     "card-border": "border-slate-700/50",
-    "header-bg": "bg-gradient-to-r from-blue-950 via-blue-900 to-blue-950",
+    "header-bg": "bg-[#313131]",
     "header-text": "text-white",
     "column-header-bg": "bg-blue-800",
     "column-header-text": "text-slate-300",
@@ -367,7 +366,7 @@ export const BASE_STYLES: ThemeClasses = {
     "close-button": "text-gray-600 hover:text-gray-900",
     "close-button-hover": "hover:bg-gray-200",
   },
-  "bg-main": "bg-gradient-to-r from-gray-50 via-white to-slate-50",
+  "bg-main": "bg-[#eaecef]",
   "bg-secondary": "bg-blue-900",
   "bg-tertiary": "bg-blue-800",
   "bg-gradient": "bg-gradient-to-br from-blue-800 to-blue-950",
@@ -427,14 +426,13 @@ export const BASE_STYLES: ThemeClasses = {
   "button-proceed-text": "text-white",
   "button-proceed-border": "border-emerald-500",
   "odds-button-bg": "bg-gray-100",
-  "odds-button-hover": "hover:bg-blue-300",
-  "odds-button-text": "text-slate-800",
-  "odds-button-border": "border-slate-300",
-  "odds-button-selected-bg":
-    "bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700",
-  "odds-button-selected-border": "border-blue-500",
+  "odds-button-hover": "hover:bg-[#eca81f50]",
+  "odds-button-text": "text-[#916610]",
+  "odds-button-border": "border-yellow-300/20",
+  "odds-button-selected-bg": "bg-[#eca81f]",
+  "odds-button-selected-border": "border-[#fad487]",
   "odds-button-selected-text": "text-white",
-  "odds-button-selected-hover": "hover:bg-blue-500",
+  "odds-button-selected-hover": "hover:bg-[#eca81f90]",
   "odds-button-disabled-bg": "bg-gray-800/50",
   "odds-button-disabled-text": "text-gray-500",
   "odds-button-disabled-border": "border-gray-700",

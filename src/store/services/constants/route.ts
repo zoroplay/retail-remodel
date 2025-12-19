@@ -95,4 +95,11 @@ export const WALLET_ACTIONS = {
   VERIFY_BANK_ACCOUNT: "/user/wallet/verify-bank-account",
   BANK_WITHDRAWAL: "/user/wallet/:client_id/bank-withdrawal",
   TRANSFER_FUNDS: "/retail/:client_id/fund-user",
+
+  VALIDATE_WITHDRAW_CODE: "/retail/:client_id/wallet/withdraw/validate",
+  VALIDATE_DEPOSIT_CODE: "/retail/:client_id/wallet/deposit/validate",
+  VALIDATE_TRANSFER: "/retail/:client_id/wallet/withdraw/transfer/:request_id",
+  VALIDATE_DEPOSIT_TRANSFER:
+    "/retail/:client_id/wallet/deposit/transfer/:request_id",
+  WALLET_BALANCE: "/user/wallet/:user_id",
 };

@@ -25,6 +25,12 @@ import environmentConfig from "@/store/services/configs/environment.config";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
 import { getClientTheme } from "@/config/theme.config";
 import { useNavigate } from "react-router-dom";
+import SwitchInput from "@/components/inputs/SwitchInput";
+import {
+  useValidateDepositCodeMutation,
+  useWalletBalanceMutation,
+} from "@/store/services/wallet.service";
+import { showToast } from "@/components/tools/toast";
 
 const OnlineDepositPage = () => {
   const { classes } = getClientTheme();
@@ -33,6 +39,7 @@ const OnlineDepositPage = () => {
   const dispatch = useAppDispatch();
 
   const [customerId, setCustomerId] = useState("");
+  const [depositCode, setDepositCode] = useState("");
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [usersList, setUsersList] = useState<any[]>([]);
@@ -48,15 +55,17 @@ const OnlineDepositPage = () => {
   } | null>(null);
   const [errMessage, setErrMessage] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  const [period, setPeriod] = useState<number>(0);
+  const [request_id, setRequestId] = useState("");
   const { user } = useAppSelector((state) => state.user);
   const { global_variables } = useAppSelector((state) => state.app);
-
   const [validateUser] = useValidateUserMutation();
   const [creditPlayer] = useCreditPlayerMutation();
 
+  const [validateDepositCode, { isLoading: isValidatingCode }] =
+    useValidateDepositCodeMutation();
   const [depositCommision] = useDepositCommissionMutation();
-
+  const [walletBalance] = useWalletBalanceMutation();
   const currency = global_variables?.currency_code || "NGN";
 
   // Format number with commas
@@ -121,7 +130,71 @@ const OnlineDepositPage = () => {
       setIsLoading(false);
     }
   };
+  const handleValidateCode = async (code: string) => {
+    if (!code.trim()) return;
 
+    setIsLoading(true);
+
+    try {
+      const result = await validateDepositCode({
+        code: code,
+        userRole: user?.role || "",
+      }).unwrap();
+      console.log("validate deposit code result", result);
+      if (result.success === false) {
+        console.log(
+          "Error:",
+          result.message || "Failed to validate deposit code"
+        );
+        showToast({
+          type: "error",
+          title: "Error",
+          description: result.message || "Failed to validate deposit code",
+        });
+        return;
+      }
+      const balance = await walletBalance({
+        user_id: result.data.user_id,
+      }).unwrap();
+
+      const transferData = result.data;
+
+      // Ensure transferData is valid before setting state
+      if (!transferData) {
+        showToast({
+          type: "error",
+          title: "Error",
+          description: "Invalid deposit code or code has expired",
+        });
+        return;
+      }
+
+      setRequestId(String(transferData.id) || "");
+      setSelectedUser({
+        username: transferData.username || "",
+        balance: balance?.availableBalance || 0,
+        role: transferData?.role,
+        id: transferData.user_id || 0,
+        email: transferData?.email,
+        phoneNumber: transferData?.phoneNumber,
+        code: transferData?.code,
+      });
+      setAmount(String(parseFloat(transferData.amount) || 0));
+      // setCurrentStep(3);
+    } catch (error: any) {
+      console.log(
+        "Error:",
+        error?.data?.message || "Failed to validate deposit code"
+      );
+      showToast({
+        type: "error",
+        title: "Error",
+        description: error?.data?.message || "Failed to validate deposit code",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleSelectUser = (user: any) => {
     setSelectedUser({
       username: user.username || "",
@@ -336,82 +409,181 @@ const OnlineDepositPage = () => {
               }}
               className="flex flex-col gap-2"
             >
-              {/* Customer Search with Dropdown */}
-              <div className="relative" ref={dropdownRef}>
-                <SingleSearchInput
-                  label="Customer ID / Username"
-                  value={customerId}
-                  onChange={(e) => {
-                    setCustomerId(e.target.value);
-                  }}
-                  searchState={{
-                    isValid: !!selectedUser,
-                    isNotFound: errMessage.includes("No user found"),
-                    isLoading: isLoading,
-                    message: errMessage,
-                  }}
-                  onSearch={(customer_id) => {
-                    handleValidateUser(customer_id);
-                  }}
-                  placeholder="Start typing (min 4 characters)..."
-                  name="customerId"
-                  bg_color={classes["input-bg"]}
-                  text_color={classes["input-text"]}
-                  border_color={`border ${classes["input-border"]}`}
-                  className={`w-full text-xs rounded-lg ${classes["input-text"]} transition-all duration-200`}
+              <div className="min-w-[220px]">
+                <SwitchInput
+                  options={[{ title: "By Customer ID" }, { title: "By Code" }]}
+                  selected={period}
+                  onChange={(i) => setPeriod(i)}
+                  rounded="rounded-md"
+                  background={`${classes.betslip["tab-bg"]} ${classes.betslip["tab-border"]} !p-[2px] border shadow-sm`}
+                  thumb_background={`${classes.betslip["tab-bg"]}`}
+                  thumb_color={`${classes.betslip["tab-active-bg"]} ${classes.betslip["tab-active-text"]} transition-all duration-300 !rounded-[4px]`}
+                  text_color={`${classes.betslip["tab-inactive-text"]} !text-[11px] font-medium`}
+                  selected_text_color={`${classes.betslip["tab-active-text"]} !text-[11px] font-medium`}
                 />
-
-                {/* Dropdown for user selection */}
-                {showDropdown && usersList.length > 0 && (
-                  <div
-                    className={`absolute z-50 w-full mt-1 ${pageClasses["form-bg"]} backdrop-blur-[4px] border ${pageClasses["form-border"]} rounded-lg shadow-lg max-h-60 overflow-y-auto`}
-                  >
-                    {usersList.map((user, index) => (
-                      <div
-                        key={user.id || index}
-                        onClick={() => handleSelectUser(user)}
-                        className={`p-2 cursor-pointer ${pageClasses["row-hover"]} border-b ${pageClasses["form-border"]} last:border-b-0`}
-                      >
-                        <div className="flex justify-between items-center">
-                          <div className="flex-1">
-                            <div
-                              className={`flex items-center gap-2 mb-1 ${pageClasses["form-text"]}`}
-                            >
-                              <span className={`text-xs font-semibold `}>
-                                {user.username}
-                              </span>
-                              {user.code && (
-                                <span
-                                  className={`text-[10px] px-1.5 py-0.5 ${pageClasses["button-primary-bg"]} rounded`}
-                                >
-                                  {user.code}
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex flex-col gap-0.5 text-[10px]">
-                              {user.email && (
-                                <span className={pageClasses["label-text"]}>
-                                  {user.email}
-                                </span>
-                              )}
-                              {user.balance !== undefined && (
-                                <span className={pageClasses["balance-value"]}>
-                                  Balance: {currency}{" "}
-                                  {formatNumber(user.balance)}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <User
-                            size={16}
-                            className={pageClasses["form-text"]}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
+              {/* Customer Search with Dropdown */}
+              {period === 0 ? (
+                <div className="relative" ref={dropdownRef}>
+                  <SingleSearchInput
+                    label="Customer ID / Username"
+                    value={customerId}
+                    onChange={(e) => {
+                      setCustomerId(e.target.value);
+                    }}
+                    searchState={{
+                      isValid: !!selectedUser,
+                      isNotFound: errMessage.includes("No user found"),
+                      isLoading: isLoading,
+                      message: errMessage,
+                    }}
+                    onSearch={(customer_id) => {
+                      handleValidateUser(customer_id);
+                    }}
+                    placeholder="Start typing (min 4 characters)..."
+                    name="customerId"
+                    bg_color={classes["input-bg"]}
+                    text_color={classes["input-text"]}
+                    border_color={`border ${classes["input-border"]}`}
+                    className={`w-full text-xs rounded-lg ${classes["input-text"]} transition-all duration-200`}
+                  />
+
+                  {/* Dropdown for user selection */}
+                  {showDropdown && usersList.length > 0 && (
+                    <div
+                      className={`absolute z-50 w-full mt-1 ${pageClasses["form-bg"]} backdrop-blur-[4px] border ${pageClasses["form-border"]} rounded-lg shadow-lg max-h-60 overflow-y-auto`}
+                    >
+                      {usersList.map((user, index) => (
+                        <div
+                          key={user.id || index}
+                          onClick={() => handleSelectUser(user)}
+                          className={`p-2 cursor-pointer ${pageClasses["row-hover"]} border-b ${pageClasses["form-border"]} last:border-b-0`}
+                        >
+                          <div className="flex justify-between items-center">
+                            <div className="flex-1">
+                              <div
+                                className={`flex items-center gap-2 mb-1 ${pageClasses["form-text"]}`}
+                              >
+                                <span className={`text-xs font-semibold `}>
+                                  {user.username}
+                                </span>
+                                {user.code && (
+                                  <span
+                                    className={`text-[10px] px-1.5 py-0.5 ${pageClasses["button-primary-bg"]} rounded`}
+                                  >
+                                    {user.code}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex flex-col gap-0.5 text-[10px]">
+                                {user.email && (
+                                  <span className={pageClasses["label-text"]}>
+                                    {user.email}
+                                  </span>
+                                )}
+                                {user.balance !== undefined && (
+                                  <span
+                                    className={pageClasses["balance-value"]}
+                                  >
+                                    Balance: {currency}{" "}
+                                    {formatNumber(user.balance)}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <User
+                              size={16}
+                              className={pageClasses["form-text"]}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="relative" ref={dropdownRef}>
+                  <SingleSearchInput
+                    label="Deposit Code"
+                    value={depositCode}
+                    onChange={(e) => {
+                      setDepositCode(e.target.value);
+                    }}
+                    searchState={{
+                      isValid: !!selectedUser,
+                      isNotFound: errMessage.includes("No user found"),
+                      isLoading: isLoading,
+                      message: errMessage,
+                    }}
+                    onSearch={(customer_id) => {
+                      if (customer_id.trim().length <= 5) {
+                        setErrMessage("Please enter a valid deposit code");
+                        return;
+                      }
+                      handleValidateCode(customer_id);
+                    }}
+                    placeholder="Start typing (min 4 characters)..."
+                    name="depositCode"
+                    bg_color={classes["input-bg"]}
+                    text_color={classes["input-text"]}
+                    border_color={`border ${classes["input-border"]}`}
+                    className={`w-full text-xs rounded-lg ${classes["input-text"]} transition-all duration-200`}
+                  />
+
+                  {/* Dropdown for user selection */}
+                  {showDropdown && usersList.length > 0 && (
+                    <div
+                      className={`absolute z-50 w-full mt-1 ${pageClasses["form-bg"]} backdrop-blur-[4px] border ${pageClasses["form-border"]} rounded-lg shadow-lg max-h-60 overflow-y-auto`}
+                    >
+                      {usersList.map((user, index) => (
+                        <div
+                          key={user.id || index}
+                          onClick={() => handleSelectUser(user)}
+                          className={`p-2 cursor-pointer ${pageClasses["row-hover"]} border-b ${pageClasses["form-border"]} last:border-b-0`}
+                        >
+                          <div className="flex justify-between items-center">
+                            <div className="flex-1">
+                              <div
+                                className={`flex items-center gap-2 mb-1 ${pageClasses["form-text"]}`}
+                              >
+                                <span className={`text-xs font-semibold `}>
+                                  {user.username}
+                                </span>
+                                {user.code && (
+                                  <span
+                                    className={`text-[10px] px-1.5 py-0.5 ${pageClasses["button-primary-bg"]} rounded`}
+                                  >
+                                    {user.code}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex flex-col gap-0.5 text-[10px]">
+                                {user.email && (
+                                  <span className={pageClasses["label-text"]}>
+                                    {user.email}
+                                  </span>
+                                )}
+                                {user.balance !== undefined && (
+                                  <span
+                                    className={pageClasses["balance-value"]}
+                                  >
+                                    Balance: {currency}{" "}
+                                    {formatNumber(user.balance)}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <User
+                              size={16}
+                              className={pageClasses["form-text"]}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Selected User Info */}
               {selectedUser && (

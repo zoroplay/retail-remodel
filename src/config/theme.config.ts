@@ -3,6 +3,7 @@ import { BASE_STYLES } from "./clients/base";
 import { BETCRUZ_STYLES } from "./clients/betcruz";
 import { BWINNERS_STYLES } from "./clients/bwinners";
 import { MAXBET_STYLES } from "./clients/maxbet";
+import { EVERESTBET_STYLES } from "./clients/everestbet";
 
 export interface ThemeColors {
   // Primary colors
@@ -376,17 +377,6 @@ export interface ThemeClasses {
     "market-title": string;
     "axis-label-text": string;
     "axis-label-bg": string;
-    "odds-button-bg": string;
-    "odds-button-hover": string;
-    "odds-button-text": string;
-    "odds-button-border": string;
-    "odds-button-selected-bg": string;
-    "odds-button-selected-border": string;
-    "odds-button-selected-text": string;
-    "odds-button-selected-hover": string;
-    "odds-button-disabled-bg": string;
-    "odds-button-disabled-text": string;
-    "odds-button-disabled-border": string;
   };
   modal: {
     change_password: {
@@ -478,6 +468,17 @@ export interface ThemeClasses {
   "button-proceed-hover": string;
   "button-proceed-text": string;
   "button-proceed-border": string;
+  "odds-button-bg": string;
+  "odds-button-hover": string;
+  "odds-button-text": string;
+  "odds-button-border": string;
+  "odds-button-selected-bg": string;
+  "odds-button-selected-border": string;
+  "odds-button-selected-text": string;
+  "odds-button-selected-hover": string;
+  "odds-button-disabled-bg": string;
+  "odds-button-disabled-text": string;
+  "odds-button-disabled-border": string;
 }
 
 export interface ClientTheme {
@@ -485,20 +486,33 @@ export interface ClientTheme {
   classes: ThemeClasses;
 }
 
-const getThemeClassesForClient = (clientId: string): ThemeClasses => {
+enum Clients {
+  BETCRUZ = "betcruz",
+  STREETBET = "streetbet",
+  EVERESTBET = "everestbet",
+  BWINNERS = "bwinners",
+  MAXBET = "maxbet",
+  DEFAULT = "default",
+}
+
+const getThemeClassesForClient = (clientId: Clients): ThemeClasses => {
   switch (String(clientId)) {
-    case "3": // Black & Gold theme
+    case Clients.MAXBET: // Black & Gold theme
       return MAXBET_STYLES;
-    case "9": // Black & Gold theme
+    case Clients.STREETBET: // Black & Gold theme
+      return BASE_STYLES;
+    case Clients.BWINNERS: // Black & Gold theme
       return BWINNERS_STYLES;
-    case "10": // Purple & Violet theme
+    case Clients.EVERESTBET: // Purple & Violet theme
+      return EVERESTBET_STYLES;
+    case Clients.BETCRUZ: // Purple & Violet theme
       return BETCRUZ_STYLES;
     default: // Default Deep Blue theme
       return BASE_STYLES;
   }
 };
 
-const buildClientTheme = (clientId: string): ClientTheme => {
+const buildClientTheme = (clientId: Clients): ClientTheme => {
   const themeClasses = getThemeClassesForClient(clientId);
 
   return {
@@ -508,10 +522,12 @@ const buildClientTheme = (clientId: string): ClientTheme => {
 };
 
 const clientThemes: Record<string, ClientTheme> = {
-  "3": buildClientTheme("3"),
-  "9": buildClientTheme("9"),
-  "10": buildClientTheme("10"),
-  default: buildClientTheme("default"),
+  "3": buildClientTheme(Clients.MAXBET),
+  "7": buildClientTheme(Clients.EVERESTBET),
+  "9": buildClientTheme(Clients.BWINNERS),
+  "10": buildClientTheme(Clients.BETCRUZ),
+  "13": buildClientTheme(Clients.STREETBET),
+  default: buildClientTheme(Clients.DEFAULT),
 };
 
 export const getClientTheme = (): ClientTheme => {
@@ -522,6 +538,8 @@ export const getClientTheme = (): ClientTheme => {
       return clientThemes["3"];
     case 9:
       return clientThemes["9"];
+    case 7:
+      return clientThemes["7"];
     case 10:
       return clientThemes["10"];
     default:

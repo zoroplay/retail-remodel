@@ -4,7 +4,13 @@ import { AppHelper } from "@/lib/helper";
 import { apiSlice } from "./constants/api.service";
 import { REQUEST_ACTIONS } from "./constants/request-types";
 import { WALLET_ACTIONS } from "./constants/route";
-import { Bank, TransferFundsResponse } from "./types/responses";
+import {
+  Bank,
+  TransferFundsResponse,
+  ValidateDepositCodeResponse,
+  ValidateWithdrawCodeResponse,
+  WalletBalanceResponse,
+} from "./types/responses";
 import {
   WithdrawVerifyDto,
   WithdrawCreateDto,
@@ -119,6 +125,64 @@ const WalletApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    validateCode: builder.mutation<
+      ValidateWithdrawCodeResponse,
+      { code: string; userRole: string }
+    >({
+      query: ({ code, userRole }) => ({
+        url: AppHelper.buildQueryUrl(WALLET_ACTIONS.VALIDATE_WITHDRAW_CODE, {}),
+        method: REQUEST_ACTIONS.POST,
+        body: {
+          code,
+          userRole,
+        },
+      }),
+    }),
+    validateDepositCode: builder.mutation<
+      ValidateDepositCodeResponse,
+      { code: string; userRole: string }
+    >({
+      query: ({ code, userRole }) => ({
+        url: AppHelper.buildQueryUrl(WALLET_ACTIONS.VALIDATE_DEPOSIT_CODE, {}),
+        method: REQUEST_ACTIONS.POST,
+        body: {
+          code,
+          userRole,
+        },
+      }),
+    }),
+    validateTransfer: builder.mutation<
+      ValidateWithdrawCodeResponse,
+      { request_id: string }
+    >({
+      query: ({ request_id }) => ({
+        url: AppHelper.buildQueryUrl(WALLET_ACTIONS.VALIDATE_TRANSFER, {
+          request_id,
+        }),
+        method: REQUEST_ACTIONS.GET,
+      }),
+    }),
+    validateDepositTransfer: builder.mutation<
+      ValidateWithdrawCodeResponse,
+      { request_id: string }
+    >({
+      query: ({ request_id }) => ({
+        url: AppHelper.buildQueryUrl(WALLET_ACTIONS.VALIDATE_DEPOSIT_TRANSFER, {
+          request_id,
+        }),
+        method: REQUEST_ACTIONS.GET,
+      }),
+    }),
+    walletBalance: builder.mutation<WalletBalanceResponse, { user_id: number }>(
+      {
+        query: ({ user_id }) => ({
+          url: AppHelper.buildQueryUrl(WALLET_ACTIONS.WALLET_BALANCE, {
+            user_id,
+          }),
+          method: REQUEST_ACTIONS.GET,
+        }),
+      }
+    ),
   }),
 });
 
@@ -136,4 +200,10 @@ export const {
   useVerifyBankAccountMutation,
   useBankWithdrawalMutation,
   useTransferFundsMutation,
+
+  useValidateCodeMutation,
+  useValidateTransferMutation,
+  useValidateDepositCodeMutation,
+  useValidateDepositTransferMutation,
+  useWalletBalanceMutation,
 } = WalletApiSlice;
