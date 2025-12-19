@@ -56,6 +56,7 @@ export interface ThemeColors {
 export interface ThemeClasses {
   app_header: {
     "header-gradient": string;
+    "header-secondary-gradient": string;
     "highlight-indicator": string;
     "active-route-indicator": string;
     "inactive-route-indicator": string;

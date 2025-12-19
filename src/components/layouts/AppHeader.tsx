@@ -374,57 +374,61 @@ export const AppHeader: React.FC = ({}) => {
         </div>
       </div>
       <div
-        className={`relative max-w-[75rem] flex gap-2  px-2 py-1 rounded-lg shadow-inner`}
-        data-nav-container
+        className={`${classes.app_header["header-secondary-gradient"]} w-full flex justify-center items-center `}
       >
-        {/* Moving highlight indicator - only show when a nav item is active */}
-        {selected >= 0 && (
-          <div
-            className={`absolute outline-0 top-0 bottom-0 bg-white shadow-lg`}
-            style={{
-              // left: `${getActiveTabPosition()}px`,
-              // width: `${getTabWidth() - 2}px`,
-              // transform: `translateX(${selected * 100}%)`,
-              left: `${getActiveTabPosition()}px`,
-              width: `${getActiveTabWidth()}px`,
-              zIndex: 1,
-              background: classes.app_header["highlight-indicator"],
-              // background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
-              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-              transform: "translateZ(0)", // Force hardware acceleration
-              willChange: "left, width", //
-              clipPath: "polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)",
-            }}
-          />
-        )}
-        {top_nav.map((item, index) => (
-          <Link
-            key={item.name}
-            to={item.href}
-            target={item?.target}
-            className={`relative outline-none flex justify-center items-center h-[32px] uppercase text-xs font-medium py-1 px-2 transition-all duration-300    ${
-              isActive(item.href)
-                ? `${classes.app_header["active-route-indicator"]} z-10`
-                : classes.app_header["inactive-route-indicator"]
-            }`}
-            style={{
-              width: `${getTabWidth()}px`,
-              textAlign: "center",
-            }}
-            tabIndex={0}
-            aria-current={isActive(item.href) ? "page" : undefined}
-            onClick={() => {
-              dispatch(
-                setTournamentDetails({
-                  tournament_id: 11,
-                  sport_id: 1,
-                })
-              );
-            }}
-          >
-            {item.name}
-          </Link>
-        ))}
+        <div
+          className={`relative max-w-[75rem] flex gap-2  px-2 py-1 rounded-lg shadow-inner`}
+          data-nav-container
+        >
+          {/* Moving highlight indicator - only show when a nav item is active */}
+          {selected >= 0 && (
+            <div
+              className={`absolute outline-0 top-0 bottom-0 bg-white shadow-lg`}
+              style={{
+                // left: `${getActiveTabPosition()}px`,
+                // width: `${getTabWidth() - 2}px`,
+                // transform: `translateX(${selected * 100}%)`,
+                left: `${getActiveTabPosition()}px`,
+                width: `${getActiveTabWidth()}px`,
+                zIndex: 1,
+                background: classes.app_header["highlight-indicator"],
+                // background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                transform: "translateZ(0)", // Force hardware acceleration
+                willChange: "left, width", //
+                clipPath: "polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)",
+              }}
+            />
+          )}
+          {top_nav.map((item, index) => (
+            <Link
+              key={item.name}
+              to={item.href}
+              target={item?.target}
+              className={`relative outline-none flex justify-center items-center h-[32px] uppercase text-xs font-medium py-1 px-2 transition-all duration-300    ${
+                isActive(item.href)
+                  ? `${classes.app_header["active-route-indicator"]} z-10`
+                  : classes.app_header["inactive-route-indicator"]
+              }`}
+              style={{
+                width: `${getTabWidth()}px`,
+                textAlign: "center",
+              }}
+              tabIndex={0}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              onClick={() => {
+                dispatch(
+                  setTournamentDetails({
+                    tournament_id: 11,
+                    sport_id: 1,
+                  })
+                );
+              }}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
       </div>
       {/* User Info Panel (Mobile) */}
       {user?.id && (

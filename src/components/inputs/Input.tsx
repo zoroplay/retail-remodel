@@ -101,17 +101,17 @@ const validatePassword = (
 ): { isValid: boolean; message: string } => {
   if (!password) return { isValid: false, message: "Password is required" };
 
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasNumber = /[0-9]/.test(password);
-  const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+  // const hasUpperCase = /[A-Z]/.test(password);
+  // const hasLowerCase = /[a-z]/.test(password);
+  // const hasNumber = /[0-9]/.test(password);
+  // const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
   const isLongEnough = password.length >= 8;
 
   const requirements = [];
-  if (!hasUpperCase) requirements.push("uppercase letter");
-  if (!hasLowerCase) requirements.push("lowercase letter");
-  if (!hasNumber) requirements.push("number");
-  if (!hasSpecialChar) requirements.push("special character");
+  // if (!hasUpperCase) requirements.push("uppercase letter");
+  // if (!hasLowerCase) requirements.push("lowercase letter");
+  // if (!hasNumber) requirements.push("number");
+  // if (!hasSpecialChar) requirements.push("special character");
   if (!isLongEnough) requirements.push("minimum of 8 characters");
 
   if (requirements.length === 0) {

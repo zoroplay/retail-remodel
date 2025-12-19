@@ -39,6 +39,12 @@ export interface PayoutCommissionRequest {
   betId: string;
 }
 
+export interface ChangeUserPassword {
+  clientId: string;
+  password: string;
+  username: string;
+}
+
 export interface CreateUserRequest {
   clientId: number;
   userId: string;

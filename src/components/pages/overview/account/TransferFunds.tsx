@@ -19,6 +19,7 @@ import { showToast } from "@/components/tools/toast";
 import { setUserRerender } from "@/store/features/slice/user.slice";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
 import PaginatedTable from "@/components/common/PaginatedTable";
+import { setRefresh } from "@/store/features/slice/app.slice";
 
 interface TransferFormData {
   fromUserId: number;
@@ -36,6 +37,7 @@ const TransferFunds = () => {
   const pageClasses = classes.user_management_page;
   const { type } = useParams<{ type: string }>();
   const { user } = useAppSelector((state) => state.user);
+  const { app_refresh } = useAppSelector((state) => state.app);
   const [searchText, setSearchText] = useState("");
   const dispatch = useAppDispatch();
   const [sendFund, { isLoading: is_sending, isSuccess }] =
@@ -51,7 +53,11 @@ const TransferFunds = () => {
     action: "deposit",
   });
 
-  const { data, isLoading } = useGetAgentUsersQuery(
+  const {
+    data,
+    isFetching: isLoading,
+    refetch,
+  } = useGetAgentUsersQuery(
     {
       agentId: user?.id || 0,
     },
@@ -59,29 +65,30 @@ const TransferFunds = () => {
       skip: !user?.id,
     }
   );
-  console.log("Agent Users Data: ", data, "@!&*!&@=----", user?.id);
+  useEffect(() => {
+    refetch();
+  }, [app_refresh]);
 
   const users = data?.data || [];
 
   const filteredUsers = users.filter((u) =>
     u.username.toLowerCase().includes(searchText.toLowerCase())
   );
-  useEffect(() => {
-    if (isSuccess) {
-      setFormData({
-        fromUserId: user?.id || 0,
-        fromUsername: user?.username || "",
-        toUsername: "",
-        toUserId: 0,
-        amount: "",
-        description:
-          type === "internal" ? "" : `Credit to user ${user?.username}`,
-        type: type === "internal" ? "internal" : "external",
-        action: "deposit",
-      });
-    }
-    dispatch(setUserRerender());
-  }, [isSuccess]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     setFormData({
+  //       fromUserId: user?.id || 0,
+  //       fromUsername: user?.username || "",
+  //       toUsername: "",
+  //       toUserId: 0,
+  //       amount: "",
+  //       description:
+  //         type === "internal" ? "" : `Credit to user ${user?.username}`,
+  //       type: type === "internal" ? "internal" : "external",
+  //       action: "deposit",
+  //     });
+  //   }
+  // }, [isSuccess]);
   const handleTransfer = (targetUser: any, isWithdraw: boolean) => {
     if (isWithdraw) {
       // Withdraw from selected user to current user
@@ -137,11 +144,30 @@ const TransferFunds = () => {
         type: type === "internal" ? "internal" : "external",
         action: "deposit",
       }).unwrap();
-
-      showToast({
-        type: "success",
-        title: "Transaction was completed successfully",
-      });
+      if (response.success) {
+        showToast({
+          type: "success",
+          title: "Transaction was completed successfully",
+        });
+        setFormData({
+          fromUserId: user?.id || 0,
+          fromUsername: user?.username || "",
+          toUsername: "",
+          toUserId: 0,
+          amount: "",
+          description:
+            type === "internal" ? "" : `Credit to user ${user?.username}`,
+          type: type === "internal" ? "internal" : "external",
+          action: "deposit",
+        });
+        dispatch(setRefresh());
+        dispatch(setUserRerender());
+      } else {
+        showToast({
+          type: "error",
+          title: response.message || "Transaction failed",
+        });
+      }
     } catch (error: any) {
       showToast({
         type: "error",

@@ -11,6 +11,7 @@ import type {
   PayoutCommissionRequest,
   DepositCommissionRequest,
   CreateUserRequest,
+  ChangeUserPassword,
 } from "./types/requests";
 import type {
   CommissionTransactionsResponse,
@@ -224,6 +225,13 @@ const UserApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    changeUserPassword: builder.mutation<any, ChangeUserPassword>({
+      query: (body) => ({
+        url: AppHelper.buildQueryUrl(USER_ACTIONS.CHANGE_USER_PASSWORD, {}),
+        method: REQUEST_ACTIONS.PUT,
+        body,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -244,4 +252,6 @@ export const {
   useSuperAgentCommissionQuery,
   useTotalSuperAgentCommissionQuery,
   useCreateUserMutation,
+
+  useChangeUserPasswordMutation,
 } = UserApiSlice;

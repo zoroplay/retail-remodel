@@ -4,6 +4,9 @@ import Input from "../../inputs/Input";
 import { toast } from "sonner";
 import Modal from "../Modal";
 import { getClientTheme } from "@/config/theme.config";
+import { useChangeUserPasswordMutation } from "@/store/services/user.service";
+import { showToast } from "@/components/tools/toast";
+import environmentConfig from "@/store/services/configs/environment.config";
 
 interface ChangePasswordForm {
   oldPassword: string;
@@ -18,55 +21,78 @@ type Props = {
 const ChangePasswordModal = ({ onClose }: Props) => {
   const { classes } = getClientTheme();
   const modalClasses = classes.modal.change_password;
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const [isLoading, setIsLoading] = useState(false);
+  const searchParams = new URLSearchParams(window.location.search);
+  const [ref, _] = useState<string | null>(searchParams.get("ref"));
+
   const [passwordForm, setPasswordForm] = useState<ChangePasswordForm>({
     oldPassword: "",
     password: "",
     confPassword: "",
   });
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [changeUserPassword, { isLoading }] = useChangeUserPasswordMutation();
+
+  const handlePasswordChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     setPasswordForm({ ...passwordForm, [name]: value });
   };
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validation
-    if (!passwordForm.oldPassword || passwordForm.oldPassword.length < 3) {
-      toast.error("Enter your old password (min 3 characters)");
+    if (
+      !ref &&
+      (!passwordForm.oldPassword || passwordForm.oldPassword.length < 3)
+    ) {
+      setErrors({
+        ...errors,
+        oldPassword: "Enter your old password (min 3 characters)",
+      });
+      console.log("oldPassword here");
       return;
     }
 
     if (!passwordForm.password || passwordForm.password.length < 3) {
-      toast.error("Enter a new password (min 3 characters)");
+      setErrors((prev) => ({
+        ...prev,
+        password: "Enter a new password (min 3 characters)",
+      }));
+      console.log("password here");
       return;
     }
 
     if (passwordForm.password !== passwordForm.confPassword) {
-      toast.error("Passwords must match");
+      setErrors((prev) => ({
+        ...prev,
+        password: "Passwords must match",
+        confPassword: "Passwords must match",
+      }));
+      console.log("confPassword here");
+      //
+
       return;
     }
 
-    setIsLoading(true);
-
     // TODO: Replace with actual API call
-    // changePassword(passwordForm).then(res => {
-    //   if (res.success) {
-    //     toast.success("Password changed successfully");
-    //     onClose();
-    //     // Redirect to login
-    //   }
-    // })
+    const response = await changeUserPassword({
+      clientId: environmentConfig.CLIENT_ID,
+      password: passwordForm.password,
+      username: ref ?? "",
+    }).unwrap();
 
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Password changed successfully. Please login again.");
+    if (response.success) {
+      showToast({
+        type: "success",
+        title: "Password changed successfully. Please login again.",
+      });
       onClose();
       setPasswordForm({ oldPassword: "", password: "", confPassword: "" });
-    }, 1500);
+    }
   };
 
   return (
@@ -87,6 +113,7 @@ const ChangePasswordModal = ({ onClose }: Props) => {
           </button>
           <button
             type="submit"
+            form="change-password-form"
             disabled={isLoading}
             className={`flex-1 px-4 py-2 ${classes["button-primary-bg"]} ${classes["button-primary-border"]} ${classes["button-primary-hover"]} ${classes["button-primary-text"]} shadow text-[11px] font-medium rounded-md transition-all rounded-l-none disabled:opacity-50 disabled:cursor-not-allowed`}
           >
@@ -115,7 +142,11 @@ const ChangePasswordModal = ({ onClose }: Props) => {
         </div>
 
         {/* Modal Body */}
-        <form onSubmit={handlePasswordSubmit} className="pt-2">
+        <form
+          id="change-password-form"
+          onSubmit={handlePasswordSubmit}
+          className="pt-2"
+        >
           <div
             className={`${modalClasses["info-box-bg"]} border ${modalClasses["info-box-border"]} rounded-lg p-2 mb-4`}
           >
@@ -126,19 +157,22 @@ const ChangePasswordModal = ({ onClose }: Props) => {
           </div>
 
           <div className="space-y-3">
-            <Input
-              label="Current Password"
-              name="oldPassword"
-              type="password"
-              value={passwordForm.oldPassword}
-              onChange={handlePasswordChange}
-              placeholder="Enter current password"
-              required
-              bg_color={classes["input-bg"]}
-              border_color={classes["input-border"]}
-              text_color={classes["input-text"]}
-              password
-            />
+            {!ref && (
+              <Input
+                label="Current Password"
+                name="oldPassword"
+                type="password"
+                value={passwordForm.oldPassword}
+                onChange={handlePasswordChange}
+                placeholder="Enter current password"
+                required
+                bg_color={classes["input-bg"]}
+                border_color={classes["input-border"]}
+                text_color={classes["input-text"]}
+                password
+                error={errors?.oldPassword}
+              />
+            )}
 
             <Input
               label="New Password"
@@ -152,6 +186,7 @@ const ChangePasswordModal = ({ onClose }: Props) => {
               border_color={classes["input-border"]}
               text_color={classes["input-text"]}
               password
+              error={errors?.password}
             />
 
             <Input
@@ -166,6 +201,7 @@ const ChangePasswordModal = ({ onClose }: Props) => {
               border_color={classes["input-border"]}
               text_color={classes["input-text"]}
               password
+              error={errors?.confPassword}
             />
           </div>
 

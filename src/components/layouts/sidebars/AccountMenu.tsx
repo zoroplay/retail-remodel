@@ -78,12 +78,24 @@ const AccountMenu = (props: Props) => {
         //   href: ACCOUNT.ONLINE_REPORT,
         //   icon: <BarChart3 size={16} />,
         // },
-        { name: "Deposit", href: ACCOUNT.DEPOSIT, icon: <Plus size={16} /> },
-        { name: "Withdraw", href: ACCOUNT.WITHDRAW, icon: <Minus size={16} /> },
+        ...(USER_ROLES.CASHIER !== user?.role
+          ? [
+              {
+                name: "Deposit",
+                href: ACCOUNT.DEPOSIT,
+                icon: <Plus size={16} />,
+              },
+              {
+                name: "Withdraw",
+                href: ACCOUNT.WITHDRAW,
+                icon: <Minus size={16} />,
+              },
+            ]
+          : []),
       ],
     },
     {
-      title: "POS",
+      title: "PDR",
       color: "bg-blue-600",
       items: [
         ...(USER_ROLES.CASHIER === user?.role || USER_ROLES.SHOP === user?.role
@@ -95,16 +107,20 @@ const AccountMenu = (props: Props) => {
               },
             ]
           : []),
-        {
-          name: "User List",
-          href: ACCOUNT.USER_LIST,
-          icon: <Users size={16} />,
-        },
-        {
-          name: "Transfer Funds to Cashier",
-          href: ACCOUNT.TRANSFER_TO_CASHIER,
-          icon: <ArrowRightLeft size={16} />,
-        },
+        ...(USER_ROLES.CASHIER !== user?.role
+          ? [
+              {
+                name: "User List",
+                href: ACCOUNT.USER_LIST,
+                icon: <Users size={16} />,
+              },
+              {
+                name: "Transfer Funds to Cashier",
+                href: ACCOUNT.TRANSFER_TO_CASHIER,
+                icon: <ArrowRightLeft size={16} />,
+              },
+            ]
+          : []),
         {
           name: "Transfer Funds to Player",
           href: ACCOUNT.TRANSFER_TO_PLAYER,
@@ -112,24 +128,32 @@ const AccountMenu = (props: Props) => {
         },
       ],
     },
-    {
-      title: "Reports",
-      color: "bg-green-600",
-      items: [
-        {
-          name: "Commissions",
-          href: ACCOUNT.COMMISSIONS,
-          icon: <Percent size={16} />,
-        },
-        { name: "Sales", href: ACCOUNT.SALES, icon: <TrendingUp size={16} /> },
-        { name: "Bonus", href: ACCOUNT.BONUS, icon: <Gift size={16} /> },
-        // {
-        //   name: "Credit & Liability",
-        //   href: ACCOUNT.CREDIT_LIABILITY,
-        //   icon: <Shield size={16} />,
-        // },
-      ],
-    },
+    ...(USER_ROLES.CASHIER !== user?.role
+      ? [
+          {
+            title: "Reports",
+            color: "bg-green-600",
+            items: [
+              {
+                name: "Commissions",
+                href: ACCOUNT.COMMISSIONS,
+                icon: <Percent size={16} />,
+              },
+              {
+                name: "Sales",
+                href: ACCOUNT.SALES,
+                icon: <TrendingUp size={16} />,
+              },
+              { name: "Bonus", href: ACCOUNT.BONUS, icon: <Gift size={16} /> },
+              // {
+              //   name: "Credit & Liability",
+              //   href: ACCOUNT.CREDIT_LIABILITY,
+              //   icon: <Shield size={16} />,
+              // },
+            ],
+          },
+        ]
+      : []),
     // {
     //   title: "Settings",
     //   color: "bg-gray-600",

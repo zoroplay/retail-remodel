@@ -3,9 +3,13 @@ import { ThemeClasses } from "../theme.config";
 export const BETCRUZ_STYLES: ThemeClasses = {
   app_header: {
     "highlight-indicator": "linear-gradient(135deg, #EA3C00 0%, #FEA352 100%)",
-    "header-gradient":
+    "header-gradient": "bg-white",
+    // "header-gradient":
+    //   "bg-gradient-to-r from-[#894824] via-[#884816] to-[#894824]",
+    "header-secondary-gradient":
       "bg-gradient-to-r from-[#894824] via-[#884816] to-[#894824]",
     "active-route-indicator": "text-white",
+    // "inactive-route-indicator": "text-[#884816]",
     "inactive-route-indicator": "text-white",
     divider: "bg-[#FEA352]",
     "login-button-bg": "bg-[#EA3C00]",

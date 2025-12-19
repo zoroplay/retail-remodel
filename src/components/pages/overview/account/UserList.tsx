@@ -19,6 +19,8 @@ import SingleSearchInput from "@/components/inputs/SingleSearchInput";
 import { getClientTheme } from "@/config/theme.config";
 import PaginatedTable from "@/components/common/PaginatedTable";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
+import { MODAL_COMPONENTS } from "@/store/features/types/modal.types";
+import { useModal } from "@/hooks/useModal";
 
 interface UserData {
   id: number;
@@ -48,6 +50,7 @@ const UserList = () => {
       skip: !user?.id,
     }
   );
+  const { openModal } = useModal();
   const users = Array.isArray(data?.data) ? data?.data : [];
   console.log("UserList data:", users);
 
@@ -321,6 +324,13 @@ const UserList = () => {
                       <Eye size={14} />
                     </button>
                     <button
+                      onClick={() =>
+                        openModal({
+                          modal_name: MODAL_COMPONENTS.CHANGE_PASSWORD,
+                          title: "Change Password",
+                          ref: row?.username,
+                        })
+                      }
                       className={`p-1.5 ${pageClasses["badge-withdraw-bg"]} ${pageClasses["row-hover"]} ${pageClasses["badge-withdraw-text"]} rounded transition-colors`}
                       title="Change Password"
                     >
