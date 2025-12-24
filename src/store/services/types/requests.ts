@@ -44,6 +44,12 @@ export interface ChangeUserPassword {
   password: string;
   username: string;
 }
+export interface GetRetailDataRequest {
+  clientId: number;
+  agentId: number;
+  from: string;
+  to: string;
+}
 
 export interface CreateUserRequest {
   clientId: number;

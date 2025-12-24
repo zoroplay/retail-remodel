@@ -445,4 +445,10 @@ export const BETCRUZ_STYLES: ThemeClasses = {
   "odds-button-disabled-bg": "bg-gray-400/50",
   "odds-button-disabled-text": "text-gray-700",
   "odds-button-disabled-border": "border-gray-400",
+
+  "top-bets-bg": "bg-white",
+  "top-bets-border": "border-[#EA3C00]/20",
+  "top-bets-text-primary": "text-[#884816]",
+  "top-bets-text-secondary": "text-[#884816]/70",
+  "top-bets-hover": "hover:bg-gray-100",
 };

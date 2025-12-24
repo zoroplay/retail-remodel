@@ -40,6 +40,7 @@ import LiveOverviewScreen from "./components/pages/overview/LiveOverview";
 import Withdraw from "./components/pages/overview/account/Withdraw";
 import PoolOverviewScreen from "./components/pages/overview/PoolOverview";
 import { USER_ROLES } from "./data/enums/enum";
+import OnlineReport from "./components/pages/overview/account/OnlineReport";
 
 // Route constants
 
@@ -269,6 +270,14 @@ function App() {
                 element={
                   <AccountLayout>
                     <OnlineDepositPage />
+                  </AccountLayout>
+                }
+              />
+              <Route
+                path={ACCOUNT.ONLINE_REPORT}
+                element={
+                  <AccountLayout>
+                    <OnlineReport />
                   </AccountLayout>
                 }
               />

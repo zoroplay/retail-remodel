@@ -18,6 +18,8 @@ const CashDeskSlice = createSlice({
       state,
       { payload }: PayloadAction<{ event_id: string }>
     ) => {
+      if (state.form_data.length <= 1)
+        state.form_data = [initialCashDeskFormData];
       state.form_data = state.form_data.filter(
         (item) => item.eventId !== payload.event_id
       );

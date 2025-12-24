@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -46,7 +47,6 @@ import {
 } from "@/store/features/slice/fixtures.slice";
 import { BET_TYPES_ENUM, MARKET_SECTION, USER_ROLES } from "@/data/enums/enum";
 import { FixturesSkeletonCard } from "@/components/skeletons/OutComesSkeleton";
-import FixtureItem from "@/components/bets/FixtureItem";
 import FixtureCard from "@/components/bets/FixtureCard";
 import { getFirebaseLeagueImage } from "@/assets/images";
 
@@ -74,7 +74,7 @@ const FixtureDisplay = forwardRef<
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`${sportsPageClasses["card-bg"]} border ${sportsPageClasses["card-border"]} shadow-2xl overflow-hidden rounded-lg`}
+      className={`${sportsPageClasses["card-bg"]} border ${sportsPageClasses["card-border"]} shadow-md hover:shadow-xl transition-all duration-200 overflow-hidden rounded-lg`}
     >
       <div
         className={`p-1 flex items-center justify-end ${sportsPageClasses["header-bg"]} border-b ${sportsPageClasses["header-border"]}`}
@@ -131,29 +131,36 @@ const LoadBetsPage = () => {
   // Initialize theme
   const { classes } = getClientTheme();
   const cashdeskClasses = classes.cashdesk_page;
-  const { data: data_top_bets, isLoading: is_top_bets_loading } =
-    useTopBetsQuery();
+  const {
+    data: data_top_bets,
+    isLoading: is_top_bets_loading,
+    isSuccess: is_success,
+  } = useTopBetsQuery();
   const top_bets = Array.isArray(data_top_bets?.data) ? data_top_bets.data : [];
-  // Add betType state
-  const [betType, setBetType] = useState<BET_TYPES_ENUM>(
-    BET_TYPES_ENUM.MULTIPLE
+  const top_bet = top_bets.find(
+    (bet) => bet?.sportName.toLowerCase() === "soccer"
   );
+  const tournamentId = useMemo(
+    () => String(top_bet?.tournamentID),
+    [, top_bet?.tournamentID]
+  );
+
+  const sportId = useMemo(() => String(top_bet?.sportID), [top_bet?.sportID]);
+
+  useEffect(() => {
+    if (is_success && top_bet) {
+      handleTopBetsPress({ tournament_id: tournamentId, sport_id: sportId });
+    }
+  }, [is_success]);
   const dispatch = useAppDispatch();
-  const [bookingNumber, setBookingNumber] = useState("");
-  const [couponCode, setCouponCode] = useState("");
-  const [quickBetEntries, setQuickBetEntries] = useState<any[]>([]); // Track items in quick bet entry
   const { global_variables } = useAppSelector((state) => state.app);
   const { form_data } = useAppSelector((state) => state.cashdesk);
   const { cashdesk_fixtures } = useAppSelector((state) => state.fixtures);
   const [fetchFixture] = useLazyFixturesQuery();
 
-  const [eventId, setEventId] = useState("");
-
   const addForm = () => {
     dispatch(addCashDeskItem());
   };
-
-  const smartCodeInputRef = React.useRef<HTMLInputElement>(null);
 
   const [isFormLoading, setIsFormLoading] = useState(false);
   const {
@@ -175,9 +182,6 @@ const LoadBetsPage = () => {
     confirmBet,
     cancelBet,
     canPlaceBet,
-
-    // InsufficientBalanceModalComponent,
-    // SuccessModalComponent,
   } = usePlaceBet();
 
   const [
@@ -213,7 +217,6 @@ const LoadBetsPage = () => {
     const run = async () => {
       // setFormData([]);
       try {
-        // Otherwise, map the coupon selections
         const updatedSelections = await Promise.all(
           couponSelections.map(async (sel) => {
             const newQueryParams = {
@@ -227,8 +230,6 @@ const LoadBetsPage = () => {
             const result = (await getFixture(
               newQueryParams
             )) as unknown as FetchFixtureResponse;
-            // console.log("Fetched Fixture for Quick Bet:", fixturesData);
-            console.log("Fetched Fixture for Quick Bet:", result.data);
 
             const res: CashDeskFormData = {
               eventId: sel.game?.event_id?.toString() || "",
@@ -257,15 +258,49 @@ const LoadBetsPage = () => {
     };
     run();
   }, []);
-  // MQTT for tracking odds changes on selected bets
   const { subscribe } = useMqtt();
   const [oddsChangeNotifications, setOddsChangeNotifications] = useState<any[]>(
     []
   );
 
-  // Get fixtures from the store (populated by the query)
-  const [findBet, { isLoading: isFindingBet }] = useFindBetMutation();
-  const [findCoupon, { isLoading: isFindingCoupon }] = useFindCouponMutation();
+  const handleTopBetsPress = useCallback(
+    ({
+      tournament_id,
+      sport_id,
+    }: {
+      tournament_id: string;
+      sport_id: string;
+    }) => {
+      dispatch(setCashDeskLoading());
+
+      fetchFixture({
+        tournament_id: String(tournament_id),
+        sport_id: String(sport_id),
+        period: "all",
+        markets: [
+          String(MARKET_SECTION.ONE_X_TWO),
+          String(MARKET_SECTION.DOUBLE_CHANCE),
+          String(MARKET_SECTION.OVER_UNDER),
+          String(MARKET_SECTION.TENNIS_WINNER),
+          String(MARKET_SECTION.NFL_ONE_X_TWO),
+          String(MARKET_SECTION.NFL_HSH),
+        ],
+        specifier: "",
+      })
+        .unwrap()
+        .then((response) => {
+          dispatch(
+            addCashDeskFixtures({
+              fixtures: (response?.fixtures ??
+                []) as unknown as PreMatchFixture[],
+              selectedMarket: response?.selectedMarket || [],
+              sport_id: Number(sport_id) || 0,
+            })
+          );
+        });
+    },
+    []
+  );
 
   // Subscribe to odds changes for selected bets
   useEffect(() => {
@@ -358,47 +393,6 @@ const LoadBetsPage = () => {
     });
   };
 
-  const fetchFixtureData = async (eventId: string) => {
-    setIsFormLoading(true);
-    console.log("Fetching fixture data for event ID:", eventId);
-    try {
-      const newQueryParams = {
-        tournament_id: eventId,
-        sport_id: "1",
-        period: "all",
-        markets: ["1", "10", "18"],
-        specifier: "",
-      };
-
-      const result = await getFixture(newQueryParams);
-    } catch (error) {
-      console.error("Error fetching fixture:", error);
-      setIsFormLoading(false);
-    }
-  };
-
-  const handleCheckCoupon = async () => {
-    if (!couponCode.trim()) {
-      console.log("Please enter a coupon code");
-      return;
-    }
-
-    try {
-      const result = await findCoupon({
-        betslipId: couponCode,
-        clientId: getEnvironmentVariable(
-          ENVIRONMENT_VARIABLES.CLIENT_ID
-        ) as unknown as string,
-      });
-      console.log("Check coupon code:", result);
-    } catch (error) {
-      console.error("Error checking coupon:", error);
-    }
-  };
-
-  const theme = "dark";
-
-  // Ref for FixtureDisplay
   const fixtureDisplayRef = useRef<HTMLDivElement>(null);
 
   // Scroll to FixtureDisplay when fixtures appear
@@ -410,7 +404,6 @@ const LoadBetsPage = () => {
       });
     }
   }, [cashdesk_fixtures.fixtures.length]);
-  console.log("top_bets", top_bets);
   return (
     <div
       className={`px-4 flex flex-col gap-4 pb-8 text-white h-[calc(100vh-100px)] overflow-y-auto relative ${cashdeskClasses["container-bg"]}`}
@@ -421,7 +414,7 @@ const LoadBetsPage = () => {
           <section className="flex-1">
             {/* Event Details Form - Modern Betting Platform Design */}
             <div
-              className={`${classes.sports_page["card-bg"]} border ${classes.sports_page["card-border"]} rounded-md shadow-2xl overflow-hidden mb-1`}
+              className={`${classes.sports_page["card-bg"]} border ${classes.sports_page["card-border"]} transition-all duration-300 rounded-md shadow-md hover:shadow-xl overflow-hidden mb-1`}
             >
               {/* Header */}
               <div
@@ -856,36 +849,11 @@ const LoadBetsPage = () => {
                 {top_bets.map((top, index) => (
                   <div
                     key={index}
-                    className={`flex-shrink-0 rounded-md shadow-lg p-2 flex flex-col items-center ${classes.transactions_page["row-hover"]} cursor-pointer transition-transform duration-200 min-w-[180px] max-w-xs ${classes.sports_page["card-bg"]} border ${classes.sports_page["card-border"]} `}
-                    onClick={() => {
-                      dispatch(setCashDeskLoading());
-
-                      fetchFixture({
-                        tournament_id: String(top.tournamentID!),
-                        sport_id: String(top.sportID),
-                        period: "all",
-                        markets: [
-                          String(MARKET_SECTION.ONE_X_TWO),
-                          String(MARKET_SECTION.DOUBLE_CHANCE),
-                          String(MARKET_SECTION.OVER_UNDER),
-                          String(MARKET_SECTION.TENNIS_WINNER),
-                          String(MARKET_SECTION.NFL_ONE_X_TWO),
-                          String(MARKET_SECTION.NFL_HSH),
-                        ],
-                        specifier: "",
-                      })
-                        .unwrap()
-                        .then((response) => {
-                          dispatch(
-                            addCashDeskFixtures({
-                              fixtures: (response?.fixtures ??
-                                []) as unknown as PreMatchFixture[],
-                              selectedMarket: response?.selectedMarket || [],
-                              sport_id: Number(top.sportID) || 0,
-                            })
-                          );
-                        });
-                    }}
+                    className={`flex-shrink-0 rounded-md shadow-md hover:shadow-lg p-2 flex flex-col items-center ${classes["top-bets-hover"]} transition-all duration-300 cursor-pointer  min-w-[180px] max-w-xs ${classes["top-bets-bg"]} border ${classes["top-bets-border"]} `}
+                    onClick={handleTopBetsPress.bind(null, {
+                      tournament_id: String(top.tournamentID!),
+                      sport_id: String(top.sportID!),
+                    })}
                   >
                     <div className="w-20 h-20 min-w-20 mb-2 flex items-center justify-center  rounded-lg overflow-hidden">
                       <img
@@ -898,12 +866,12 @@ const LoadBetsPage = () => {
                       />
                     </div>
                     <span
-                      className={`text-xs ${classes["text-primary"]} text-opacity-70 font-semibold mb-1 text-center truncate w-full`}
+                      className={`text-xs ${classes["top-bets-text-secondary"]} font-semibold mb-1 text-center truncate w-full`}
                     >
                       {top.categoryName || top.sportName || ""}
                     </span>
                     <span
-                      className={`text-xs font-bold text-center  truncate w-full ${classes["text-primary"]}`}
+                      className={`text-xs font-bold text-center  truncate w-full ${classes["top-bets-text-primary"]}`}
                     >
                       {top.tournamentName}
                     </span>

@@ -41,7 +41,7 @@ const PaginatedTable: React.FC<PaginatedTableProps> = ({
   isLoading = false,
   pagination,
   className,
-  bodyClassName = `shadow-lg border rounded-md ${classes.sports_page["card-border"]}`,
+  bodyClassName = `shadow-md border rounded-md ${classes.sports_page["card-border"]}`,
 }) => {
   let base_styles = "";
   if (className) {

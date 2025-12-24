@@ -53,7 +53,7 @@ const FixtureItem = ({ fixture, selectedMarkets }: Props) => {
       } border-b !${sportsPageClasses["card-border"].replace(
         "border-",
         "border-b-"
-      )}`}
+      )} h-full`}
     >
       {/* Time */}
       <div
@@ -73,7 +73,7 @@ const FixtureItem = ({ fixture, selectedMarkets }: Props) => {
       </div>
 
       {/* Match Info */}
-      <div className="col-span-6 flex flex-col justify-center">
+      <div className="col-span-6 flex flex-col justify-center pl-2">
         {/* <div
           className={`text-[10px] ${sportsPageClasses["match-tournament-text"]} mb-1`}
         >

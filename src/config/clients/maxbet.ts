@@ -11,6 +11,7 @@ export const MAXBET_STYLES: ThemeClasses = {
     "login-button-bg": "bg-red-600",
     "login-button-hover": "hover:bg-red-700",
     "login-button-text": "text-white",
+    "header-secondary-gradient": "",
   },
   sports_sidebar: {
     "main-bg": "bg-[#161616]",
@@ -439,4 +440,10 @@ export const MAXBET_STYLES: ThemeClasses = {
   "odds-button-disabled-bg": "bg-gray-100/90",
   "odds-button-disabled-text": "text-gray-800",
   "odds-button-disabled-border": "border-gray-400",
+
+  "top-bets-bg": "bg-white",
+  "top-bets-border": "border-gray-300",
+  "top-bets-text-primary": "text-gray-700",
+  "top-bets-text-secondary": "text-gray-500",
+  "top-bets-hover": "hover:bg-gray-100",
 };

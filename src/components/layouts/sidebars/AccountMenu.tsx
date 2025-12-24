@@ -25,7 +25,7 @@ import {
 import { getClientTheme } from "@/config/theme.config";
 import { USER_ROLES } from "@/data/enums/enum";
 import { useAppSelector } from "@/hooks/useAppDispatch";
-import { IoCard } from "react-icons/io5";
+import { TbReportAnalytics } from "react-icons/tb";
 
 interface MenuSection {
   title: string;
@@ -80,6 +80,11 @@ const AccountMenu = (props: Props) => {
         // },
         ...(USER_ROLES.CASHIER !== user?.role
           ? [
+              {
+                name: "Online Report",
+                href: ACCOUNT.ONLINE_REPORT,
+                icon: <TbReportAnalytics fontSize={16} />,
+              },
               {
                 name: "Deposit",
                 href: ACCOUNT.DEPOSIT,

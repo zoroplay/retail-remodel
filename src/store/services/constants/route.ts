@@ -85,6 +85,7 @@ export const USER_ACTIONS = {
   CREATE_USER: "/retail/create-user",
 
   CHANGE_USER_PASSWORD: "/admin/users/change-password",
+  USER_RETAIL_DATA: "user/wallet/list-retail-data",
 };
 export const WALLET_ACTIONS = {
   GET_PAYMENT_METHODS: "/user/wallet/:client_id/payment-methods",

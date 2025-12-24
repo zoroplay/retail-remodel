@@ -88,7 +88,7 @@ export const BASE_STYLES: ThemeClasses = {
     "date-separator-border": "border-slate-700/40",
     "time-text": "text-gray-500",
     "time-text-live": "text-green-600",
-    "time-border": "border-gray-500",
+    "time-border": "border-gray-300",
     "match-tournament-text": "text-gray-500",
     "match-team-text": "text-gray-700",
     "score-text": "text-green-400",
@@ -439,4 +439,10 @@ export const BASE_STYLES: ThemeClasses = {
   "odds-button-disabled-bg": "bg-gray-800/50",
   "odds-button-disabled-text": "text-gray-500",
   "odds-button-disabled-border": "border-gray-700",
+
+  "top-bets-bg": "bg-white",
+  "top-bets-border": "border-gray-300",
+  "top-bets-text-primary": "text-gray-700",
+  "top-bets-text-secondary": "text-gray-500",
+  "top-bets-hover": "hover:bg-gray-100",
 };

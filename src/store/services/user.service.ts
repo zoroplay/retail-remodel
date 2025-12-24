@@ -12,6 +12,7 @@ import type {
   DepositCommissionRequest,
   CreateUserRequest,
   ChangeUserPassword,
+  GetRetailDataRequest,
 } from "./types/requests";
 import type {
   CommissionTransactionsResponse,
@@ -232,6 +233,13 @@ const UserApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    userRetailData: builder.query<any, GetRetailDataRequest>({
+      query: (body) => ({
+        url: AppHelper.buildQueryUrl(USER_ACTIONS.USER_RETAIL_DATA, {}),
+        method: REQUEST_ACTIONS.POST,
+        body,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -254,4 +262,6 @@ export const {
   useCreateUserMutation,
 
   useChangeUserPasswordMutation,
+
+  useUserRetailDataQuery,
 } = UserApiSlice;

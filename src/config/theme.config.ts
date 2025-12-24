@@ -210,7 +210,6 @@ export interface ThemeClasses {
     "secondary-button": string;
     "secondary-button-hover": string;
   };
-
   coupon_details: {
     "section-bg": string;
     "section-border": string;
@@ -480,6 +479,12 @@ export interface ThemeClasses {
   "odds-button-disabled-bg": string;
   "odds-button-disabled-text": string;
   "odds-button-disabled-border": string;
+
+  "top-bets-bg": string;
+  "top-bets-border": string;
+  "top-bets-text-primary": string;
+  "top-bets-text-secondary": string;
+  "top-bets-hover": string;
 }
 
 export interface ClientTheme {

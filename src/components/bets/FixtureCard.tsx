@@ -3,6 +3,7 @@ import { PreMatchFixture } from "@/store/features/types/fixtures.types";
 import React from "react";
 import FixtureItem from "./FixtureItem";
 import { SelectedMarket } from "@/data/types/betting.types";
+import { TfiLineDouble } from "react-icons/tfi";
 
 type Props = {
   fixtures: PreMatchFixture[];
@@ -43,7 +44,7 @@ const FixtureCard = ({ fixtures, selectedMarkets }: Props) => {
         )
       ).map(([date, tournaments]) => (
         <div key={date}>
-          <div
+          {/* <div
             className={`${sportsPageClasses["date-separator-bg"]} px-6 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
           >
             <h3
@@ -51,14 +52,24 @@ const FixtureCard = ({ fixtures, selectedMarkets }: Props) => {
             >
               {date}
             </h3>
-          </div>
+          </div> */}
           {Object.entries(tournaments).map(([tournamentKey, fixtures]) => {
             const [category, tournament] = tournamentKey.split("|||");
             return (
               <div key={tournamentKey} className="">
                 <div
-                  className={`${sportsPageClasses["date-separator-bg"]} px-8 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
+                  className={`${sportsPageClasses["date-separator-bg"]} px-8 py-1 border-b ${sportsPageClasses["date-separator-border"]} flex justify-start items-center gap-2 mb-1`}
                 >
+                  <h3
+                    className={`${sportsPageClasses["date-separator-text"]} font-medium text-[11px] uppercase tracking-wide`}
+                  >
+                    {date}
+                  </h3>{" "}
+                  <div
+                    className={`${sportsPageClasses["date-separator-text"]} rotate-90`}
+                  >
+                    <TfiLineDouble />
+                  </div>
                   <h4
                     className={`${sportsPageClasses["date-separator-text"]} font-medium text-[10px] uppercase tracking-wide`}
                   >
