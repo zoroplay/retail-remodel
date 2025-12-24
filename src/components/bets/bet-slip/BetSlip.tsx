@@ -113,6 +113,7 @@ const BetSlip = (props: Props) => {
                 bonus_list: [],
               });
             });
+            updateStake({ stake: Number(result.data.data.stake) });
 
             showToast({
               type: "success",

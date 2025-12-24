@@ -14,6 +14,8 @@ import {
   useFetchFixturesMutation,
   useFindBetMutation,
   useFindCouponMutation,
+  useLazyFixturesQuery,
+  useTopBetsQuery,
 } from "../../../store/services/bets.service";
 import { usePlaceBet } from "../../../hooks/usePlaceBet";
 import { AppHelper } from "../../../lib/helper";
@@ -23,10 +25,7 @@ import environmentConfig, {
 } from "../../../store/services/configs/environment.config";
 import { Check, ChevronRight, Grid, X } from "lucide-react";
 import Spinner from "../../layouts/Spinner";
-import NavigationBar from "../../layouts/CDNavigationBar";
-import SingleSearchInput from "@/components/inputs/SingleSearchInput";
 import Input from "@/components/inputs/Input";
-import { MODAL_COMPONENTS, SelectedBet } from "@/store/features/types";
 import { FetchFixtureResponse } from "@/store/services/data/betting.types";
 import { useModal } from "@/hooks/useModal";
 import QuickBets from "@/components/bets/QuickBets";
@@ -34,19 +33,22 @@ import { getClientTheme } from "@/config/theme.config";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import {
   addCashDeskItem,
-  clearCashDeskItems,
   setFormData,
 } from "@/store/features/slice/cashdesk.slice";
 import { CashDeskFormData } from "@/store/features/types/cashdesk.types";
 import CurrencyFormatter from "@/components/inputs/CurrencyFormatter";
 import { PreMatchFixture } from "@/store/features/types/fixtures.types";
 import { Fixture, SelectedMarket } from "@/data/types/betting.types";
-import { removeCashDeskFixture } from "@/store/features/slice/fixtures.slice";
-import OddsButton from "@/components/buttons/OddsButton";
+import {
+  addCashDeskFixtures,
+  removeCashDeskFixture,
+  setCashDeskLoading,
+} from "@/store/features/slice/fixtures.slice";
 import { BET_TYPES_ENUM, MARKET_SECTION, USER_ROLES } from "@/data/enums/enum";
-import { useNavigate } from "react-router-dom";
-import { OVERVIEW } from "@/data/routes/routes";
 import { FixturesSkeletonCard } from "@/components/skeletons/OutComesSkeleton";
+import FixtureItem from "@/components/bets/FixtureItem";
+import FixtureCard from "@/components/bets/FixtureCard";
+import { getFirebaseLeagueImage } from "@/assets/images";
 
 const FixtureDisplay = forwardRef<
   HTMLDivElement,
@@ -59,14 +61,7 @@ const FixtureDisplay = forwardRef<
 >(({ displayFixtures, selectedMarkets, sport_id, is_loading }, ref) => {
   const { classes } = getClientTheme();
   const sportsPageClasses = classes.sports_page;
-  const { user } = useAppSelector((state) => state.user);
-  const navigate = useNavigate();
-
-  const { openModal } = useModal();
-  const { selected_bets } = useBetting();
   selectedMarkets = Array.isArray(selectedMarkets) ? selectedMarkets : [];
-
-  // For soccer (sportID 1), only show 1X2 and Double Chance markets
   if (sport_id == 1) {
     selectedMarkets = selectedMarkets.filter(
       (market) =>
@@ -74,32 +69,7 @@ const FixtureDisplay = forwardRef<
         market.marketID === String(MARKET_SECTION.DOUBLE_CHANCE) // Double Chance
     );
   }
-
   const dispatch = useAppDispatch();
-  const getMarketOutcomes = (fixture: any, marketConfig: SelectedMarket) => {
-    return marketConfig.outcomes
-      .map((expectedOutcome: any) => {
-        return fixture?.outcomes?.find(
-          (outcome: any) =>
-            outcome.marketID.toString() === marketConfig.marketID &&
-            outcome.outcomeID.toString() ===
-              expectedOutcome.outcomeID.toString()
-        );
-      })
-      .filter(Boolean); // Remove undefined outcomes
-  };
-
-  const handleMorePress = useCallback(
-    (game: PreMatchFixture) => {
-      // dispatch(setSelectedGame(game));
-      openModal({
-        modal_name: MODAL_COMPONENTS.GAME_OPTIONS,
-        title: "Menu",
-        ref: game.gameID,
-      });
-    },
-    [openModal]
-  );
 
   return (
     <div
@@ -148,152 +118,10 @@ const FixtureDisplay = forwardRef<
         <FixturesSkeletonCard selected_markets={selectedMarkets} />
       )}
       {!is_loading && displayFixtures.length > 0 && (
-        <div className="divide-y divide-gray-700 max-h-[70vh] overflow-y-auto overflow-x-hidden">
-          {Object.entries(
-            displayFixtures.reduce(
-              (groups: Record<string, typeof displayFixtures>, fixture) => {
-                // Parse date correctly from the fixture data format
-                const fixtureDate = new Date(
-                  fixture.date || fixture.eventTime
-                ).toLocaleDateString("en-GB", {
-                  weekday: "short",
-                  day: "numeric",
-                  month: "short",
-                });
-
-                if (!groups[fixtureDate]) {
-                  groups[fixtureDate] = [];
-                }
-                groups[fixtureDate].push(fixture);
-                return groups;
-              },
-              {}
-            )
-          ).map(([date, fixtures]) => (
-            <div key={date}>
-              {/* Date Separator */}
-              <div
-                className={`${sportsPageClasses["date-separator-bg"]} px-6 py-1 border-b ${sportsPageClasses["date-separator-border"]}`}
-              >
-                <h3
-                  className={`${sportsPageClasses["date-separator-text"]} font-medium text-xs uppercase tracking-wide`}
-                >
-                  {date}
-                </h3>
-              </div>
-
-              {/* Games for this date */}
-              {fixtures.map((fixture: PreMatchFixture | Fixture) => {
-                return (
-                  <div
-                    key={fixture.matchID}
-                    className={`grid grid-cols-[repeat(17,minmax(0,1fr))] gap-1 p-2 ${sportsPageClasses["card-hover"]} ${classes["item-hover-border-l"]} transition-colors duration-200 cursor-pointer border-l-4 border-transparent`}
-                  >
-                    {/* Time */}
-                    <div
-                      className={`col-span-2 ${sportsPageClasses["time-border"]} border-r flex flex-col items-start justify-center`}
-                    >
-                      <span
-                        className={`text-sm font-semibold ${sportsPageClasses["time-text"]}`}
-                      >
-                        {fixture.eventTime}
-                      </span>
-
-                      <span
-                        className={`text-[11px] ${sportsPageClasses["match-tournament-text"]} whitespace-nowrap`}
-                      >
-                        ID: {fixture.matchID}
-                      </span>
-                    </div>
-
-                    {/* Match Info */}
-                    <div className="col-span-6 flex flex-col justify-center">
-                      <div
-                        className={`text-[10px] ${sportsPageClasses["match-tournament-text"]} mb-1`}
-                      >
-                        {fixture.tournament} • {fixture.categoryName}
-                      </div>
-                      <div
-                        className={`text-xs font-medium ${sportsPageClasses["match-team-text"]}`}
-                      >
-                        {fixture.homeTeam} vs {fixture.awayTeam}
-                      </div>
-                    </div>
-
-                    {/* Dynamic Market Outcomes */}
-                    {selectedMarkets.map((marketConfig, marketIndex) => {
-                      const marketOutcomes = getMarketOutcomes(
-                        fixture,
-                        marketConfig
-                      );
-
-                      return (
-                        <div
-                          key={marketConfig.marketID}
-                          className="col-span-4 flex items-center justify-center"
-                        >
-                          {marketConfig.outcomes.map(
-                            (expectedOutcome, outcomeIndex) => {
-                              const foundOutcome = marketOutcomes.find(
-                                (outcome: any) =>
-                                  outcome?.outcomeID.toString() ===
-                                  expectedOutcome.outcomeID.toString()
-                              );
-
-                              const isFirst = outcomeIndex === 0;
-                              const isLast =
-                                outcomeIndex ===
-                                marketConfig.outcomes.length - 1;
-                              let rounded = "";
-                              if (isFirst) rounded = "rounded-l-md";
-                              else if (isLast) rounded = "rounded-r-md";
-
-                              return (
-                                <OddsButton
-                                  key={`${marketConfig.marketID}-${expectedOutcome.outcomeID}`}
-                                  outcome={foundOutcome!}
-                                  game_id={Number(fixture.gameID)}
-                                  fixture_data={fixture as PreMatchFixture}
-                                  height={"h-10"}
-                                  disabled={!foundOutcome}
-                                  rounded={rounded}
-                                />
-                              );
-                            }
-                          )}
-                        </div>
-                      );
-                    })}
-
-                    <div className="col-span-1 ml-2 px-2 flex items-center justify-center relative">
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleMorePress(fixture as PreMatchFixture);
-                        }}
-                        className={`text-[10px] flex justify-center items-center h-10 rounded-md w-12 p-1   ${
-                          classes["odds-button-hover"]
-                        } shadow font-semibold transition-colors border-2 ${
-                          selected_bets.some(
-                            (bet) =>
-                              bet.game &&
-                              (bet.game.matchID == Number(fixture.matchID) ||
-                                bet.game.game_id == Number(fixture.gameID))
-                          )
-                            ? `${classes["odds-button-selected-bg"]}   ${classes["odds-button-selected-text"]} ${classes["odds-button-selected-border"]}`
-                            : `${classes["odds-button-border"]} ${classes["odds-button-bg"]} ${classes["odds-button-text"]}`
-                        }`}
-                      >
-                        <span>+{fixture.activeMarkets || 0}</span>
-                        <ChevronRight size={12} />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
+        <FixtureCard
+          fixtures={displayFixtures as PreMatchFixture[]}
+          selectedMarkets={selectedMarkets}
+        />
       )}
     </div>
   );
@@ -303,7 +131,9 @@ const LoadBetsPage = () => {
   // Initialize theme
   const { classes } = getClientTheme();
   const cashdeskClasses = classes.cashdesk_page;
-
+  const { data: data_top_bets, isLoading: is_top_bets_loading } =
+    useTopBetsQuery();
+  const top_bets = Array.isArray(data_top_bets?.data) ? data_top_bets.data : [];
   // Add betType state
   const [betType, setBetType] = useState<BET_TYPES_ENUM>(
     BET_TYPES_ENUM.MULTIPLE
@@ -315,6 +145,7 @@ const LoadBetsPage = () => {
   const { global_variables } = useAppSelector((state) => state.app);
   const { form_data } = useAppSelector((state) => state.cashdesk);
   const { cashdesk_fixtures } = useAppSelector((state) => state.fixtures);
+  const [fetchFixture] = useLazyFixturesQuery();
 
   const [eventId, setEventId] = useState("");
 
@@ -579,15 +410,14 @@ const LoadBetsPage = () => {
       });
     }
   }, [cashdesk_fixtures.fixtures.length]);
-
+  console.log("top_bets", top_bets);
   return (
     <div
-      className={`px-4 pb-8 text-white h-[calc(100vh-100px)] overflow-y-auto relative ${cashdeskClasses["container-bg"]}`}
+      className={`px-4 flex flex-col gap-4 pb-8 text-white h-[calc(100vh-100px)] overflow-y-auto relative ${cashdeskClasses["container-bg"]}`}
     >
       {/* <SportsMenu /> */}
       <main className=" relative">
         <div className="flex flex-col lg:flex-row gap-2">
-          {/* Left: main content */}
           <section className="flex-1">
             {/* Event Details Form - Modern Betting Platform Design */}
             <div
@@ -1011,25 +841,80 @@ const LoadBetsPage = () => {
               </div>
             </div> */}
           </section>
-
-          {/* Right sidebar - Betting Controls */}
         </div>
 
         {/* Modals */}
-        {/* <InsufficientBalanceModal
-          open={showInsufficientBalanceModal}
-          {...modalData}
-          onClose={() => setShowInsufficientBalanceModal(false)}
-          onDeposit={handleDeposit}
-        />
-        <SuccessModal
-          open={showSuccessModal}
-          title={modalData.title}
-          message={modalData.message}
-          onClose={() => setShowSuccessModal(false)}
-        /> */}
       </main>
-      <main className="flex flex-col gap-4 mt-2">
+      <main className="">
+        {top_bets.length ? (
+          <div className={``}>
+            <div className="overflow-x-auto">
+              <div
+                className="flex gap-2 pb-2 min-w-[320px] max-w-[36vw]"
+                style={{ scrollbarWidth: "thin" }}
+              >
+                {top_bets.map((top, index) => (
+                  <div
+                    key={index}
+                    className={`flex-shrink-0 rounded-md shadow-lg p-2 flex flex-col items-center ${classes.transactions_page["row-hover"]} cursor-pointer transition-transform duration-200 min-w-[180px] max-w-xs ${classes.sports_page["card-bg"]} border ${classes.sports_page["card-border"]} `}
+                    onClick={() => {
+                      dispatch(setCashDeskLoading());
+
+                      fetchFixture({
+                        tournament_id: String(top.tournamentID!),
+                        sport_id: String(top.sportID),
+                        period: "all",
+                        markets: [
+                          String(MARKET_SECTION.ONE_X_TWO),
+                          String(MARKET_SECTION.DOUBLE_CHANCE),
+                          String(MARKET_SECTION.OVER_UNDER),
+                          String(MARKET_SECTION.TENNIS_WINNER),
+                          String(MARKET_SECTION.NFL_ONE_X_TWO),
+                          String(MARKET_SECTION.NFL_HSH),
+                        ],
+                        specifier: "",
+                      })
+                        .unwrap()
+                        .then((response) => {
+                          dispatch(
+                            addCashDeskFixtures({
+                              fixtures: (response?.fixtures ??
+                                []) as unknown as PreMatchFixture[],
+                              selectedMarket: response?.selectedMarket || [],
+                              sport_id: Number(top.sportID) || 0,
+                            })
+                          );
+                        });
+                    }}
+                  >
+                    <div className="w-20 h-20 min-w-20 mb-2 flex items-center justify-center  rounded-lg overflow-hidden">
+                      <img
+                        className="w-full h-full object-contain"
+                        src={
+                          getFirebaseLeagueImage(top.tournamentName).tournament
+                        }
+                        alt={top.tournamentName}
+                        loading="lazy"
+                      />
+                    </div>
+                    <span
+                      className={`text-xs ${classes["text-primary"]} text-opacity-70 font-semibold mb-1 text-center truncate w-full`}
+                    >
+                      {top.categoryName || top.sportName || ""}
+                    </span>
+                    <span
+                      className={`text-xs font-bold text-center  truncate w-full ${classes["text-primary"]}`}
+                    >
+                      {top.tournamentName}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </main>
+      <main className="flex flex-col gap-4">
         {cashdesk_fixtures.fixtures.length ? (
           <FixtureDisplay
             ref={fixtureDisplayRef}

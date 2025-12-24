@@ -6,6 +6,19 @@ import header_bg from "../images/header-bg.png";
 import betcruz_logo from "../images/bet-cruz-logo.png";
 import environmentConfig from "@/store/services/configs/environment.config";
 let logo = sbe_logo;
+
+// Helper to get Firebase Storage image for a league name
+export function getFirebaseLeagueImage(name: string) {
+  return {
+    tournament: `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/Top%20Leagues%2F${encodeURIComponent(
+      name
+    )}.png?alt=media`,
+    team: `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/teams%2F${encodeURIComponent(
+      name
+    )}.png?alt=media`,
+  };
+}
+
 switch (Number(environmentConfig.FRONTEND_CLIENT_ID)) {
   case 13:
     logo = streetbet_logo;

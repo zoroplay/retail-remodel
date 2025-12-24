@@ -77,14 +77,14 @@ function AuthenticationManager() {
       ) {
         navigate(OVERVIEW.SPORTS, { replace: true });
       }
-      // if (
-      //   (USER_ROLES.CASHIER !== user?.role &&
-      //     pathname.startsWith(ACCOUNT.USER_LIST)) ||
-      //   (USER_ROLES.CASHIER !== user?.role &&
-      //     pathname.startsWith(ACCOUNT.TRANSFER_TO_CASHIER))
-      // ) {
-      //   navigate(ACCOUNT.PROFILE, { replace: true });
-      // }
+      if (
+        (USER_ROLES.CASHIER === user?.role &&
+          pathname.startsWith(ACCOUNT.USER_LIST)) ||
+        (USER_ROLES.CASHIER === user?.role &&
+          pathname.startsWith(ACCOUNT.TRANSFER_TO_CASHIER))
+      ) {
+        navigate(ACCOUNT.PROFILE, { replace: true });
+      }
     } catch (err) {
       console.error("Authentication error:", err);
     }

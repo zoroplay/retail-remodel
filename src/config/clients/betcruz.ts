@@ -92,7 +92,7 @@ export const BETCRUZ_STYLES: ThemeClasses = {
     "date-separator-border": "border-[#EA3C00]/40",
     "time-text": "text-[#ea4201]",
     "time-text-live": "text-green-400",
-    "time-border": "border-gray-500",
+    "time-border": "border-gray-500/40",
     "match-tournament-text": "text-[#EA3C00]",
     "match-team-text": "text-[#894824]",
     "score-text": "text-green-400",

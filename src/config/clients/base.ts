@@ -11,6 +11,7 @@ export const BASE_STYLES: ThemeClasses = {
     "login-button-bg": "bg-blue-600",
     "login-button-hover": "hover:bg-blue-700",
     "login-button-text": "text-white",
+    "header-secondary-gradient": "",
   },
   sports_sidebar: {
     "card-border": "border-gray-300",
