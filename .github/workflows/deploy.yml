@@ -2,9 +2,9 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main , betcruz ]
   pull_request:
-    branches: [ main]
+    branches: [ main , betcruz ]
 
 permissions:
   contents: write
@@ -99,7 +99,7 @@ jobs:
             BUILD_DATE=${{ github.event.head_commit.timestamp }}
             GIT_COMMIT=${{ github.sha }}
             VERSION=${{ needs.version.outputs.version }}
-            VITE_APP_API_BASE_URL=https://dev.staging.sportsbookengine.com/api/v2
+            VITE_APP_API_BASE_URL=https://api.staging.sportsbookengine.com/api/v2
             VITE_APP_CLIENT_ID=4
             VITE_APP_MQTT_URI="wss://emqx.sportsbookengine.com/mqtt"
             VITE_APP_MQTT_USERNAME="ui"
@@ -111,7 +111,7 @@ jobs:
   release:
     needs: [version, build]
     runs-on: [self-hosted, linux, x64]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/betcruz'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -163,7 +163,7 @@ jobs:
     needs: [version, build]
     runs-on: [self-hosted, linux, x64]
     environment: GCP CI
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/betcruz'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -198,16 +198,16 @@ jobs:
       - name: Deploy to GCP server
         run: |
           # Create directory on server
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/gcp-retail/'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/betcruz-retail/'
           
           # Copy files to server
-          scp -o StrictHostKeyChecking=no .env ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
-          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
-          scp -o StrictHostKeyChecking=no deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-retail/
+          scp -o StrictHostKeyChecking=no .env ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/betcruz-retail/
+          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/betcruz-retail/
+          scp -o StrictHostKeyChecking=no deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/betcruz-retail/
           
           # Login to GitHub Container Registry on server and execute deployment
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            chmod +x ~/gcp-retail/deploy.sh
-            bash ~/gcp-retail/deploy.sh
+            chmod +x ~/betcruz-retail/deploy.sh
+            bash ~/betcruz-retail/deploy.sh
           '

@@ -6,7 +6,7 @@ set -e
 echo "Starting deployment..."
 
 # Navigate to project directory
-cd ~/gcp-retail
+cd ~/betcruz-retail
 
 # Set default PORT if not exists
 export PORT=${PORT:-8042}

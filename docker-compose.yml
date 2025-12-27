@@ -1,6 +1,6 @@
 services:
-  gcp-retail-app:
-    image: ghcr.io/zoroplay/gcp-retail:latest
+  betcruz-retail-app:
+    image: ghcr.io/zoroplay/betcruz-retail:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,7 +11,7 @@ services:
       - .env
     restart: unless-stopped
     networks:
-      - gcp-network
+      - betcruz-network
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080"]
       timeout: 10s
@@ -20,5 +20,5 @@ services:
       start_period: 40s
 
 networks:
-  gcp-network:
+  betcruz-network:
     driver: bridge
