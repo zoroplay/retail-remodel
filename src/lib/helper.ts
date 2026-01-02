@@ -7,7 +7,7 @@ import type {
   LocalImageKey,
   RemoteImageKey,
 } from "../data/types/helpers";
-import {
+import environmentConfig, {
   ENVIRONMENT_VARIABLES,
   getEnvironmentVariable,
 } from "../store/services/configs/environment.config";
@@ -354,11 +354,11 @@ export class AppHelper {
     // Replace :client_id with environment variable
     result = result.replace(
       new RegExp(":client_id", "g"),
-      getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID) ?? ""
+      environmentConfig.CLIENT_ID ?? ""
     );
     result = result.replace(
       new RegExp(":clientId", "g"),
-      getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID) ?? ""
+      environmentConfig.CLIENT_ID ?? ""
     );
 
     // Then replace all other parameters

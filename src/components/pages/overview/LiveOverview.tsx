@@ -2,37 +2,29 @@
 import OddsButton from "@/components/buttons/OddsButton";
 import SwitchInput from "@/components/inputs/SwitchInput";
 import { FixturesSkeletonCard } from "@/components/skeletons/OutComesSkeleton";
+import LiveTimeDisplay from "@/components/tools/LiveTimeDisplay";
 import { getClientTheme } from "@/config/theme.config";
 import { MARKET_SECTION } from "@/data/enums/enum";
 import { Fixture } from "@/data/types/betting.types";
 import { useAppSelector, useAppDispatch } from "@/hooks/useAppDispatch";
 import { useBetting } from "@/hooks/useBetting";
-import { useLiveTimeIncrement } from "@/hooks/useLiveTimeIncrement";
 import { useModal } from "@/hooks/useModal";
 import { useLiveMqtt } from "@/hooks/useMqtt";
-import { AppHelper } from "@/lib/helper";
 import {
   setSelectedGame,
   updateFixtureOutcome,
 } from "@/store/features/slice/fixtures.slice";
 import {
   selectLiveFixtures,
-  addLiveFixture,
   updateLiveFixtureOutcome,
   updateLiveFixture,
   LiveFixture,
 } from "@/store/features/slice/live-games.slice";
 import { MODAL_COMPONENTS } from "@/store/features/types";
 import { PreMatchFixture } from "@/store/features/types/fixtures.types";
-import {
-  useTopBetsQuery,
-  useSportsQuery,
-  useSportsHighlightLiveQuery,
-} from "@/store/services/bets.service";
-import { SportsHighlightFixture } from "@/store/services/data/betting.types";
+import { useSportsHighlightLiveQuery } from "@/store/services/bets.service";
 import { ChevronRight } from "lucide-react";
 import React, { useCallback, useState, useEffect, useMemo } from "react";
-import { useSearchParams, useLocation, useParams } from "react-router-dom";
 
 interface OverviewScreenProps {
   sportId?: string;
@@ -506,7 +498,10 @@ export default function LiveOverviewScreen({
                                             <span
                                               className={`text-[11px] font-semibold ${sportsPageClasses["time-text-live"]}`}
                                             >
-                                              {fixture.eventTime}
+                                              <LiveTimeDisplay
+                                                eventTime={fixture.eventTime}
+                                                isLive={true}
+                                              />
                                             </span>
                                             <span
                                               className={`text-xs ${sportsPageClasses["time-text-live"]}`}

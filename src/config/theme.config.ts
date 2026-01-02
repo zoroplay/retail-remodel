@@ -485,6 +485,10 @@ export interface ThemeClasses {
   "top-bets-text-primary": string;
   "top-bets-text-secondary": string;
   "top-bets-hover": string;
+
+  "live-score-bg": string;
+  "live-score-border": string;
+  "live-score-text": string;
 }
 
 export interface ClientTheme {

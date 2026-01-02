@@ -451,4 +451,8 @@ export const BETCRUZ_STYLES: ThemeClasses = {
   "top-bets-text-primary": "text-[#884816]",
   "top-bets-text-secondary": "text-[#884816]/70",
   "top-bets-hover": "hover:bg-gray-100",
+
+  "live-score-bg": "bg-[#4a250a]",
+  "live-score-border": "border-[#ffb780]",
+  "live-score-text": "text-[#ffdfc7]",
 };

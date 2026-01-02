@@ -21,6 +21,8 @@ import ExactGoals from "@/components/bets/sections/ExactGoals";
 import { SkeletonTitle } from "@/components/skeletons/OutComesSkeleton";
 import { getClientTheme } from "@/config/theme.config";
 import Modal from "../Modal";
+import LiveTimeDisplay from "@/components/tools/LiveTimeDisplay";
+import Input from "@/components/inputs/Input";
 
 export const groupLiveSports = (data: PreMatchFixture[] | PreMatchFixture) => {
   // Handle both single fixture object and array of outcomes
@@ -83,8 +85,8 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const { toggleBet } = useBetting();
   const { selectedGame } = useAppSelector((state) => state.fixtures);
-  const theme = getClientTheme();
-  const modalClasses = theme.classes.game_options_modal;
+  const { classes } = getClientTheme();
+  const modalClasses = classes.game_options_modal;
   const searchParams = new URLSearchParams(window.location.search);
   const ref = searchParams.get("ref");
   const {
@@ -108,6 +110,8 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
   const [fixture_data, setFixtureData] = useState<PreMatchFixture | null>(
     !ref ? selectedGame : null
   );
+  // Market search state
+  const [marketSearch, setMarketSearch] = useState("");
   const fetchFixtureData = async (eventId: string) => {
     // setIsFormLoading(true);
     try {
@@ -277,7 +281,7 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
     return "SIMPLE";
   };
 
-  // Render market sections in the order received from the backend
+  // Render market sections in the order received from the backend, filtered by search
   const createDynamicMarketSections = () => {
     if (!fixture_data || !fixture_data.outcomes) {
       return [];
@@ -301,14 +305,23 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
       is_loading: isFixtureLoading,
     };
 
+    // Filter by marketName if search is present
+    const filteredMarketIdOrder = marketSearch.trim()
+      ? marketIdOrder.filter((marketId) =>
+          (marketGroups[marketId][0]?.marketName || "")
+            .toLowerCase()
+            .includes(marketSearch.trim().toLowerCase())
+        )
+      : marketIdOrder;
+
     // Render each market group in the order received
-    return marketIdOrder.map((marketId) => {
+    return filteredMarketIdOrder.map((marketId) => {
       const outcomes = marketGroups[marketId];
       const marketName = outcomes[0]?.marketName || "";
       const specifier = outcomes[0]?.specifier || "";
       const marketType = detectMarketType(marketName, specifier, outcomes);
 
-      // Render the correct component for each market type
+      // ...existing code for rendering market components...
       if (
         marketType === "1X2" ||
         marketType === "DOUBLE_CHANCE" ||
@@ -499,6 +512,10 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
       ),
     },
   ];
+  const is_live =
+    (fixture_data?.eventTime && fixture_data?.eventTime !== "--:--") ||
+    Number(fixture_data?.homeScore) > 0 ||
+    Number(fixture_data?.awayScore) > 0;
 
   return (
     <Modal
@@ -510,23 +527,96 @@ const GameOptionsModal: React.FC<Props> = ({ onClose }) => {
           <SkeletonTitle />
         ) : (
           <>
-            <div className="flex flex-col gap-1 pb-2">
-              <span
-                className={`font-bold text-sm ${modalClasses["header-title"]}`}
-              >
-                {fixture_data?.competitor1}{" "}
-                <span className={modalClasses["header-vs-text"]}>vs</span>{" "}
-                {fixture_data?.competitor2}
-              </span>
-              <div className="flex justify-between items-center gap-2">
-                <span className={`text-xs ${modalClasses["header-subtitle"]}`}>
-                  {fixture_data?.categoryName} &middot;{" "}
-                  {fixture_data?.sportName}
-                </span>
-                <span className={`text-xs ${modalClasses["header-date-text"]}`}>
-                  {fixture_data?.date}
-                </span>
-              </div>
+            <div className="flex flex-col pb-2">
+              {/* Show live time and scores if live */}
+              {is_live ? (
+                <>
+                  <div className="flex justify-between items-center gap-2 w-full ">
+                    {/* You may need to import and use your LiveTimeDisplay component for web here */}
+                    {/* <span style={{ color: '#1a1a1a', fontWeight: 600, fontSize: 15 }}>
+                      {fixture_data?.eventTime}
+                    </span> */}
+                    <span className="font-semibold text-sm">
+                      <LiveTimeDisplay
+                        eventTime={fixture_data?.eventTime!}
+                        isLive={true}
+                      />
+                    </span>
+                    <div className="max-w-[24rem]">
+                      <Input
+                        type="text"
+                        placeholder="Search market name..."
+                        value={marketSearch}
+                        onChange={(e) => setMarketSearch(e.target.value)}
+                        className=" text-xs w-full"
+                        name={""}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      className={`flex justify-between items-center ${classes["live-score-bg"]} ${classes["live-score-border"]} border`}
+                    >
+                      <span
+                        className={`font-bold text-xs ${classes["live-score-text"]} p-2`}
+                      >
+                        {fixture_data?.homeTeam ?? fixture_data?.competitor1}
+                      </span>
+                      <span className="bg-[#d32f2f] h-full min-w-12 flex items-center justify-center px-2 py-1 text-white font-bold">
+                        {fixture_data?.homeScore ?? 0}
+                      </span>
+                    </div>
+                    <div
+                      className={`flex justify-between items-center ${classes["live-score-bg"]} ${classes["live-score-border"]} border`}
+                    >
+                      <span
+                        className={`font-bold text-xs ${classes["live-score-text"]} p-2`}
+                      >
+                        {fixture_data?.awayTeam ?? fixture_data?.competitor2}
+                      </span>
+                      <span className="bg-[#d32f2f] h-full min-w-12 flex items-center justify-center px-2 py-1 text-white font-bold ">
+                        {fixture_data?.awayScore ?? 0}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-between items-center gap-4 w-full ">
+                    <span
+                      className={`font-bold text-sm ${modalClasses["header-title"]}`}
+                    >
+                      {fixture_data?.competitor1}{" "}
+                      <span className={modalClasses["header-vs-text"]}>vs</span>{" "}
+                      {fixture_data?.competitor2}
+                    </span>
+                    <div className="max-w-[20rem]">
+                      <Input
+                        type="text"
+                        placeholder="Search market name..."
+                        value={marketSearch}
+                        onChange={(e) => setMarketSearch(e.target.value)}
+                        className=" text-xs w-full"
+                        name={""}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center gap-2">
+                    <span
+                      className={`text-xs ${modalClasses["header-subtitle"]}`}
+                    >
+                      {fixture_data?.categoryName} &middot;{" "}
+                      {fixture_data?.sportName}
+                    </span>
+                    <span
+                      className={`text-xs ${modalClasses["header-date-text"]}`}
+                    >
+                      {fixture_data?.date}
+                    </span>
+                  </div>
+                </>
+              )}
+              {/* Market search input */}
             </div>
           </>
         )

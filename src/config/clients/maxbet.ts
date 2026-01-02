@@ -446,4 +446,8 @@ export const MAXBET_STYLES: ThemeClasses = {
   "top-bets-text-primary": "text-gray-700",
   "top-bets-text-secondary": "text-gray-500",
   "top-bets-hover": "hover:bg-gray-100",
+
+  "live-score-bg": "bg-[#2a2a2a]",
+  "live-score-border": "border-[#3a3a3a]",
+  "live-score-text": "text-gray-200",
 };

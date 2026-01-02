@@ -444,4 +444,8 @@ export const EVERESTBET_STYLES: ThemeClasses = {
   "top-bets-text-primary": "text-gray-700",
   "top-bets-text-secondary": "text-gray-500",
   "top-bets-hover": "hover:bg-gray-100",
+
+  "live-score-bg": "bg-blue-950",
+  "live-score-border": "border-gray-300",
+  "live-score-text": "text-blue-100",
 };
