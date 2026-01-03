@@ -218,7 +218,7 @@ export default function OverviewScreen({
 
   return (
     <div
-      className={`min-h-[calc(100vh-110px)] flex justify-center items-start text-white relative w-full ${sportsPageClasses["container-bg"]}`}
+      className={`h-[calc(100vh-100px)] overflow-y-auto flex justify-center items-start text-white relative w-full ${sportsPageClasses["container-bg"]}`}
     >
       <div className="h-full p-1 w-full">
         {/* Unified Table Structure */}
