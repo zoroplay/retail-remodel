@@ -57,6 +57,8 @@ const OnlineReport = () => {
       clientId: Number(environmentConfig.CLIENT_ID),
       from: dateRange.startDate,
       to: dateRange.endDate,
+      // from: "",
+      // to: "",
     },
     {
       skip: !user?.id,

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { AppHelper } from "../../../../lib/helper";
 import { useLazyFetchTransactionsQuery } from "../../../../store/services/bets.service";
-import {
+import environmentConfig, {
   getEnvironmentVariable,
   ENVIRONMENT_VARIABLES,
 } from "../../../../store/services/configs/environment.config";
@@ -91,7 +91,7 @@ const TransactionsPage = () => {
   // Auto-fetch when filters change
   useEffect(() => {
     fetchTransactions({
-      clientId: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID)!,
+      clientId: environmentConfig.CLIENT_ID!,
       endDate: dateRange.endDate,
       page_size: parseInt(pageSize),
       startDate: dateRange.startDate,

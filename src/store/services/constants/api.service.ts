@@ -129,10 +129,10 @@ const baseQuery = fetchBaseQuery({
         headers.set("SBE-API-KEY", generateApiKey());
         headers.set("SBE-API-SIGNATURE", aesEncrypt());
       } catch (encryptError) {
-        console.error("Error adding encryption headers:", encryptError);
+        // console.error("Error adding encryption headers:", encryptError);
       }
     } catch (error) {
-      console.log("Error getting access token:", error);
+      // console.log("Error getting access token:", error);
     }
     return headers;
   },
@@ -140,31 +140,31 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithLogging = async (args: any, api: any, extraOptions: any) => {
   const fullUrl = typeof args === "string" ? args : args.url;
-  console.log("🚀 API Request:", {
-    fullUrl: `${fullUrl}`,
-    method: args.method || "GET",
-    body: args.body,
-    headers: args.headers,
-    timestamp: new Date().toISOString(),
-  });
+  // console.log("🚀 API Request:", {
+  //   fullUrl: `${fullUrl}`,
+  //   method: args.method || "GET",
+  //   body: args.body,
+  //   headers: args.headers,
+  //   timestamp: new Date().toISOString(),
+  // });
 
   try {
     const result = await baseQuery(args, api, extraOptions);
-    console.log("✅ API Response:", {
-      url: `${fullUrl}`,
-      status: result.meta?.response?.status,
-      data: result.data,
-      error: result.error,
-      timestamp: new Date().toISOString(),
-    });
+    // console.log("✅ API Response:", {
+    //   url: `${fullUrl}`,
+    //   status: result.meta?.response?.status,
+    //   data: result.data,
+    //   error: result.error,
+    //   timestamp: new Date().toISOString(),
+    // });
     return result;
   } catch (error: any) {
-    console.log("❌ API Error:", {
-      url: `${fullUrl}`,
-      error: error.message,
-      stack: error.stack,
-      timestamp: new Date().toISOString(),
-    });
+    // console.log("❌ API Error:", {
+    //   url: `${fullUrl}`,
+    //   error: error.message,
+    //   stack: error.stack,
+    //   timestamp: new Date().toISOString(),
+    // });
 
     if (error.message?.includes("Network request failed")) {
       // showToast({
