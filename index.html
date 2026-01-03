@@ -18,23 +18,19 @@
 
     <title></title>
     <script>
-      // Example client themes config
       const clientThemes = {
         3: { title: "Client 3 POS", favicon: "/client3.ico" },
         7: { title: "Client 7 POS", favicon: "/client7.ico" },
         9: { title: "Client 9 POS", favicon: "/client9.ico" },
-        10: { title: "Betcruz Retail", favicon: "/betcruz-favicon.ico" },
+        10: { title: "Betcruz Shop", favicon: "/betcruz-favicon.ico" },
         default: { title: "Retail", favicon: "/favicon.ico" },
       };
       const frontendClientId = localStorage.getItem("FRONTEND_CLIENT_ID");
-      console.log("FRONTEND_CLIENT_ID from localStorage:", frontendClientId);
 
       function setClientTheme() {
         const clientId = frontendClientId;
         const theme = clientThemes[clientId] || clientThemes.default;
-        // Set title
         document.title = theme.title;
-        // Set favicon
         let link = document.querySelector("link[rel~='icon']");
         if (!link) {
           link = document.createElement("link");
