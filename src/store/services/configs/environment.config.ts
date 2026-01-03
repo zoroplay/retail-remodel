@@ -34,6 +34,19 @@ const getBaseUrl = (): string => {
   return getEnvironmentVariable(ENVIRONMENT_VARIABLES.API_BASE_URL);
 };
 
+const UrlClientId = () => {
+  return window.location.origin.includes("maxbet")
+    ? 3
+    : window.location.origin.includes("localhost")
+    ? 4
+    : window.location.origin.includes("betcruz")
+    ? 10
+    : null;
+};
+
+console.log("Frontend Client ID:", UrlClientId());
+console.log("window.location.origin:", window.location.origin);
+
 export const environmentConfig = {
   API_BASE_URL: getBaseUrl(),
   SITE_KEY: getEnvironmentVariable(ENVIRONMENT_VARIABLES.SITE_KEY),
@@ -47,6 +60,7 @@ export const environmentConfig = {
   CLIENT_ID: getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID),
   FRONTEND_CLIENT_ID:
     getEnvironmentVariable(ENVIRONMENT_VARIABLES.FRONTEND_CLIENT_ID) ||
+    UrlClientId() ||
     getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID),
   BASE_URL: getEnvironmentVariable(ENVIRONMENT_VARIABLES.BASE_URL),
   FRONTEND_URL: getEnvironmentVariable(ENVIRONMENT_VARIABLES.FRONTEND_URL),
@@ -57,15 +71,9 @@ export const environmentConfig = {
     ENVIRONMENT_VARIABLES.XPRESS_PRIVATE_KEY
   ),
 };
-
-console.log(
-  "getEnvironmentVariable: API_BASE_URL",
-  getEnvironmentVariable(ENVIRONMENT_VARIABLES.API_BASE_URL)
+localStorage.setItem(
+  "FRONTEND_CLIENT_ID",
+  environmentConfig.FRONTEND_CLIENT_ID.toString()
 );
-console.log(
-  "getEnvironmentVariable: CLIENT_ID",
-  getEnvironmentVariable(ENVIRONMENT_VARIABLES.CLIENT_ID)
-);
-console.log("Environment Config:", environmentConfig);
 
 export default environmentConfig;
